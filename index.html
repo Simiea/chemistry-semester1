@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stage 1 Chemistry — Study Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #07090e;
+    --bg2: #0d1018;
+    --surface: #10141f;
+    --surface2: #161c2c;
+    --border: #1e2840;
+    --border2: #2a3a58;
+    --text: #dde6f5;
+    --muted: #6a7fa0;
+    --muted2: #35486a;
+
+    --t1: #ff7744;
+    --t2: #4ade80;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    font-weight: 400;
+    line-height: 1.7;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 4rem 2rem 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 70% 55% at 30% 40%, rgba(255,119,68,0.07) 0%, transparent 60%),
+      radial-gradient(ellipse 55% 50% at 75% 65%, rgba(74,222,128,0.06) 0%, transparent 55%);
+    animation: pulse 10s ease-in-out infinite alternate;
+  }
+
+  @keyframes pulse { from{opacity:0.5} to{opacity:1} }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 44px 44px;
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 700px;
+  }
+
+  .hero-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--t1);
+    border: 1px solid rgba(255,119,68,0.3);
+    background: rgba(255,119,68,0.07);
+    padding: 0.4em 1.2em;
+    border-radius: 100px;
+    display: inline-block;
+    margin-bottom: 1.75rem;
+    animation: up 0.7s ease both;
+  }
+
+  .hero h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(2.8rem, 8vw, 6rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.25rem;
+    animation: up 0.7s 0.1s ease both;
+  }
+
+  .hero h1 .hl1 { color: var(--t1); }
+  .hero h1 .hl2 { color: var(--t2); }
+
+  .hero-desc {
+    font-size: 0.97rem;
+    color: var(--muted);
+    max-width: 460px;
+    margin: 0 auto 2.75rem;
+    line-height: 1.75;
+    animation: up 0.7s 0.2s ease both;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    animation: up 0.7s 0.3s ease both;
+    margin-bottom: 2.75rem;
+  }
+
+  .stat-pill {
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: 100px;
+    padding: 0.45em 1.2em;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.73rem;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .stat-pill .n { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; font-weight: 700; color: var(--text); }
+
+  .scroll-hint {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.67rem;
+    letter-spacing: 0.12em;
+    color: var(--muted2);
+    animation: up 0.7s 0.4s ease both;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .bounce { animation: bounce 2s ease-in-out infinite; }
+
+  @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(5px)} }
+  @keyframes up { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+
+  /* ── SECTION ── */
+  .section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 4.5rem 2rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .sec-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1.25rem;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sec-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+
+  .sec-sub { font-size: 0.85rem; color: var(--muted); }
+
+  /* ── TOPIC CARDS ── */
+  .topic-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+    position: relative;
+  }
+
+  .topic-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 4px;
+    border-radius: 18px 0 0 18px;
+    background: var(--topic-color);
+    transition: width 0.25s;
+  }
+
+  .topic-card:hover { transform: translateY(-2px); box-shadow: 0 10px 40px rgba(0,0,0,0.4); }
+  .topic-card:hover::before { width: 6px; }
+
+  /* topic header */
+  .topic-header {
+    padding: 1.5rem 1.75rem 1.25rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  .topic-badge {
+    width: 52px; height: 52px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    flex-shrink: 0;
+    background: color-mix(in srgb, var(--topic-color) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--topic-color) 28%, transparent);
+    color: var(--topic-color);
+  }
+
+  .topic-info { flex: 1; min-width: 0; }
+
+  .topic-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.63rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted2);
+    margin-bottom: 0.2rem;
+  }
+
+  .topic-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 0.25rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .topic-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+
+  /* chapter rows */
+  .chapters {
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .chapter-row {
+    display: flex;
+    align-items: stretch;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+
+  .chapter-row:last-child { border-bottom: none; }
+  .chapter-row:hover { background: var(--surface2); }
+
+  .ch-left {
+    padding: 0.85rem 1.75rem 0.85rem 2rem;
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .ch-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--muted2);
+    letter-spacing: 0.08em;
+    flex-shrink: 0;
+    width: 32px;
+  }
+
+  .ch-info { min-width: 0; }
+
+  .ch-name {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 0.1rem;
+  }
+
+  .ch-topics {
+    font-size: 0.77rem;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .ch-links {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    padding: 0.85rem 1.25rem 0.85rem 0.5rem;
+    flex-shrink: 0;
+  }
+
+  .link-btn {
+    text-decoration: none;
+    padding: 0.45em 1em;
+    border-radius: 8px;
+    border: 1px solid;
+    font-family: 'Barlow', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 500;
+    transition: all 0.16s;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  .link-btn.notes {
+    background: color-mix(in srgb, var(--topic-color) 8%, transparent);
+    border-color: color-mix(in srgb, var(--topic-color) 25%, transparent);
+    color: var(--topic-color);
+  }
+
+  .link-btn.notes:hover {
+    background: color-mix(in srgb, var(--topic-color) 18%, transparent);
+    border-color: var(--topic-color);
+  }
+
+  .link-btn.quiz {
+    background: var(--surface2);
+    border-color: var(--border2);
+    color: var(--muted);
+  }
+
+  .link-btn.quiz:hover {
+    background: color-mix(in srgb, var(--topic-color) 10%, var(--surface2));
+    border-color: color-mix(in srgb, var(--topic-color) 40%, transparent);
+    color: var(--text);
+  }
+
+  @media (max-width: 620px) {
+    .topic-header { flex-wrap: wrap; }
+    .ch-left { padding-left: 1.25rem; }
+    .ch-topics { display: none; }
+    .ch-links { padding-right: 0.75rem; }
+    .link-btn { font-size: 0.72rem; padding: 0.4em 0.75em; }
+  }
+
+  /* ── QUICK ACCESS GRIDS ── */
+  .quick-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 0.85rem;
+    margin-top: 1.75rem;
+  }
+
+  .quick-card {
+    text-decoration: none;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.1rem;
+    transition: all 0.18s;
+  }
+
+  .quick-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 24px rgba(0,0,0,0.35);
+    border-color: var(--border2);
+  }
+
+  .qc-icon { font-size: 1.4rem; margin-bottom: 0.45rem; }
+  .qc-label { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted2); margin-bottom: 0.2rem; }
+  .qc-name { font-family: 'Barlow Condensed', sans-serif; font-size: 0.9rem; font-weight: 700; letter-spacing: -0.01em; color: var(--text); line-height: 1.3; margin-bottom: 0.4rem; }
+
+  .qc-tag {
+    font-size: 0.72rem;
+    font-weight: 500;
+    padding: 0.18em 0.65em;
+    border-radius: 100px;
+    display: inline-block;
+    border: 1px solid;
+  }
+
+  .qc-tag.notes { color: var(--t1); border-color: rgba(255,119,68,0.3); background: rgba(255,119,68,0.08); }
+  .qc-tag.quiz  { color: var(--t2); border-color: rgba(74,222,128,0.3); background: rgba(74,222,128,0.08); }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted2);
+    letter-spacing: 0.07em;
+  }
+
+  footer span { color: var(--t1); }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">Stage 1 Chemistry</div>
+    <h1><span class="hl1">Chemistry</span><br>Study Hub</h1>
+    <p class="hero-desc">Notes and quizzes for every topic — all in one place. Read, revise, then test yourself.</p>
+    <div class="hero-stats">
+      <div class="stat-pill"><span class="n">2</span> Topics</div>
+      <div class="stat-pill"><span class="n">6</span> Chapters</div>
+      <div class="stat-pill"><span class="n">2</span> Notes Pages</div>
+      <div class="stat-pill"><span class="n">2</span> Quizzes</div>
+      <div class="stat-pill"><span class="n">69+</span> Flashcards</div>
+      <div class="stat-pill"><span class="n">39+</span> MCQ Questions</div>
+    </div>
+    <div class="scroll-hint"><span class="bounce">↓</span> scroll to browse</div>
+  </div>
+</section>
+
+<!-- ── TOPICS ── -->
+<div class="section">
+  <div class="sec-header">
+    <div class="sec-title">All Topics</div>
+    <div class="sec-sub">Notes · Quiz for each topic</div>
+  </div>
+
+  <!-- TOPIC 1 -->
+  <div class="topic-card" style="--topic-color: #ff7744;">
+    <div class="topic-header">
+      <div class="topic-badge">T1</div>
+      <div class="topic-info">
+        <div class="topic-label">Topic 1</div>
+        <div class="topic-name">Materials and Their Atoms</div>
+        <div class="topic-desc">Properties · Nanomaterials · Separation · Atomic structure · Spectra · Isotopes · Subshells · Moles · Periodic table · Trends</div>
+      </div>
+    </div>
+    <div class="chapters">
+      <div class="chapter-row">
+        <div class="ch-left">
+          <div class="ch-num">1.1</div>
+          <div class="ch-info">
+            <div class="ch-name">Properties and Uses of Materials</div>
+            <div class="ch-topics">Solubility · Thermal & electrical conductivity · Melting/boiling points · Nanomaterials · Mixtures · Separation techniques</div>
+          </div>
+        </div>
+        <div class="ch-links">
+          <a class="link-btn notes" href="chem-topic-1-notes.html#s11">📖 Notes</a>
+        </div>
+      </div>
+      <div class="chapter-row">
+        <div class="ch-left">
+          <div class="ch-num">1.2</div>
+          <div class="ch-info">
+            <div class="ch-name">Atomic Structure</div>
+            <div class="ch-topics">Protons/neutrons/electrons · Electron shells · Absorption & emission spectra · Isotopes · Subshell configurations · Ion configs</div>
+          </div>
+        </div>
+        <div class="ch-links">
+          <a class="link-btn notes" href="chem-topic-1-notes.html#s12">📖 Notes</a>
+        </div>
+      </div>
+      <div class="chapter-row">
+        <div class="ch-left">
+          <div class="ch-num">1.3</div>
+          <div class="ch-info">
+            <div class="ch-name">Quantities of Atoms</div>
+            <div class="ch-topics">The mole · Avogadro's number · Molar mass · n = m/M · Relative atomic mass · Isotope abundance</div>
+          </div>
+        </div>
+        <div class="ch-links">
+          <a class="link-btn notes" href="chem-topic-1-notes.html#s13">📖 Notes</a>
+        </div>
+      </div>
+      <div class="chapter-row">
+        <div class="ch-left">
+          <div class="ch-num">1.4</div>
+          <div class="ch-info">
+            <div class="ch-name">The Periodic Table</div>
+            <div class="ch-topics">Periods & groups · s/p/d/f blocks · Metallic character · Atomic radius · Electronegativity · Valency trends</div>
+          </div>
+        </div>
+        <div class="ch-links">
+          <a class="link-btn notes" href="chem-topic-1-notes.html#s14">📖 Notes</a>
+          <a class="link-btn quiz"  href="chem-topic-1-quiz.html">⚡ Quiz</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOPIC 2 -->
+  <div class="topic-card" style="--topic-color: #4ade80;">
+    <div class="topic-header">
+      <div class="topic-badge">T2</div>
+      <div class="topic-info">
+        <div class="topic-label">Topic 2</div>
+        <div class="topic-name">Combining Atoms</div>
+        <div class="topic-desc">Types of solids · Bonding energy · Metallic bonding · Ionic bonding · Empirical formulae · Polyatomic ions · Covalent bonds · Lewis structures · Polarity · Networks · Naming</div>
+      </div>
+    </div>
+    <div class="chapters">
+      <div class="chapter-row">
+        <div class="ch-left">
+          <div class="ch-num">2.1</div>
+          <div class="ch-info">
+            <div class="ch-name">Types of Materials</div>
+            <div class="ch-topics">Metallic · Ionic · Covalent molecular · Covalent network · Melting points · Conductivity evidence</div>
+          </div>
+        </div>
+        <div class="ch-links">
+          <a class="link-btn notes" href="chem-topic-2-notes.html#types">📖 Notes</a>
+        </div>
+      </div>
+      <div class="chapter-row">
+        <div class="ch-left">
+          <div class="ch-num">2.2</div>
+          <div class="ch-info">
+            <div class="ch-name">Bonding Between Atoms</div>
+            <div class="ch-topics">Octet rule · Ions · Bond energy · Metallic/ionic/covalent bonds · Empirical formulae · Polyatomic ions · Lewis structures · Polarity · Networks · Naming</div>
+          </div>
+        </div>
+        <div class="ch-links">
+          <a class="link-btn notes" href="chem-topic-2-notes.html#octet">📖 Notes</a>
+          <a class="link-btn quiz"  href="chem-topic-2-quiz.html">⚡ Quiz</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- QUICK ACCESS -->
+<div class="section" style="border-top:1px solid var(--border);">
+  <div class="sec-header">
+    <div class="sec-title">Quick Access — Quizzes</div>
+    <div class="sec-sub">Jump straight into practice</div>
+  </div>
+  <div class="quick-grid">
+    <a class="quick-card" href="chem-topic-1-quiz.html">
+      <div class="qc-icon">⚗️</div>
+      <div class="qc-label">Topic 1</div>
+      <div class="qc-name">Materials &amp; Their Atoms</div>
+      <span class="qc-tag quiz">⚡ Quiz</span>
+    </a>
+    <a class="quick-card" href="chem-topic-2-quiz.html">
+      <div class="qc-icon">🔬</div>
+      <div class="qc-label">Topic 2</div>
+      <div class="qc-name">Combining Atoms</div>
+      <span class="qc-tag quiz">⚡ Quiz</span>
+    </a>
+  </div>
+
+  <div class="sec-header" style="margin-top:3rem;">
+    <div class="sec-title">Quick Access — Notes</div>
+    <div class="sec-sub">Jump straight to reading</div>
+  </div>
+  <div class="quick-grid">
+    <a class="quick-card" href="chem-topic-1-notes.html">
+      <div class="qc-icon">📖</div>
+      <div class="qc-label">Topic 1</div>
+      <div class="qc-name">Materials &amp; Their Atoms</div>
+      <span class="qc-tag notes">📖 Notes</span>
+    </a>
+    <a class="quick-card" href="chem-topic-1-notes.html#nanomaterials">
+      <div class="qc-icon">🔬</div>
+      <div class="qc-label">Topic 1 · 1.1</div>
+      <div class="qc-name">Nanomaterials</div>
+      <span class="qc-tag notes">📖 Notes</span>
+    </a>
+    <a class="quick-card" href="chem-topic-1-notes.html#s12">
+      <div class="qc-icon">⚛️</div>
+      <div class="qc-label">Topic 1 · 1.2</div>
+      <div class="qc-name">Atomic Structure</div>
+      <span class="qc-tag notes">📖 Notes</span>
+    </a>
+    <a class="quick-card" href="chem-topic-1-notes.html#spectra">
+      <div class="qc-icon">🌈</div>
+      <div class="qc-label">Topic 1 · 1.2</div>
+      <div class="qc-name">Spectra</div>
+      <span class="qc-tag notes">📖 Notes</span>
+    </a>
+    <a class="quick-card" href="chem-topic-1-notes.html#s13">
+      <div class="qc-icon">🧮</div>
+      <div class="qc-label">Topic 1 · 1.3</div>
+      <div class="qc-name">Moles &amp; Calculations</div>
+      <span class="qc-tag notes">📖 Notes</span>
+    </a>
+    <a class="quick-card" href="chem-topic-1-notes.html#trends">
+      <div class="qc-icon">📊</div>
+      <div class="qc-label">Topic 1 · 1.4</div>
+      <div class="qc-name">Periodic Trends</div>
+      <span class="qc-tag notes">📖 Notes</span>
+    </a>
+    <a class="quick-card" href="chem-topic-2-notes.html">
+      <div class="qc-icon">📖</div>
+      <div class="qc-label">Topic 2</div>
+      <div class="qc-name">Combining Atoms</div>
+      <span class="qc-tag notes">📖 Notes</span>
+    </a>
+    <a class="quick-card" href="chem-topic-2-notes.html#metallic">
+      <div class="qc-icon">⚙️</div>
+      <div class="qc-label">Topic 2 · 2.2</div>
+      <div class="qc-name">Metallic Bonding</div>
+      <span class="qc-tag notes">📖 Notes</span>
+    </a>
+    <a class="quick-card" href="chem-topic-2-notes.html#ionic">
+      <div class="qc-icon">🔴</div>
+      <div class="qc-label">Topic 2 · 2.2</div>
+      <div class="qc-name">Ionic Bonding</div>
+      <span class="qc-tag notes">📖 Notes</span>
+    </a>
+    <a class="quick-card" href="chem-topic-2-notes.html#covalent">
+      <div class="qc-icon">🔵</div>
+      <div class="qc-label">Topic 2 · 2.2</div>
+      <div class="qc-name">Covalent Bonding</div>
+      <span class="qc-tag notes">📖 Notes</span>
+    </a>
+    <a class="quick-card" href="chem-topic-2-notes.html#empirical">
+      <div class="qc-icon">📝</div>
+      <div class="qc-label">Topic 2 · 2.2</div>
+      <div class="qc-name">Empirical Formulae</div>
+      <span class="qc-tag notes">📖 Notes</span>
+    </a>
+    <a class="quick-card" href="chem-topic-2-notes.html#networks">
+      <div class="qc-icon">💎</div>
+      <div class="qc-label">Topic 2 · 2.2</div>
+      <div class="qc-name">Covalent Networks</div>
+      <span class="qc-tag notes">📖 Notes</span>
+    </a>
+  </div>
+</div>
+
+<footer>
+  <div>Stage 1 Chemistry — Study Hub · <span>All files must be in the same folder for links to work</span></div>
+  <div style="margin-top:0.3rem;opacity:0.45;">© Essentials Education 2022 · Study resource for educational use</div>
+</footer>
+
+</body>
+</html>

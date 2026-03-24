@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chemistry Topic 1 — Materials and Their Atoms</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Barlow+Condensed:wght@600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f0e8;
+    --bg2: #ece6d8;
+    --surface: #ffffff;
+    --border: #d8d0c0;
+    --border2: #c0b89a;
+    --text: #1a1510;
+    --muted: #6b5c42;
+    --muted2: #a89070;
+
+    --chem:    #c8410a;
+    --chem-bg: rgba(200,65,10,0.07);
+    --chem-bd: rgba(200,65,10,0.22);
+
+    --atom:    #0a5c8c;
+    --atom-bg: rgba(10,92,140,0.07);
+    --atom-bd: rgba(10,92,140,0.22);
+
+    --mol:     #1a7a3c;
+    --mol-bg:  rgba(26,122,60,0.07);
+    --mol-bd:  rgba(26,122,60,0.22);
+
+    --per:     #6b2fa0;
+    --per-bg:  rgba(107,47,160,0.07);
+    --per-bd:  rgba(107,47,160,0.22);
+
+    --nano:    #b07a00;
+    --nano-bg: rgba(176,122,0,0.07);
+    --nano-bd: rgba(176,122,0,0.22);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    font-weight: 400;
+    line-height: 1.75;
+    overflow-x: hidden;
+  }
+
+  strong { font-weight: 700; }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--text);
+    color: var(--bg);
+    padding: 5rem 2rem 7rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 40px,
+      rgba(255,255,255,0.015) 40px,
+      rgba(255,255,255,0.015) 41px
+    );
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 0; right: 0;
+    height: 70px;
+    background: var(--bg);
+    clip-path: polygon(0 100%, 100% 0, 100% 100%);
+  }
+
+  .hero-inner { max-width: 1000px; margin: 0 auto; position: relative; z-index: 1; }
+
+  .hero-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--chem);
+    margin-bottom: 1.25rem;
+    animation: up 0.6s ease both;
+  }
+
+  .hero h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(3rem, 8vw, 7rem);
+    font-weight: 800;
+    line-height: 0.92;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.25rem;
+    animation: up 0.6s 0.1s ease both;
+  }
+
+  .hero h1 em {
+    display: block;
+    font-style: italic;
+    font-family: 'Barlow', sans-serif;
+    font-weight: 300;
+    font-size: 0.45em;
+    color: rgba(245,240,232,0.5);
+    letter-spacing: 0.02em;
+    line-height: 1.5;
+    margin-top: 0.5rem;
+  }
+
+  .hero-desc {
+    font-size: 0.95rem;
+    color: rgba(245,240,232,0.55);
+    max-width: 540px;
+    margin-bottom: 2.5rem;
+    line-height: 1.75;
+    animation: up 0.6s 0.2s ease both;
+  }
+
+  .hero-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    animation: up 0.6s 0.3s ease both;
+  }
+
+  .hero-nav a {
+    text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    padding: 0.45em 1em;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.15);
+    color: rgba(245,240,232,0.65);
+    background: rgba(255,255,255,0.05);
+    transition: all 0.18s;
+  }
+
+  .hero-nav a:hover { border-color: var(--chem); color: #ff8855; }
+
+  @keyframes up { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 1060px; margin: 0 auto; padding: 0 2rem; }
+  section { padding: 5rem 0; border-top: 1px solid var(--border); }
+
+  .sec-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.67rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted2);
+    margin-bottom: 0.4rem;
+  }
+
+  .sec-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    margin-bottom: 0.9rem;
+  }
+
+  .sec-intro {
+    font-size: 0.94rem;
+    color: var(--muted);
+    max-width: 700px;
+    line-height: 1.85;
+    margin-bottom: 2.5rem;
+  }
+
+  /* ── REVEAL ── */
+  .reveal { opacity:0; transform:translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .reveal.vis { opacity:1; transform:none; }
+
+  /* ── CALLOUT ── */
+  .callout {
+    border-radius: 12px;
+    border: 1px solid;
+    padding: 1.25rem 1.5rem;
+    margin-top: 1.75rem;
+    font-size: 0.89rem;
+    color: var(--muted);
+    line-height: 1.75;
+  }
+  .callout-title { font-family: 'Barlow Condensed', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 0.35rem; letter-spacing: -0.01em; }
+  .callout.chem  { background:var(--chem-bg); border-color:var(--chem-bd); } .callout.chem  .callout-title { color:var(--chem); }
+  .callout.atom  { background:var(--atom-bg); border-color:var(--atom-bd); } .callout.atom  .callout-title { color:var(--atom); }
+  .callout.mol   { background:var(--mol-bg);  border-color:var(--mol-bd);  } .callout.mol   .callout-title { color:var(--mol); }
+  .callout.per   { background:var(--per-bg);  border-color:var(--per-bd);  } .callout.per   .callout-title { color:var(--per); }
+  .callout.nano  { background:var(--nano-bg); border-color:var(--nano-bd); } .callout.nano  .callout-title { color:var(--nano); }
+
+  /* ── PROPERTY CARDS ── */
+  .prop-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.1rem;
+    margin-top: 2rem;
+  }
+
+  .prop-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.4rem;
+    border-top: 4px solid;
+    transition: all 0.2s;
+  }
+
+  .prop-card:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(26,21,16,0.12); }
+
+  .prop-card.c1 { border-top-color: var(--chem); }
+  .prop-card.c2 { border-top-color: var(--atom); }
+  .prop-card.c3 { border-top-color: var(--mol); }
+  .prop-card.c4 { border-top-color: var(--per); }
+  .prop-card.c5 { border-top-color: var(--nano); }
+  .prop-card.c6 { border-top-color: #c07000; }
+
+  .pc-icon { font-size: 1.9rem; margin-bottom: 0.65rem; }
+  .pc-name { font-family: 'Barlow Condensed', sans-serif; font-size: 1.15rem; font-weight: 700; margin-bottom: 0.4rem; letter-spacing: -0.01em; }
+  .pc-desc { font-size: 0.86rem; color: var(--muted); line-height: 1.65; }
+  .pc-desc strong { color: var(--text); }
+
+  /* ── TWO-COL TABLE ── */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 2rem;
+    font-size: 0.88rem;
+  }
+
+  .data-table th {
+    text-align: left;
+    padding: 0.8rem 1.1rem;
+    background: var(--bg2);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.67rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 2px solid;
+  }
+
+  .data-table td {
+    padding: 0.8rem 1.1rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    line-height: 1.6;
+    vertical-align: top;
+  }
+
+  .data-table tr:hover td { background: var(--bg); }
+  .data-table td:first-child { font-weight: 600; color: var(--text); }
+
+  .data-table.chem th { color: var(--chem); border-bottom-color: var(--chem); }
+  .data-table.atom th { color: var(--atom); border-bottom-color: var(--atom); }
+  .data-table.mol  th { color: var(--mol);  border-bottom-color: var(--mol); }
+  .data-table.per  th { color: var(--per);  border-bottom-color: var(--per); }
+
+  /* ── SUBATOMIC PARTICLE TABLE ── */
+  .particle-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-top: 2rem;
+  }
+
+  @media (max-width: 580px) { .particle-grid { grid-template-columns: 1fr; } }
+
+  .particle-cell {
+    background: var(--surface);
+    padding: 1.4rem;
+    text-align: center;
+    transition: background 0.18s;
+  }
+
+  .particle-cell:hover { background: var(--bg2); }
+
+  .pc-particle-icon { font-size: 2.2rem; margin-bottom: 0.5rem; }
+  .pc-particle-name { font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.4rem; letter-spacing: -0.01em; }
+  .pc-particle-sym { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--muted2); margin-bottom: 0.6rem; }
+  .pc-particle-stat { font-size: 0.8rem; color: var(--muted); line-height: 1.6; }
+  .pc-particle-stat strong { color: var(--text); }
+
+  .particle-cell.proton   .pc-particle-name { color: var(--chem); }
+  .particle-cell.neutron  .pc-particle-name { color: var(--muted); }
+  .particle-cell.electron .pc-particle-name { color: var(--atom); }
+
+  /* ── ELECTRON SHELL TABLE ── */
+  .shell-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 2rem;
+    font-size: 0.88rem;
+  }
+
+  .shell-table th {
+    padding: 0.8rem 1.1rem;
+    background: var(--atom-bg);
+    color: var(--atom);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.67rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border-bottom: 2px solid var(--atom-bd);
+    text-align: center;
+  }
+
+  .shell-table th:first-child { text-align: left; }
+
+  .shell-table td {
+    padding: 0.75rem 1.1rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+  }
+
+  .shell-table td:first-child { text-align: left; color: var(--text); font-weight: 600; }
+  .shell-table tr:hover td { background: var(--bg); }
+
+  /* ── ELECTRON CONFIG TABLE ── */
+  .config-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  @media (max-width: 580px) { .config-grid { grid-template-columns: 1fr; } }
+
+  .config-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.84rem;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .config-table th {
+    padding: 0.65rem 1rem;
+    background: var(--bg2);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.63rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted2);
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+  }
+
+  .config-table td {
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+  }
+
+  .config-table tr:last-child td { border-bottom: none; }
+  .config-table tr:hover td { background: var(--bg); }
+  .config-table td:first-child { font-weight: 600; color: var(--text); }
+  .config-table td:last-child { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--atom); }
+
+  /* ── SEPARATION METHODS ── */
+  .sep-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-top: 2rem;
+  }
+
+  .sep-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+
+  .sep-card:hover { box-shadow: 0 6px 24px rgba(26,21,16,0.1); }
+
+  .sep-head {
+    padding: 1rem 1.5rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sep-body { padding: 1.1rem 1.5rem; font-size: 0.88rem; color: var(--muted); line-height: 1.7; }
+  .sep-body strong { color: var(--text); }
+
+  .sep-card.filt .sep-head { background: var(--mol-bg); color: var(--mol); border-bottom-color: var(--mol-bd); }
+  .sep-card.evap .sep-head { background: var(--chem-bg); color: var(--chem); border-bottom-color: var(--chem-bd); }
+  .sep-card.dist .sep-head { background: var(--atom-bg); color: var(--atom); border-bottom-color: var(--atom-bd); }
+  .sep-card.frac .sep-head { background: var(--per-bg); color: var(--per); border-bottom-color: var(--per-bd); }
+
+  /* ── ISOTOPE NOTATION ── */
+  .isotope-box {
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: 14px;
+    padding: 2rem;
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+  }
+
+  .iso-symbol {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 5rem;
+    font-weight: 800;
+    color: var(--atom);
+    position: relative;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  .iso-mass {
+    position: absolute;
+    top: -0.1em;
+    left: -0.7em;
+    font-size: 0.32em;
+    color: var(--chem);
+  }
+
+  .iso-atomic {
+    position: absolute;
+    bottom: 0;
+    left: -0.7em;
+    font-size: 0.32em;
+    color: var(--mol);
+  }
+
+  .iso-legend { flex: 1; min-width: 200px; }
+
+  .iso-leg-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.88rem;
+  }
+
+  .iso-dot {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ── SUBSHELL TABLE ── */
+  .subshell-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 2rem;
+  }
+
+  .ss-cell {
+    background: var(--surface);
+    padding: 1.2rem 1rem;
+    text-align: center;
+    transition: background 0.18s;
+  }
+
+  .ss-cell:hover { background: var(--bg2); }
+
+  .ss-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 0.4rem;
+  }
+
+  .ss-name { font-size: 0.75rem; color: var(--muted2); margin-bottom: 0.3rem; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.08em; }
+  .ss-cap { font-size: 1rem; font-weight: 700; font-family: 'Barlow Condensed', sans-serif; }
+
+  .ss-cell:nth-child(1) .ss-label { color: var(--chem); }
+  .ss-cell:nth-child(2) .ss-label { color: var(--atom); }
+  .ss-cell:nth-child(3) .ss-label { color: var(--mol); }
+  .ss-cell:nth-child(4) .ss-label { color: var(--per); }
+
+  /* ── MOLE CALC BOX ── */
+  .formula-card {
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: 16px;
+    padding: 2rem;
+    margin-top: 2rem;
+    text-align: center;
+  }
+
+  .formula-display {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--chem);
+    line-height: 1;
+    margin-bottom: 0.75rem;
+  }
+
+  .formula-caption { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+
+  .formula-vars {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 1.25rem;
+  }
+
+  .fv {
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    border-radius: 10px;
+    padding: 0.7rem 1.2rem;
+    text-align: center;
+  }
+
+  .fv-sym { font-family: 'JetBrains Mono', monospace; font-size: 1.2rem; font-weight: 500; color: var(--chem); }
+  .fv-desc { font-size: 0.75rem; color: var(--muted2); margin-top: 0.2rem; }
+
+  /* ── PERIODIC TRENDS ── */
+  .trends-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  @media (max-width: 580px) { .trends-grid { grid-template-columns: 1fr; } }
+
+  .trend-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.5rem;
+    border-left: 5px solid;
+    transition: transform 0.2s;
+  }
+
+  .trend-card:hover { transform: translateY(-3px); }
+
+  .trend-card.radius   { border-left-color: var(--atom); }
+  .trend-card.electro  { border-left-color: var(--chem); }
+  .trend-card.valency  { border-left-color: var(--mol); }
+  .trend-card.metallic { border-left-color: var(--per); }
+
+  .tc-title { font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; letter-spacing: -0.01em; }
+  .trend-card.radius  .tc-title { color: var(--atom); }
+  .trend-card.electro .tc-title { color: var(--chem); }
+  .trend-card.valency .tc-title { color: var(--mol); }
+  .trend-card.metallic .tc-title { color: var(--per); }
+
+  .tc-desc { font-size: 0.86rem; color: var(--muted); line-height: 1.65; }
+  .tc-desc strong { color: var(--text); }
+
+  .trend-row {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .trend-pill {
+    font-size: 0.77rem;
+    font-family: 'JetBrains Mono', monospace;
+    padding: 0.25em 0.8em;
+    border-radius: 100px;
+    border: 1px solid;
+  }
+
+  .trend-card.radius  .trend-pill { color: var(--atom); border-color: var(--atom-bd); background: var(--atom-bg); }
+  .trend-card.electro .trend-pill { color: var(--chem); border-color: var(--chem-bd); background: var(--chem-bg); }
+
+  /* ── EXAMPLE BOX ── */
+  .example-box {
+    background: var(--bg2);
+    border-left: 4px solid var(--chem);
+    border-radius: 0 10px 10px 0;
+    padding: 1.1rem 1.5rem;
+    margin-top: 1.5rem;
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .example-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--chem);
+    margin-bottom: 0.4rem;
+    font-weight: 500;
+  }
+
+  .example-box strong { color: var(--text); }
+
+  /* ── CONDUCTIVITY COMPARE ── */
+  .cond-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1.25rem;
+    margin-top: 2rem;
+  }
+
+  @media (max-width: 640px) { .cond-grid { grid-template-columns: 1fr; } }
+
+  .cond-card {
+    border-radius: 14px;
+    border: 1px solid;
+    overflow: hidden;
+  }
+
+  .cond-head {
+    padding: 0.85rem 1.25rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    border-bottom: 1px solid;
+  }
+
+  .cond-body { padding: 1rem 1.25rem; font-size: 0.84rem; color: var(--muted); line-height: 1.65; }
+  .cond-body strong { color: var(--text); }
+
+  .cond-card.good    { border-color: var(--mol-bd); }
+  .cond-card.good    .cond-head { background: var(--mol-bg); color: var(--mol); border-color: var(--mol-bd); }
+  .cond-card.resist  { border-color: var(--nano-bd); }
+  .cond-card.resist  .cond-head { background: var(--nano-bg); color: var(--nano); border-color: var(--nano-bd); }
+  .cond-card.insul   { border-color: var(--chem-bd); }
+  .cond-card.insul   .cond-head { background: var(--chem-bg); color: var(--chem); border-color: var(--chem-bd); }
+
+  /* ── MIXTURE TYPES ── */
+  .mix-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  @media (max-width: 580px) { .mix-grid { grid-template-columns: 1fr; } }
+
+  .mix-card {
+    border-radius: 14px;
+    border: 1px solid;
+    overflow: hidden;
+  }
+
+  .mix-head {
+    padding: 1rem 1.5rem;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    border-bottom: 1px solid;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .mix-body { padding: 1.1rem 1.5rem; font-size: 0.87rem; color: var(--muted); line-height: 1.7; }
+  .mix-body strong { color: var(--text); }
+
+  .mix-card.homo { border-color: var(--mol-bd); }
+  .mix-card.homo .mix-head { background: var(--mol-bg); color: var(--mol); border-color: var(--mol-bd); }
+  .mix-card.hetero { border-color: var(--chem-bd); }
+  .mix-card.hetero .mix-head { background: var(--chem-bg); color: var(--chem); border-color: var(--chem-bd); }
+
+  /* ── SPECTRUM ── */
+  .spectrum-bar {
+    height: 48px;
+    border-radius: 8px;
+    background: linear-gradient(to right,
+      #8b00ff 0%, #4400ff 8%, #0000ff 16%, #0080ff 24%,
+      #00c8ff 32%, #00ff80 40%, #80ff00 48%, #ffff00 56%,
+      #ffa500 64%, #ff4500 72%, #ff0000 80%, #800000 100%
+    );
+    margin-top: 1.25rem;
+    position: relative;
+  }
+
+  .spectrum-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.35rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--muted2);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--text);
+    color: rgba(245,240,232,0.35);
+    text-align: center;
+    padding: 2.5rem 2rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.07em;
+    margin-top: 3rem;
+  }
+
+  footer span { color: var(--chem); }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">Stage 1 Chemistry · Topic 1</div>
+    <h1>Materials &amp;<br>Their Atoms
+      <em>Properties · Atomic Structure · Moles · The Periodic Table</em>
+    </h1>
+    <p class="hero-desc">A comprehensive study guide covering all four sections of Topic 1 — from bulk properties and separation techniques to electron configurations and periodic trends.</p>
+    <nav class="hero-nav">
+      <a href="#s11">1.1 Properties</a>
+      <a href="#nanomaterials">Nanomaterials</a>
+      <a href="#mixtures">Mixtures</a>
+      <a href="#s12">1.2 Atomic Structure</a>
+      <a href="#spectra">Spectra</a>
+      <a href="#isotopes">Isotopes</a>
+      <a href="#subshells">Subshells</a>
+      <a href="#s13">1.3 Moles</a>
+      <a href="#s14">1.4 Periodic Table</a>
+      <a href="#trends">Periodic Trends</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ══ 1.1 PROPERTIES ══ -->
+<section id="s11">
+  <div class="container">
+    <div class="sec-label">Section 1.1</div>
+    <h2 class="sec-title">Properties and Uses of Materials</h2>
+    <p class="sec-intro">Chemistry is the study of matter and its properties. Matter has mass and takes up space. Properties describe a substance's characteristics and relate directly to the nature and arrangement of its particles.</p>
+
+    <!-- PHYSICAL vs CHEMICAL -->
+    <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:700;margin-bottom:1rem;letter-spacing:-0.01em;">Physical vs Chemical Properties</h3>
+    <div class="mix-grid reveal">
+      <div class="mix-card homo">
+        <div class="mix-head">⚗️ Physical Properties</div>
+        <div class="mix-body">
+          Traits that can be <strong>observed without a chemical reaction</strong>. The substance keeps its identity.<br><br>
+          <strong>Extensive</strong> — change with amount: mass, volume, number of particles.<br><br>
+          <strong>Intensive</strong> — do not change with amount: colour, density, temperature, solubility, melting point, boiling point, conductivity, malleability, ductility, viscosity. These are useful for <em>identifying</em> substances.
+        </div>
+      </div>
+      <div class="mix-card hetero">
+        <div class="mix-head">🔥 Chemical Properties</div>
+        <div class="mix-body">
+          Describe how a material undergoes <strong>chemical changes</strong>. Observing them requires a chemical reaction — the substance changes its identity.<br><br>
+          <strong>Example:</strong> Acidity measures the ability to donate H⁺. Sulfuric acid (H₂SO₄) is more acidic than water and can dissolve metals — but only by reacting with and consuming itself in the process.<br><br>
+          Chemical properties are covered in Topics 5 and 6.
+        </div>
+      </div>
+    </div>
+
+    <!-- KEY PROPERTIES -->
+    <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:700;margin:2.5rem 0 0.5rem;letter-spacing:-0.01em;">Key Physical Properties</h3>
+    <div class="prop-grid reveal">
+
+      <div class="prop-card c1">
+        <div class="pc-icon">💧</div>
+        <div class="pc-name">Solubility</div>
+        <div class="pc-desc">The amount of a material (solute) that can dissolve in a given liquid (solvent) at a given temperature, forming a solution. E.g., sugar: <strong>200 g/dL at 25°C</strong>. Building materials should have low solubility in water; food packaging should be totally insoluble.</div>
+      </div>
+
+      <div class="prop-card c2">
+        <div class="pc-icon">🔥</div>
+        <div class="pc-name">Thermal Conductivity</div>
+        <div class="pc-desc">How rapidly a material transmits heat by conduction — particles colliding and transferring kinetic energy (like billiard balls). <strong>Conductors</strong> (metals) transfer heat fast. <strong>Insulators</strong> transfer heat slowly. A vacuum conducts no heat at all.</div>
+      </div>
+
+      <div class="prop-card c3">
+        <div class="pc-icon">⚡</div>
+        <div class="pc-name">Electrical Conductivity</div>
+        <div class="pc-desc">The ability to carry electricity by moving charged particles. <strong>Good conductors:</strong> metals (delocalised electrons), ionic solutions. <strong>High-resistance conductors:</strong> alloys (nichrome). <strong>Insulators:</strong> gases, glass, rubber, plastic, dry wood.</div>
+      </div>
+
+      <div class="prop-card c4">
+        <div class="pc-icon">🧊</div>
+        <div class="pc-name">Melting Point</div>
+        <div class="pc-desc">The temperature at which a solid transitions to a liquid (particles break out of the rigid lattice). Identical to the freezing point. E.g., <strong>water: 0°C</strong>; <strong>NaCl: 801°C</strong>. High melting point materials are used in kilns and furnaces.</div>
+      </div>
+
+      <div class="prop-card c5">
+        <div class="pc-icon">♨️</div>
+        <div class="pc-name">Boiling Point</div>
+        <div class="pc-desc">The temperature at which a liquid transitions to a gas (particles overcome attractive forces). Identical to the condensation point. E.g., <strong>water: 100°C</strong>; <strong>ethanol: 78°C</strong>. Coolants need high boiling points to prevent explosion risk.</div>
+      </div>
+
+      <div class="prop-card c6">
+        <div class="pc-icon">🌡️</div>
+        <div class="pc-name">Temperature vs Heat</div>
+        <div class="pc-desc"><strong>Heat</strong> = total kinetic energy of all particles (extensive). <strong>Temperature</strong> = average kinetic energy per particle (intensive). Double the water → double the heat energy, but the same temperature.</div>
+      </div>
+
+    </div>
+
+    <!-- ELECTRICAL CONDUCTIVITY TYPES -->
+    <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:700;margin:2.5rem 0 0.5rem;letter-spacing:-0.01em;">Types of Electrical Conductors</h3>
+    <div class="cond-grid reveal">
+      <div class="cond-card good">
+        <div class="cond-head">✅ Good Conductors</div>
+        <div class="cond-body"><strong>Metals</strong> — delocalised electrons free to move. <strong>Ionic solutions</strong> — dissolved ions move toward electrodes. Used in electrical wiring.</div>
+      </div>
+      <div class="cond-card resist">
+        <div class="cond-head">🌡️ High-Resistance Conductors</div>
+        <div class="cond-body">Conduct electricity but <strong>charged particles encounter resistance</strong> → heat is generated. Metal alloys with high resistance and high melting points. Example: <strong>Nichrome</strong> (Ni + Cr) in electric oven elements.</div>
+      </div>
+      <div class="cond-card insul">
+        <div class="cond-head">🚫 Electrical Insulators</div>
+        <div class="cond-body">Cannot conduct electricity — no free charged particles. Examples: gases (N₂, O₂), glass, rubber, plastic, dry wood. <strong>Used to control and limit current</strong> (e.g., plastic coating on wires).</div>
+      </div>
+    </div>
+
+    <div class="callout chem reveal">
+      <div class="callout-title">⚠️ Pure Water vs Ionic Solution</div>
+      Pure water contains no free charges and does <strong>not</strong> conduct electricity. When ionic substances (e.g., NaCl) dissolve in water, the ions become free to move and the solution conducts electricity. This is why seawater is a good conductor but distilled water is not.
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ NANOMATERIALS ══ -->
+<section id="nanomaterials">
+  <div class="container">
+    <div class="sec-label">Section 1.1 — Extended</div>
+    <h2 class="sec-title">Nanomaterials</h2>
+    <p class="sec-intro">Nanomaterials are substances with particles in the size range <strong>1–100 nm</strong>. At this scale, materials display dramatically different properties from their bulk forms. "Nano" = one billionth.</p>
+
+    <div class="prop-grid reveal">
+      <div class="prop-card c1">
+        <div class="pc-icon">🔬</div>
+        <div class="pc-name">What Makes Them Special?</div>
+        <div class="pc-desc">At the nanoscale, atoms and molecules are large enough to matter individually. The <strong>enormous surface area to volume ratio</strong> allows far more efficient catalysis of chemical reactions than bulk materials.</div>
+      </div>
+      <div class="prop-card c2">
+        <div class="pc-icon">💡</div>
+        <div class="pc-name">OLED Screens</div>
+        <div class="pc-desc">Nanostructured polymer films. Each pixel emits red, green, or blue light independently — allowing <strong>true black</strong> (pixel off = no light emitted) unlike LCD backlights.</div>
+      </div>
+      <div class="prop-card c3">
+        <div class="pc-icon">💧</div>
+        <div class="pc-name">Water Filtration</div>
+        <div class="pc-desc">Nanoscale filters can absorb and remove large amounts of pollutants from drinking water. Large "sponges" absorb many times their weight in oil for <strong>oil spill cleanup</strong>.</div>
+      </div>
+      <div class="prop-card c4">
+        <div class="pc-icon">🩺</div>
+        <div class="pc-name">Medical Uses</div>
+        <div class="pc-desc"><strong>Silver nanoparticles</strong> kill bacteria without harming larger organisms — used in bandages. <strong>Iron oxide nanoparticles</strong> bind to cancer cells, making tiny tumours visible on MRI scans.</div>
+      </div>
+      <div class="prop-card c5">
+        <div class="pc-icon">💉</div>
+        <div class="pc-name">mRNA Vaccines (COVID-19)</div>
+        <div class="pc-desc">Synthetic <strong>lipid nanoparticles</strong> act as envelopes to deliver mRNA into cells. Without them, the unstable mRNA breaks down before it can initiate an immune response.</div>
+      </div>
+      <div class="prop-card c6">
+        <div class="pc-icon">🥇</div>
+        <div class="pc-name">Gold Nanoparticles</div>
+        <div class="pc-desc">Bulk gold is yellow and non-reactive. Gold nanoparticles can appear <strong>red, green, or purple</strong> depending on size, and can catalyse reactions that vary by exact number of atoms (e.g., Au₂₈ vs Au₃₈).</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ MIXTURES & SEPARATION ══ -->
+<section id="mixtures">
+  <div class="container">
+    <div class="sec-label">Section 1.1 — Separation</div>
+    <h2 class="sec-title">Pure Substances, Mixtures &amp; Separation</h2>
+    <p class="sec-intro">All materials are either <strong>pure substances</strong> (one type of particle) or <strong>mixtures</strong> (multiple substances physically combined). Mixtures can be separated by exploiting differences in physical properties.</p>
+
+    <!-- CLASSIFICATION -->
+    <table class="data-table chem reveal">
+      <thead><tr><th>Type</th><th>Description</th><th>Examples</th></tr></thead>
+      <tbody>
+        <tr><td>Element</td><td>Pure substance — only one type of atom</td><td>Helium, iron, nitrogen</td></tr>
+        <tr><td>Compound</td><td>Pure substance — different atoms chemically bonded in fixed ratios</td><td>Water (H₂O), methane (CH₄), NaCl</td></tr>
+        <tr><td>Homogeneous Mixture</td><td>Thoroughly mixed — same composition throughout, even at molecular level</td><td>Saltwater, alloys, air</td></tr>
+        <tr><td>Heterogeneous Mixture</td><td>Incompletely mixed — different parts distinguishable in composition</td><td>Soil, salad dressing, crude oil, blood</td></tr>
+      </tbody>
+    </table>
+
+    <!-- SEPARATION METHODS -->
+    <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:700;margin:2.5rem 0 0.5rem;letter-spacing:-0.01em;">Separation Techniques</h3>
+    <div class="sep-steps reveal">
+      <div class="sep-card filt">
+        <div class="sep-head">🔵 Filtration</div>
+        <div class="sep-body">Separates <strong>heterogeneous mixtures</strong> containing solid particles in a liquid. The mixture passes through filter paper — liquid molecules pass through the tiny pores; larger solid grains are trapped. Both solid and liquid are retained and can be recovered.</div>
+      </div>
+      <div class="sep-card evap">
+        <div class="sep-head">♨️ Evaporation</div>
+        <div class="sep-body">Exploits differences in <strong>boiling points</strong> to separate a liquid solvent from one or more solutes. The mixture is heated to/above the boiling point of the solvent. The solvent evaporates and is lost; the solute remains. Used to recover dissolved salts.</div>
+      </div>
+      <div class="sep-card dist">
+        <div class="sep-head">🧪 Simple Distillation</div>
+        <div class="sep-body">Separates a <strong>liquid with a low boiling point</strong> from other substances. Heat vaporises the low-boiling component → vapour enters a condenser → cools to liquid (the <em>distillate</em>) → collected. The low-boiling liquid is isolated; other components remain. Example: separating pure water from saltwater.</div>
+      </div>
+      <div class="sep-card frac">
+        <div class="sep-head">🏭 Fractional Distillation</div>
+        <div class="sep-body">Separates liquids with <strong>similar boiling points</strong> using a fractionating column with increased internal surface area. Greater control over the distillate temperature allows different substances to be collected in separate flasks. Used to separate components of <strong>crude oil</strong>.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ 1.2 ATOMIC STRUCTURE ══ -->
+<section id="s12">
+  <div class="container">
+    <div class="sec-label">Section 1.2</div>
+    <h2 class="sec-title">Atomic Structure</h2>
+    <p class="sec-intro">The Rutherford-Bohr model (1913) is used in this course. Atoms are composed of protons, neutrons (in the nucleus) and electrons (in shells around the nucleus). The number of protons defines the element.</p>
+
+    <!-- SUBATOMIC PARTICLES -->
+    <div class="particle-grid reveal">
+      <div class="particle-cell proton">
+        <div class="pc-particle-icon">🔴</div>
+        <div class="pc-particle-name">Proton</div>
+        <div class="pc-particle-sym">p⁺</div>
+        <div class="pc-particle-stat"><strong>Charge:</strong> +1 (positive)<br><strong>Relative mass:</strong> 1 amu<br><strong>Location:</strong> Nucleus<br><strong>Defines:</strong> The element (atomic number)</div>
+      </div>
+      <div class="particle-cell neutron">
+        <div class="pc-particle-icon">⚪</div>
+        <div class="pc-particle-name">Neutron</div>
+        <div class="pc-particle-sym">n⁰</div>
+        <div class="pc-particle-stat"><strong>Charge:</strong> 0 (neutral)<br><strong>Relative mass:</strong> 1 amu<br><strong>Location:</strong> Nucleus<br><strong>Defines:</strong> Isotope (with protons)</div>
+      </div>
+      <div class="particle-cell electron">
+        <div class="pc-particle-icon">🔵</div>
+        <div class="pc-particle-name">Electron</div>
+        <div class="pc-particle-sym">e⁻</div>
+        <div class="pc-particle-stat"><strong>Charge:</strong> −1 (negative)<br><strong>Relative mass:</strong> ~1/1800 amu<br><strong>Location:</strong> Shells around nucleus<br><strong>Defines:</strong> Chemical properties</div>
+      </div>
+    </div>
+
+    <div class="callout atom reveal">
+      <div class="callout-title">🔑 Key Definitions</div>
+      <strong>Atomic number (Z)</strong> = number of protons = identity of the element.<br>
+      <strong>Mass number (A)</strong> = protons + neutrons (measured in amu, electrons ignored).<br>
+      <strong>Charge</strong> = determined by protons and electrons. Neutral atoms have equal protons and electrons (charges cancel).
+    </div>
+
+    <!-- ELECTRON SHELLS -->
+    <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:700;margin:2.5rem 0 0.5rem;letter-spacing:-0.01em;">Electron Shells</h3>
+    <p style="font-size:0.9rem;color:var(--muted);margin-bottom:0;line-height:1.75;">Electrons are arranged in shells (energy levels). Each shell has a capacity of <strong>2n²</strong> electrons where n = shell number. Shells fill from lowest energy (innermost) outward.</p>
+
+    <table class="shell-table reveal">
+      <thead><tr><th>Shell (n)</th><th>Capacity (2n²)</th><th>Elements filled</th></tr></thead>
+      <tbody>
+        <tr><td>1st</td><td>2</td><td>H, He</td></tr>
+        <tr><td>2nd</td><td>8</td><td>Li → Ne</td></tr>
+        <tr><td>3rd</td><td>18</td><td>Na → Ar</td></tr>
+        <tr><td>4th</td><td>32</td><td>K onwards</td></tr>
+      </tbody>
+    </table>
+
+    <!-- ELECTRON CONFIGURATIONS TABLE -->
+    <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:700;margin:2.5rem 0 0.5rem;letter-spacing:-0.01em;">Main-Shell Electron Configurations (Elements 1–18)</h3>
+    <div class="config-grid reveal">
+      <table class="config-table">
+        <thead><tr><th>Element</th><th>Electrons</th><th>Config</th></tr></thead>
+        <tbody>
+          <tr><td>Hydrogen</td><td>1</td><td>1</td></tr>
+          <tr><td>Helium</td><td>2</td><td>2</td></tr>
+          <tr><td>Lithium</td><td>3</td><td>2,1</td></tr>
+          <tr><td>Beryllium</td><td>4</td><td>2,2</td></tr>
+          <tr><td>Boron</td><td>5</td><td>2,3</td></tr>
+          <tr><td>Carbon</td><td>6</td><td>2,4</td></tr>
+          <tr><td>Nitrogen</td><td>7</td><td>2,5</td></tr>
+          <tr><td>Oxygen</td><td>8</td><td>2,6</td></tr>
+          <tr><td>Fluorine</td><td>9</td><td>2,7</td></tr>
+        </tbody>
+      </table>
+      <table class="config-table">
+        <thead><tr><th>Element</th><th>Electrons</th><th>Config</th></tr></thead>
+        <tbody>
+          <tr><td>Neon</td><td>10</td><td>2,8</td></tr>
+          <tr><td>Sodium</td><td>11</td><td>2,8,1</td></tr>
+          <tr><td>Magnesium</td><td>12</td><td>2,8,2</td></tr>
+          <tr><td>Aluminium</td><td>13</td><td>2,8,3</td></tr>
+          <tr><td>Silicon</td><td>14</td><td>2,8,4</td></tr>
+          <tr><td>Phosphorus</td><td>15</td><td>2,8,5</td></tr>
+          <tr><td>Sulfur</td><td>16</td><td>2,8,6</td></tr>
+          <tr><td>Chlorine</td><td>17</td><td>2,8,7</td></tr>
+          <tr><td>Argon</td><td>18</td><td>2,8,8</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ SPECTRA ══ -->
+<section id="spectra">
+  <div class="container">
+    <div class="sec-label">Section 1.2 — Spectra</div>
+    <h2 class="sec-title">Absorption &amp; Emission Spectra</h2>
+    <p class="sec-intro">Electrons exist in discrete energy levels. They can absorb or emit energy only in specific "chunks" (photons) that exactly match the gap between energy levels. This produces characteristic spectra for each element.</p>
+
+    <!-- ABSORPTION vs EMISSION -->
+    <div class="mix-grid reveal">
+      <div class="mix-card homo">
+        <div class="mix-head">🌑 Atomic Absorption</div>
+        <div class="mix-body">
+          An electron absorbs a photon and jumps to a <strong>higher energy shell</strong> (excited state). The photon must have <strong>exactly</strong> the right energy to match the gap — partial absorption is impossible.<br><br>
+          When white light passes through elemental gas, specific wavelengths are absorbed → <strong>dark lines</strong> appear in the spectrum at those wavelengths.<br><br>
+          The pattern of dark lines is <strong>unique to each element</strong> and can be used to identify it.
+        </div>
+      </div>
+      <div class="mix-card hetero">
+        <div class="mix-head">✨ Atomic Emission</div>
+        <div class="mix-body">
+          An excited electron returns to its <strong>ground state</strong> (lower energy shell). It emits a photon with energy equal to the energy that was originally absorbed.<br><br>
+          The emitted light separated into wavelengths produces an <strong>emission spectrum</strong> — bright coloured lines on a dark background.<br><br>
+          The wavelengths in an emission spectrum are <strong>identical</strong> to those in the absorption spectrum for the same element.
+        </div>
+      </div>
+    </div>
+
+    <!-- VISIBLE SPECTRUM -->
+    <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:1.25rem;font-weight:700;margin:2rem 0 0.5rem;letter-spacing:-0.01em;">The Visible Spectrum</h3>
+    <div class="spectrum-bar"></div>
+    <div class="spectrum-labels">
+      <span>400 nm (violet, 3.1 eV)</span>
+      <span>500 nm (green)</span>
+      <span>600 nm (orange)</span>
+      <span>700 nm (red, 1.8 eV)</span>
+    </div>
+    <p style="font-size:0.82rem;color:var(--muted);margin-top:0.6rem;font-family:'JetBrains Mono',monospace;">Photon energy is inversely proportional to wavelength. Short wavelength = high energy = violet/purple. Long wavelength = low energy = red.</p>
+
+    <div class="callout atom reveal">
+      <div class="callout-title">🌟 Applications of Spectroscopy</div>
+      Spectroscopic methods have been used to: study the composition of distant stars, monitor dissolved oxygen in blood and aquatic ecosystems, detect toxic compounds in food, identify elements in exoplanetary atmospheres (transit spectroscopy), and detect explosives at airports (mass spectrometry).
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ ISOTOPES ══ -->
+<section id="isotopes">
+  <div class="container">
+    <div class="sec-label">Section 1.2 — Isotopes</div>
+    <h2 class="sec-title">Isotopes &amp; Atomic Notation</h2>
+    <p class="sec-intro">Individual atoms are represented using a composite symbol showing the elemental symbol, mass number (A) and atomic number (Z). Isotopes are versions of an element with the same number of protons but different numbers of neutrons.</p>
+
+    <div class="isotope-box reveal">
+      <div style="position:relative; display:inline-block; padding: 0 1rem;">
+        <div style="font-family:'Barlow Condensed',sans-serif; font-size:0.7rem; position:absolute; top:0; left:0; color:var(--chem); font-weight:700; letter-spacing:0.05em;">A (mass number)</div>
+        <div style="font-family:'Barlow Condensed',sans-serif; font-size:0.7rem; position:absolute; bottom:0; left:0; color:var(--mol); font-weight:700; letter-spacing:0.05em;">Z (atomic number)</div>
+        <div style="font-family:'Barlow Condensed',sans-serif; font-size:5rem; font-weight:800; color:var(--atom); line-height:1; padding:0.8rem 0 0.8rem 2.2rem;">X</div>
+        <div style="position:absolute;top:0.3rem;left:0.3rem;font-family:'Barlow Condensed',sans-serif;font-size:2rem;font-weight:800;color:var(--chem);">A</div>
+        <div style="position:absolute;bottom:0.3rem;left:0.3rem;font-family:'Barlow Condensed',sans-serif;font-size:2rem;font-weight:800;color:var(--mol);">Z</div>
+      </div>
+      <div class="iso-legend">
+        <div class="iso-leg-row"><div class="iso-dot" style="background:var(--chem)"></div><span><strong>A</strong> (mass number) = protons + neutrons</span></div>
+        <div class="iso-leg-row"><div class="iso-dot" style="background:var(--mol)"></div><span><strong>Z</strong> (atomic number) = number of protons = element identity</span></div>
+        <div class="iso-leg-row"><div class="iso-dot" style="background:var(--atom)"></div><span><strong>X</strong> = elemental symbol</span></div>
+        <div class="iso-leg-row"><div class="iso-dot" style="background:var(--muted2)"></div><span><strong>neutrons</strong> = A − Z</span></div>
+        <div class="iso-leg-row"><div class="iso-dot" style="background:var(--muted2)"></div><span><strong>Isotopes</strong> have same Z (same element) but different A (different neutrons)</span></div>
+      </div>
+    </div>
+
+    <div class="example-box reveal">
+      <div class="example-label">Example — Calcium-42</div>
+      Ca-42: Z = 20 (20 protons, all calcium), A = 42. Neutrons = 42 − 20 = <strong>22 neutrons</strong>. Isotopes of calcium have the same chemical properties (same electrons) but different masses.
+    </div>
+
+    <div class="callout atom reveal" style="margin-top:1.5rem;">
+      <div class="callout-title">⚠️ Isotopes — Same Chemistry, Different Mass</div>
+      Isotopes have <strong>identical chemical properties</strong> because chemical behaviour is determined by electrons, and isotopes have the same number of electrons. They differ only in mass (different neutrons) and in their physical properties. Unstable isotopes can decay and emit radiation. Elements 1–42, 44–60, and 62–82 have at least one stable isotope.
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ SUBSHELLS ══ -->
+<section id="subshells">
+  <div class="container">
+    <div class="sec-label">Section 1.2 — Subshells</div>
+    <h2 class="sec-title">Subshell Electron Configurations</h2>
+    <p class="sec-intro">Each main shell is made up of subshells (s, p, d, f). Subshells fill from lowest energy first. The 4s subshell fills before 3d due to energy level overlap.</p>
+
+    <div class="subshell-grid reveal">
+      <div class="ss-cell"><div class="ss-label">s</div><div class="ss-name">1 orbital</div><div class="ss-cap" style="color:var(--chem);">2 electrons</div></div>
+      <div class="ss-cell"><div class="ss-label">p</div><div class="ss-name">3 orbitals</div><div class="ss-cap" style="color:var(--atom);">6 electrons</div></div>
+      <div class="ss-cell"><div class="ss-label">d</div><div class="ss-name">5 orbitals</div><div class="ss-cap" style="color:var(--mol);">10 electrons</div></div>
+      <div class="ss-cell"><div class="ss-label">f</div><div class="ss-name">7 orbitals</div><div class="ss-cap" style="color:var(--per);">14 electrons</div></div>
+    </div>
+
+    <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:700;margin:2.5rem 0 0.5rem;letter-spacing:-0.01em;">Fill Order for Subshells</h3>
+    <div class="callout atom reveal">
+      <div class="callout-title">📋 Subshell Fill Order (Aufbau Order)</div>
+      1s → 2s → 2p → 3s → 3p → <strong>4s</strong> → <strong>3d</strong> → 4p → 5s → 4d → 5p → 6s → 4f → 5d → 6p → 7s…<br><br>
+      Note: <strong>4s fills before 3d</strong> because it is lower in energy. This means potassium's 19th electron goes into 4s¹, not 3d¹.
+    </div>
+
+    <!-- FULL CONFIG TABLE for elements 1-20 -->
+    <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:700;margin:2.5rem 0 0.5rem;letter-spacing:-0.01em;">Subshell Configurations — Elements 1–20</h3>
+    <table class="data-table atom reveal">
+      <thead><tr><th>Element</th><th>Z</th><th>Subshell Configuration</th></tr></thead>
+      <tbody>
+        <tr><td>Hydrogen</td><td>1</td><td style="font-family:'JetBrains Mono',monospace;">1s¹</td></tr>
+        <tr><td>Helium</td><td>2</td><td style="font-family:'JetBrains Mono',monospace;">1s²</td></tr>
+        <tr><td>Lithium</td><td>3</td><td style="font-family:'JetBrains Mono',monospace;">1s² 2s¹</td></tr>
+        <tr><td>Beryllium</td><td>4</td><td style="font-family:'JetBrains Mono',monospace;">1s² 2s²</td></tr>
+        <tr><td>Boron</td><td>5</td><td style="font-family:'JetBrains Mono',monospace;">1s² 2s² 2p¹</td></tr>
+        <tr><td>Carbon</td><td>6</td><td style="font-family:'JetBrains Mono',monospace;">1s² 2s² 2p²</td></tr>
+        <tr><td>Nitrogen</td><td>7</td><td style="font-family:'JetBrains Mono',monospace;">1s² 2s² 2p³</td></tr>
+        <tr><td>Oxygen</td><td>8</td><td style="font-family:'JetBrains Mono',monospace;">1s² 2s² 2p⁴</td></tr>
+        <tr><td>Fluorine</td><td>9</td><td style="font-family:'JetBrains Mono',monospace;">1s² 2s² 2p⁵</td></tr>
+        <tr><td>Neon</td><td>10</td><td style="font-family:'JetBrains Mono',monospace;">1s² 2s² 2p⁶</td></tr>
+        <tr><td>Sodium</td><td>11</td><td style="font-family:'JetBrains Mono',monospace;">1s² 2s² 2p⁶ 3s¹</td></tr>
+        <tr><td>Magnesium</td><td>12</td><td style="font-family:'JetBrains Mono',monospace;">1s² 2s² 2p⁶ 3s²</td></tr>
+        <tr><td>Aluminium</td><td>13</td><td style="font-family:'JetBrains Mono',monospace;">1s² 2s² 2p⁶ 3s² 3p¹</td></tr>
+        <tr><td>Silicon</td><td>14</td><td style="font-family:'JetBrains Mono',monospace;">1s² 2s² 2p⁶ 3s² 3p²</td></tr>
+        <tr><td>Phosphorus</td><td>15</td><td style="font-family:'JetBrains Mono',monospace;">1s² 2s² 2p⁶ 3s² 3p³</td></tr>
+        <tr><td>Sulfur</td><td>16</td><td style="font-family:'JetBrains Mono',monospace;">1s² 2s² 2p⁶ 3s² 3p⁴</td></tr>
+        <tr><td>Chlorine</td><td>17</td><td style="font-family:'JetBrains Mono',monospace;">1s² 2s² 2p⁶ 3s² 3p⁵</td></tr>
+        <tr><td>Argon</td><td>18</td><td style="font-family:'JetBrains Mono',monospace;">1s² 2s² 2p⁶ 3s² 3p⁶</td></tr>
+        <tr><td>Potassium</td><td>19</td><td style="font-family:'JetBrains Mono',monospace;">1s² 2s² 2p⁶ 3s² 3p⁶ 4s¹</td></tr>
+        <tr><td>Calcium</td><td>20</td><td style="font-family:'JetBrains Mono',monospace;">1s² 2s² 2p⁶ 3s² 3p⁶ 4s²</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout chem reveal">
+      <div class="callout-title">⭐ Special Cases — Chromium &amp; Copper</div>
+      <strong>Chromium (Cr, Z=24):</strong> ends in 4s¹3d⁵ (not 4s²3d⁴). One electron moves from 4s to 3d because a <strong>half-filled d subshell</strong> (d⁵) is especially stable.<br><br>
+      <strong>Copper (Cu, Z=29):</strong> ends in 4s¹3d¹⁰ (not 4s²3d⁹). One electron moves from 4s to 3d because a <strong>fully-filled d subshell</strong> (d¹⁰) is especially stable.<br><br>
+      <strong>Transition metal ions</strong> lose electrons from the ns subshell BEFORE the (n−1)d subshell. E.g., Ni²⁺ loses both 4s electrons, not 3d electrons.
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ 1.3 MOLES ══ -->
+<section id="s13">
+  <div class="container">
+    <div class="sec-label">Section 1.3</div>
+    <h2 class="sec-title">Quantities of Atoms — The Mole</h2>
+    <p class="sec-intro">Atoms are too small to count individually. The <strong>mole</strong> is a unit that converts between numbers of particles and measurable masses. 1 mole = 6.02 × 10²³ particles (Avogadro's number, N<sub>A</sub>).</p>
+
+    <div class="formula-card reveal">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted2);margin-bottom:0.75rem;">The Mole Equation</div>
+      <div class="formula-display">n = m / M</div>
+      <div class="formula-caption">The number of moles is the mass divided by the molar mass.</div>
+      <div class="formula-vars">
+        <div class="fv"><div class="fv-sym">n</div><div class="fv-desc">moles (mol)</div></div>
+        <div class="fv"><div class="fv-sym">m</div><div class="fv-desc">mass (g)</div></div>
+        <div class="fv"><div class="fv-sym">M</div><div class="fv-desc">molar mass (g/mol)</div></div>
+      </div>
+    </div>
+
+    <!-- KEY CONCEPTS -->
+    <div class="prop-grid reveal" style="margin-top:2rem;">
+      <div class="prop-card c1">
+        <div class="pc-icon">🥚</div>
+        <div class="pc-name">Avogadro's Number</div>
+        <div class="pc-desc">1 mole = <strong>6.02 × 10²³ particles</strong>. Like counting eggs in dozens. Based on the number of carbon atoms in exactly 12.00 g of carbon-12. Named after Amadeo Avogadro.</div>
+      </div>
+      <div class="prop-card c2">
+        <div class="pc-icon">⚖️</div>
+        <div class="pc-name">Molar Mass (M)</div>
+        <div class="pc-desc">Mass of one mole of a substance in <strong>g/mol</strong>. For an element, it equals the atomic mass on the periodic table. For compounds, add up the molar masses of all atoms: M(H₂O) = 2(1.01) + 16.00 = <strong>18.02 g/mol</strong>.</div>
+      </div>
+      <div class="prop-card c3">
+        <div class="pc-icon">🔢</div>
+        <div class="pc-name">Relative Atomic Mass (Ar)</div>
+        <div class="pc-desc">A weighted average of all isotope masses, weighted by natural abundance on Earth. E.g., bromine: 50.7% Br-79 (78.92 amu) + 49.3% Br-81 (80.92 amu) = <strong>Ar ≈ 79.91</strong>. This is what appears on the periodic table.</div>
+      </div>
+      <div class="prop-card c4">
+        <div class="pc-icon">📏</div>
+        <div class="pc-name">SI Prefixes for Moles</div>
+        <div class="pc-desc">Moles can use SI prefixes: <strong>mmol</strong> (millimoles, × 10⁻³), <strong>μmol</strong> (micromoles, × 10⁻⁶), <strong>nmol</strong> (nanomoles, × 10⁻⁹). Drug doses (e.g., paclitaxel chemotherapy ~12 μmol per dose) are often calculated in micromoles.</div>
+      </div>
+    </div>
+
+    <!-- WORKED EXAMPLES -->
+    <div class="example-box reveal">
+      <div class="example-label">Worked Example 1 — Moles of Iron</div>
+      Iron nail, m = 0.214 g, M(Fe) = 55.85 g/mol<br>
+      n = m/M = 0.214 / 55.85 = <strong>3.83 × 10⁻³ mol</strong>
+    </div>
+
+    <div class="example-box reveal" style="border-left-color:var(--atom);">
+      <div class="example-label" style="color:var(--atom);">Worked Example 2 — Methane</div>
+      m = 1.000 kg = 1000 g, M(CH₄) = 12.01 + 4(1.01) = 16.05 g/mol<br>
+      n(CH₄) = 1000 / 16.05 = <strong>62.33 mol</strong><br>
+      n(H atoms) = 62.33 × 4 = <strong>249.3 mol H</strong>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ 1.4 PERIODIC TABLE ══ -->
+<section id="s14">
+  <div class="container">
+    <div class="sec-label">Section 1.4</div>
+    <h2 class="sec-title">The Periodic Table</h2>
+    <p class="sec-intro">118 elements arranged in order of increasing atomic number. <strong>Periods</strong> (rows) = main electron shells. <strong>Groups</strong> (columns) = similar electron configurations and properties. The table is divided into s, p, d, and f blocks.</p>
+
+    <table class="data-table per reveal">
+      <thead><tr><th>Block</th><th>Groups</th><th>Highest subshell</th><th>Names</th></tr></thead>
+      <tbody>
+        <tr><td>s-block</td><td>I–II</td><td>s¹ or s²</td><td>Group I = alkali metals; Group II = alkaline earth metals. (He is placed in Group XVIII)</td></tr>
+        <tr><td>p-block</td><td>XIII–XVIII</td><td>p¹ to p⁶</td><td>Post-transition metals, metalloids, non-metals. Group XVII = halogens (p⁵). Group XVIII = noble gases (p⁶)</td></tr>
+        <tr><td>d-block</td><td>III–XII</td><td>d¹ to d¹⁰</td><td>Transition metals</td></tr>
+        <tr><td>f-block</td><td>Below table</td><td>f electrons</td><td>Lanthanides (57–71) and Actinides (89–103). Shown separately to save space.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout per reveal">
+      <div class="callout-title">📍 How to Find Period and Group from Electron Configuration</div>
+      <strong>Period</strong> = the highest main shell number in the electron configuration. E.g., phosphorus 1s²2s²2p⁶<strong>3</strong>s²3p³ → Period 3.<br><br>
+      <strong>Group (main group)</strong> = number of electrons in the outermost shell. E.g., phosphorus main-shell config 2,8,<strong>5</strong> → Main Group V.<br><br>
+      <strong>Block</strong> = determined by the highest occupied subshell type (s, p, d, or f).
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ PERIODIC TRENDS ══ -->
+<section id="trends">
+  <div class="container">
+    <div class="sec-label">Section 1.4 — Trends</div>
+    <h2 class="sec-title">Periodic Trends</h2>
+    <p class="sec-intro">The position of an element in the periodic table is related to its physical and chemical properties. Three key trends run predictably across periods and down groups.</p>
+
+    <div class="trends-grid reveal">
+      <div class="trend-card radius">
+        <div class="tc-title">⭕ Atomic Radius</div>
+        <div class="tc-desc">
+          <strong>Down a group:</strong> radius increases — electrons occupy higher shells, further from nucleus.<br><br>
+          <strong>Across a period (left → right):</strong> radius decreases — more protons attract all electrons closer to nucleus (same shell, stronger pull).
+        </div>
+        <div class="trend-row">
+          <span class="trend-pill">↓ group = bigger</span>
+          <span class="trend-pill">→ period = smaller</span>
+        </div>
+      </div>
+
+      <div class="trend-card electro">
+        <div class="tc-title">🔋 Electronegativity</div>
+        <div class="tc-desc">
+          The ability of an atom to attract electrons to itself (Pauling scale, 0–4). <strong>Fluorine = 4.0</strong> (highest). <strong>Caesium/Francium = 0.7</strong> (lowest).<br><br>
+          <strong>Down a group:</strong> decreases — larger radius + more shielding electrons weaken attractive force.<br><br>
+          <strong>Across a period:</strong> increases — smaller radius means outermost electrons are held more strongly.
+        </div>
+        <div class="trend-row">
+          <span class="trend-pill">↓ group = lower</span>
+          <span class="trend-pill">→ period = higher</span>
+        </div>
+      </div>
+
+      <div class="trend-card valency">
+        <div class="tc-title">🔗 Valency</div>
+        <div class="tc-desc">
+          The capacity of an atom to form bonds with other atoms. For main groups I–III and V–VII, the ionic charge can be predicted:<br><br>
+          Group I = +1 · Group II = +2 · Group III = +3<br>
+          Group V = −3 · Group VI = −2 · Group VII = −1
+        </div>
+      </div>
+
+      <div class="trend-card metallic">
+        <div class="tc-title">🔩 Metallic Character</div>
+        <div class="tc-desc">
+          <strong>Metals:</strong> left side of table. Lustrous, good conductors, ductile/malleable, high mp/bp, low electronegativity, form positive cations.<br><br>
+          <strong>Non-metals:</strong> right side. Dull, poor conductors, brittle, low mp/bp, high electronegativity, form negative anions.<br><br>
+          <strong>Metalloids:</strong> straddle the boundary — exhibit both metallic and non-metallic properties.
+        </div>
+      </div>
+    </div>
+
+    <div class="callout per reveal">
+      <div class="callout-title">↕↔ Summary of Trends</div>
+      Atomic radius and electronegativity are <strong>inverse trends</strong> — when one increases, the other decreases. Down a group: radius ↑, electronegativity ↓. Across a period (→): radius ↓, electronegativity ↑. Metallic character mirrors the atomic radius trend (larger atoms tend to be more metallic).
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div>Chemistry Topic 1 — Materials and Their Atoms · <span>Stage 1 Chemistry</span></div>
+  <div style="margin-top:0.4rem;opacity:0.5;">© Essentials Education 2022 · Study resource for educational use</div>
+</footer>
+
+<script>
+  const els = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) { setTimeout(() => e.target.classList.add('vis'), i * 45); obs.unobserve(e.target); }
+    });
+  }, { threshold: 0.06 });
+  els.forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chemistry Topic 2 — Combining Atoms</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Barlow+Condensed:wght@600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#f0f4f8; --bg2:#e2e9f0; --surface:#ffffff; --border:#cdd8e3; --border2:#aebdd0;
+    --text:#0f1820; --muted:#4a6070; --muted2:#8aa0b0;
+
+    --metal:  #1a5c3a; --metal-bg:rgba(26,92,58,0.07); --metal-bd:rgba(26,92,58,0.22);
+    --ionic:  #8b1a1a; --ionic-bg:rgba(139,26,26,0.07); --ionic-bd:rgba(139,26,26,0.22);
+    --cov:    #1a3a8b; --cov-bg:rgba(26,58,139,0.07);   --cov-bd:rgba(26,58,139,0.22);
+    --net:    #6a1a8b; --net-bg:rgba(106,26,139,0.07);  --net-bd:rgba(106,26,139,0.22);
+    --bond:   #8b5a00; --bond-bg:rgba(139,90,0,0.07);   --bond-bd:rgba(139,90,0,0.22);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;font-weight:400;line-height:1.75;overflow-x:hidden;}
+  strong{font-weight:700;}
+
+  .hero{background:var(--text);color:#f0f4f8;padding:5rem 2rem 7rem;position:relative;overflow:hidden;}
+  .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 80% 50%,rgba(26,92,58,0.25) 0%,transparent 60%),radial-gradient(ellipse 50% 50% at 10% 70%,rgba(139,26,26,0.2) 0%,transparent 55%);}
+  .hero::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:60px;background:var(--bg);clip-path:polygon(0 100%,100% 0,100% 100%);}
+  .hero-inner{max-width:1000px;margin:0 auto;position:relative;z-index:1;}
+  .hero-tag{font-family:'JetBrains Mono',monospace;font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;color:#6ee7b7;margin-bottom:1.25rem;animation:up 0.6s ease both;}
+  .hero h1{font-family:'Barlow Condensed',sans-serif;font-size:clamp(3rem,8vw,7rem);font-weight:800;line-height:0.92;letter-spacing:-0.02em;margin-bottom:1.25rem;animation:up 0.6s 0.1s ease both;}
+  .hero h1 em{display:block;font-style:italic;font-family:'Barlow',sans-serif;font-weight:300;font-size:0.42em;color:rgba(240,244,248,0.45);letter-spacing:0.02em;line-height:1.5;margin-top:0.5rem;}
+  .hero-desc{font-size:0.95rem;color:rgba(240,244,248,0.55);max-width:560px;margin-bottom:2.5rem;line-height:1.75;animation:up 0.6s 0.2s ease both;}
+  .hero-nav{display:flex;flex-wrap:wrap;gap:0.5rem;animation:up 0.6s 0.3s ease both;}
+  .hero-nav a{text-decoration:none;font-family:'JetBrains Mono',monospace;font-size:0.72rem;padding:0.45em 1em;border-radius:6px;border:1px solid rgba(255,255,255,0.15);color:rgba(240,244,248,0.65);background:rgba(255,255,255,0.05);transition:all 0.18s;}
+  .hero-nav a:hover{border-color:#6ee7b7;color:#6ee7b7;}
+  @keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+  .container{max-width:1060px;margin:0 auto;padding:0 2rem;}
+  section{padding:5rem 0;border-top:1px solid var(--border);}
+  .sec-label{font-family:'JetBrains Mono',monospace;font-size:0.67rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted2);margin-bottom:0.4rem;}
+  .sec-title{font-family:'Barlow Condensed',sans-serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:800;letter-spacing:-0.02em;line-height:1.05;margin-bottom:0.9rem;}
+  .sec-intro{font-size:0.94rem;color:var(--muted);max-width:700px;line-height:1.85;margin-bottom:2.5rem;}
+
+  .reveal{opacity:0;transform:translateY(16px);transition:opacity 0.5s ease,transform 0.5s ease;}
+  .reveal.vis{opacity:1;transform:none;}
+
+  /* CALLOUT */
+  .callout{border-radius:12px;border:1px solid;padding:1.25rem 1.5rem;margin-top:1.75rem;font-size:0.89rem;color:var(--muted);line-height:1.75;}
+  .callout-title{font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;margin-bottom:0.35rem;letter-spacing:-0.01em;}
+  .callout.metal{background:var(--metal-bg);border-color:var(--metal-bd);}.callout.metal .callout-title{color:var(--metal);}
+  .callout.ionic{background:var(--ionic-bg);border-color:var(--ionic-bd);}.callout.ionic .callout-title{color:var(--ionic);}
+  .callout.cov{background:var(--cov-bg);border-color:var(--cov-bd);}.callout.cov .callout-title{color:var(--cov);}
+  .callout.net{background:var(--net-bg);border-color:var(--net-bd);}.callout.net .callout-title{color:var(--net);}
+  .callout.bond{background:var(--bond-bg);border-color:var(--bond-bd);}.callout.bond .callout-title{color:var(--bond);}
+
+  /* EXAMPLE BOX */
+  .eg{background:var(--bg2);border-left:4px solid var(--bond);border-radius:0 10px 10px 0;padding:1.1rem 1.5rem;margin-top:1.5rem;font-size:0.88rem;color:var(--muted);line-height:1.7;}
+  .eg-label{font-family:'JetBrains Mono',monospace;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--bond);margin-bottom:0.4rem;font-weight:500;}
+  .eg strong{color:var(--text);}
+
+  /* FOUR TYPES GRID */
+  .four-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-top:2rem;}
+  @media(max-width:640px){.four-grid{grid-template-columns:1fr;}}
+  .type-card{border-radius:16px;border:1px solid;overflow:hidden;}
+  .type-head{padding:1.1rem 1.5rem;font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;font-weight:700;letter-spacing:-0.01em;border-bottom:1px solid;}
+  .type-body{padding:1.1rem 1.5rem;font-size:0.87rem;color:var(--muted);line-height:1.7;}
+  .type-body strong{color:var(--text);}
+  .type-card.metal{border-color:var(--metal-bd);}.type-card.metal .type-head{background:var(--metal-bg);color:var(--metal);border-color:var(--metal-bd);}
+  .type-card.ionic{border-color:var(--ionic-bd);}.type-card.ionic .type-head{background:var(--ionic-bg);color:var(--ionic);border-color:var(--ionic-bd);}
+  .type-card.cov{border-color:var(--cov-bd);}.type-card.cov .type-head{background:var(--cov-bg);color:var(--cov);border-color:var(--cov-bd);}
+  .type-card.net{border-color:var(--net-bd);}.type-card.net .type-head{background:var(--net-bg);color:var(--net);border-color:var(--net-bd);}
+
+  /* DATA TABLE */
+  .data-table{width:100%;border-collapse:collapse;margin-top:2rem;font-size:0.88rem;}
+  .data-table th{text-align:left;padding:0.8rem 1.1rem;background:var(--bg2);font-family:'JetBrains Mono',monospace;font-size:0.67rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);border-bottom:2px solid;}
+  .data-table td{padding:0.8rem 1.1rem;border-bottom:1px solid var(--border);color:var(--muted);line-height:1.6;vertical-align:top;}
+  .data-table tr:hover td{background:var(--bg);}
+  .data-table td:first-child{font-weight:600;color:var(--text);}
+  .data-table.metal th{color:var(--metal);border-bottom-color:var(--metal);}
+  .data-table.ionic th{color:var(--ionic);border-bottom-color:var(--ionic);}
+  .data-table.cov th{color:var(--cov);border-bottom-color:var(--cov);}
+  .data-table.net th{color:var(--net);border-bottom-color:var(--net);}
+  .data-table.bond th{color:var(--bond);border-bottom-color:var(--bond);}
+
+  /* PROP CARDS */
+  .prop-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1.1rem;margin-top:2rem;}
+  .prop-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.35rem;border-top:4px solid;transition:all 0.2s;}
+  .prop-card:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(15,24,32,0.1);}
+  .prop-card.c1{border-top-color:var(--metal);}
+  .prop-card.c2{border-top-color:var(--ionic);}
+  .prop-card.c3{border-top-color:var(--cov);}
+  .prop-card.c4{border-top-color:var(--net);}
+  .prop-card.c5{border-top-color:var(--bond);}
+  .prop-card.c6{border-top-color:#0077aa;}
+  .pc-icon{font-size:1.9rem;margin-bottom:0.65rem;}
+  .pc-name{font-family:'Barlow Condensed',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:0.4rem;letter-spacing:-0.01em;}
+  .pc-desc{font-size:0.86rem;color:var(--muted);line-height:1.65;}
+  .pc-desc strong{color:var(--text);}
+
+  /* CONDUCTIVITY TABLE */
+  .cond-table{width:100%;border-collapse:collapse;margin-top:2rem;font-size:0.88rem;}
+  .cond-table th{padding:0.8rem 1.1rem;background:var(--bg2);font-family:'JetBrains Mono',monospace;font-size:0.67rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);border-bottom:2px solid var(--border2);text-align:center;}
+  .cond-table th:first-child{text-align:left;}
+  .cond-table td{padding:0.75rem 1.1rem;border-bottom:1px solid var(--border);text-align:center;color:var(--muted);}
+  .cond-table td:first-child{font-weight:700;color:var(--text);text-align:left;}
+  .cond-table tr:hover td{background:var(--bg);}
+  .yes{color:var(--metal);font-weight:700;}
+  .no{color:var(--ionic);font-weight:700;}
+
+  /* ION CARDS */
+  .ion-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:2rem;}
+  @media(max-width:580px){.ion-grid{grid-template-columns:1fr;}}
+  .ion-card{border-radius:14px;border:1px solid;overflow:hidden;}
+  .ion-head{padding:1rem 1.5rem;font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;letter-spacing:-0.01em;border-bottom:1px solid;display:flex;align-items:center;gap:0.5rem;}
+  .ion-body{padding:1.1rem 1.5rem;font-size:0.87rem;color:var(--muted);line-height:1.7;}
+  .ion-body strong{color:var(--text);}
+  .ion-card.cat{border-color:var(--metal-bd);}.ion-card.cat .ion-head{background:var(--metal-bg);color:var(--metal);border-color:var(--metal-bd);}
+  .ion-card.an{border-color:var(--ionic-bd);}.ion-card.an .ion-head{background:var(--ionic-bg);color:var(--ionic);border-color:var(--ionic-bd);}
+
+  /* FORMULA STEPS */
+  .steps{margin-top:2rem;display:flex;flex-direction:column;gap:1rem;}
+  .step-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.1rem 1.4rem;display:flex;gap:1rem;align-items:flex-start;}
+  .step-num{width:32px;height:32px;border-radius:50%;background:var(--ionic);color:#fff;font-family:'JetBrains Mono',monospace;font-size:0.82rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:0.1rem;}
+  .step-text{font-size:0.88rem;color:var(--muted);line-height:1.65;}
+  .step-text strong{color:var(--text);}
+
+  /* BOND TYPE VISUAL */
+  .bond-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-top:2rem;}
+  @media(max-width:580px){.bond-grid{grid-template-columns:1fr;}}
+  .bond-cell{background:var(--surface);padding:1.4rem;text-align:center;transition:background 0.18s;}
+  .bond-cell:hover{background:var(--bg2);}
+  .bc-icon{font-size:2rem;margin-bottom:0.5rem;}
+  .bc-name{font-family:'Barlow Condensed',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:0.4rem;letter-spacing:-0.01em;}
+  .bc-pairs{font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--muted2);margin-bottom:0.5rem;}
+  .bc-desc{font-size:0.82rem;color:var(--muted);line-height:1.55;}
+  .bond-cell:nth-child(1) .bc-name{color:var(--cov);}
+  .bond-cell:nth-child(2) .bc-name{color:var(--bond);}
+  .bond-cell:nth-child(3) .bc-name{color:var(--metal);}
+
+  /* LEWIS STRUCTURES */
+  .lewis-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-top:2rem;}
+  .lewis-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.2rem;text-align:center;transition:all 0.2s;}
+  .lewis-card:hover{transform:translateY(-2px);border-color:var(--border2);}
+  .lc-formula{font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:500;color:var(--cov);margin-bottom:0.4rem;}
+  .lc-name{font-size:0.75rem;color:var(--muted2);font-family:'JetBrains Mono',monospace;letter-spacing:0.08em;margin-bottom:0.5rem;}
+  .lc-structure{font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:var(--muted);background:var(--bg2);padding:0.5rem;border-radius:6px;line-height:1.6;}
+
+  /* POLARITY */
+  .polar-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:2rem;}
+  @media(max-width:580px){.polar-grid{grid-template-columns:1fr;}}
+  .polar-card{border-radius:14px;border:1px solid;overflow:hidden;}
+  .polar-head{padding:1rem 1.5rem;font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;letter-spacing:-0.01em;border-bottom:1px solid;}
+  .polar-body{padding:1.1rem 1.5rem;font-size:0.87rem;color:var(--muted);line-height:1.7;}
+  .polar-body strong{color:var(--text);}
+  .polar-card.nonpol{border-color:var(--metal-bd);}.polar-card.nonpol .polar-head{background:var(--metal-bg);color:var(--metal);border-color:var(--metal-bd);}
+  .polar-card.pol{border-color:var(--ionic-bd);}.polar-card.pol .polar-head{background:var(--ionic-bg);color:var(--ionic);border-color:var(--ionic-bd);}
+
+  /* POLYATOMIC TABLE */
+  .poly-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:2rem;}
+  @media(max-width:580px){.poly-grid{grid-template-columns:1fr;}}
+
+  /* ENERGY PROFILE */
+  .energy-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:2rem;}
+  @media(max-width:580px){.energy-grid{grid-template-columns:1fr;}}
+  .energy-card{border-radius:14px;border:1px solid;overflow:hidden;}
+  .energy-head{padding:1rem 1.5rem;font-family:'Barlow Condensed',sans-serif;font-size:1rem;font-weight:700;letter-spacing:-0.01em;border-bottom:1px solid;display:flex;align-items:center;gap:0.5rem;}
+  .energy-body{padding:1.1rem 1.5rem;font-size:0.87rem;color:var(--muted);line-height:1.7;}
+  .energy-body strong{color:var(--text);}
+  .energy-card.exo{border-color:var(--metal-bd);}.energy-card.exo .energy-head{background:var(--metal-bg);color:var(--metal);border-color:var(--metal-bd);}
+  .energy-card.endo{border-color:var(--ionic-bd);}.energy-card.endo .energy-head{background:var(--ionic-bg);color:var(--ionic);border-color:var(--ionic-bd);}
+
+  /* SVG ENERGY DIAGRAMS */
+  .energy-svg{width:100%;height:120px;margin-top:0.75rem;}
+
+  footer{background:var(--text);color:rgba(240,244,248,0.35);text-align:center;padding:2.5rem 2rem;font-family:'JetBrains Mono',monospace;font-size:0.72rem;letter-spacing:0.07em;margin-top:3rem;}
+  footer span{color:#6ee7b7;}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">Stage 1 Chemistry · Topic 2</div>
+    <h1>Combining Atoms
+      <em>Types of Materials · Bonding · Ionic · Covalent · Metallic</em>
+    </h1>
+    <p class="hero-desc">A comprehensive guide to the four types of solid materials, how bonds form and break, metallic bonding, ionic compounds, covalent molecules and networks.</p>
+    <nav class="hero-nav">
+      <a href="#types">2.1 Types of Materials</a>
+      <a href="#meltcond">Melting &amp; Conductivity</a>
+      <a href="#octet">Octet Rule &amp; Ions</a>
+      <a href="#bondenergy">Bond Energy</a>
+      <a href="#metallic">Metallic Bonding</a>
+      <a href="#ionic">Ionic Bonding</a>
+      <a href="#empirical">Empirical Formulae</a>
+      <a href="#polyatomic">Polyatomic Ions</a>
+      <a href="#covalent">Covalent Bonding</a>
+      <a href="#lewis">Lewis Structures</a>
+      <a href="#polarity">Bond Polarity</a>
+      <a href="#networks">Covalent Networks</a>
+      <a href="#naming">Naming</a>
+    </nav>
+  </div>
+</header>
+
+<!-- 2.1 TYPES -->
+<section id="types">
+  <div class="container">
+    <div class="sec-label">Section 2.1</div>
+    <h2 class="sec-title">Types of Materials</h2>
+    <p class="sec-intro">All solid materials result from <strong>intramolecular forces</strong> (primary bonds) between atoms or ions. There are four types of solid materials classified by their bonding and structure.</p>
+
+    <div class="four-grid reveal">
+      <div class="type-card metal">
+        <div class="type-head">⚙️ Metallic Solids</div>
+        <div class="type-body"><strong>Formed between:</strong> metal atoms only.<br><strong>Structure:</strong> Regular lattice of positive metal cations surrounded by a "sea" of delocalised electrons.<br><strong>Examples:</strong> Magnesium, tin, copper.<br><strong>Bond:</strong> Electrostatic attraction between cations and delocalised electrons.</div>
+      </div>
+      <div class="type-card ionic">
+        <div class="type-head">🔴 Ionic Solids</div>
+        <div class="type-body"><strong>Formed between:</strong> metallic and non-metallic atoms.<br><strong>Structure:</strong> Geometric lattice of alternating cations (+) and anions (−) in fixed ratios.<br><strong>Examples:</strong> Sodium chloride (NaCl), nickel oxide.<br><strong>Bond:</strong> Electrostatic attraction between oppositely charged ions.</div>
+      </div>
+      <div class="type-card cov">
+        <div class="type-head">🔵 Covalent Molecular Solids</div>
+        <div class="type-body"><strong>Formed between:</strong> non-metallic atoms.<br><strong>Structure:</strong> Discrete molecules interacting via intermolecular forces.<br><strong>Examples:</strong> Sucrose, iodine.<br><strong>Bond:</strong> Sharing of valence electron pairs between non-metal atoms.</div>
+      </div>
+      <div class="type-card net">
+        <div class="type-head">💎 Covalent Network Solids</div>
+        <div class="type-body"><strong>Formed between:</strong> non-metallic atoms.<br><strong>Structure:</strong> Each atom forms covalent bonds with ALL nearest neighbours — extending through the entire solid.<br><strong>Examples:</strong> Diamond, graphite, silica (sand).<br><strong>Bond:</strong> Covalent bonds throughout the network lattice.</div>
+      </div>
+    </div>
+
+    <!-- MELTING POINTS TABLE -->
+    <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:700;margin:2.5rem 0 0.5rem;letter-spacing:-0.01em;">Melting Points by Bonding Type</h3>
+    <p style="font-size:0.9rem;color:var(--muted);margin-bottom:0;line-height:1.75;">For a solid to melt, vibrations must exceed the intramolecular or intermolecular attractive forces. Stronger bonds = higher melting point.</p>
+    <table class="data-table bond reveal">
+      <thead><tr><th>Bonding Type</th><th>Bond Strength</th><th>Examples</th><th>Melting Point (°C)</th></tr></thead>
+      <tbody>
+        <tr><td>Covalent Network</td><td>Very High</td><td>Diamond (C), Silica (SiO₂)</td><td>3500 / 1600</td></tr>
+        <tr><td>Metallic</td><td>High</td><td>Silver (Ag), Aluminium (Al)</td><td>961 / 660</td></tr>
+        <tr><td>Ionic</td><td>Moderate–High</td><td>NaCl, KF</td><td>801 / 857</td></tr>
+        <tr><td>Covalent Molecular</td><td>Low</td><td>Iodine (I₂), CCl₄</td><td>114 / −23</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- MELTING & CONDUCTIVITY -->
+<section id="meltcond">
+  <div class="container">
+    <div class="sec-label">Section 2.1 — Electrical Conductivity</div>
+    <h2 class="sec-title">Electrical Conductivity as Evidence for Bonding</h2>
+    <p class="sec-intro">Electrical conductivity — the ease with which electric charge passes through a material — is a useful tool for classifying bonding type. It depends on the presence of <strong>free charged particles</strong> (electrons or ions).</p>
+
+    <table class="cond-table reveal">
+      <thead>
+        <tr><th>Bonding Type</th><th>Solid</th><th>Molten</th><th>Aqueous Solution</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>🔩 Metallic</td><td><span class="yes">Yes</span></td><td><span class="yes">Yes</span></td><td>— (not dissolved)</td></tr>
+        <tr><td>🔴 Ionic</td><td><span class="no">No*</span></td><td><span class="yes">Yes</span></td><td><span class="yes">Yes</span></td></tr>
+        <tr><td>💎 Covalent Network</td><td><span class="no">No**</span></td><td><span class="no">No</span></td><td>—</td></tr>
+        <tr><td>🔵 Covalent Molecular</td><td><span class="no">No</span></td><td><span class="no">No</span></td><td><span class="no">No</span></td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:0.82rem;color:var(--muted);margin-top:0.75rem;font-family:'JetBrains Mono',monospace;">* Ionic solids have fixed ions — no movement possible.<br>** Exception: Graphite — delocalised electrons between layers allow excellent conductivity.</p>
+
+    <div class="callout net reveal">
+      <div class="callout-title">💎 Graphite — The Exception</div>
+      Graphite is a covalent network solid where each carbon bonds to only <strong>three</strong> adjacent carbon atoms. The <strong>fourth valence electron is delocalised</strong> and can move freely between the graphite layers — allowing graphite to conduct electricity excellently, unlike all other covalent networks.
+    </div>
+  </div>
+</section>
+
+<!-- OCTET RULE & IONS -->
+<section id="octet">
+  <div class="container">
+    <div class="sec-label">Section 2.2</div>
+    <h2 class="sec-title">The Octet Rule &amp; Ion Formation</h2>
+    <p class="sec-intro">Most atoms prefer to have <strong>8 valence electrons</strong> (octet). To achieve this, atoms gain, lose, or share electrons. Noble gases (Group VIII) already have a full octet and are non-reactive.</p>
+
+    <div class="ion-grid reveal">
+      <div class="ion-card cat">
+        <div class="ion-head">➕ Cations (Positive Ions)</div>
+        <div class="ion-body">
+          <strong>Formed when:</strong> Metal atoms <em>lose</em> valence electrons.<br><br>
+          <strong>Why metals?</strong> Metals have large atomic radii — valence electrons are far from the nucleus and weakly attracted. Low ionisation energies.<br><br>
+          <strong>Charge:</strong> Equal to the number of electrons lost = Group number (for Groups I–III).<br><br>
+          <strong>Examples:</strong> Li → Li⁺ + e⁻ &nbsp;·&nbsp; Mg → Mg²⁺ + 2e⁻ &nbsp;·&nbsp; Al → Al³⁺ + 3e⁻<br><br>
+          <strong>Naming:</strong> Name of the parent atom + "cation" (or just the element name).
+        </div>
+      </div>
+      <div class="ion-card an">
+        <div class="ion-head">➖ Anions (Negative Ions)</div>
+        <div class="ion-body">
+          <strong>Formed when:</strong> Non-metal atoms <em>gain</em> electrons.<br><br>
+          <strong>Why non-metals?</strong> High ionisation energies (hard to remove electrons) + high electron affinity (tendency to attract electrons).<br><br>
+          <strong>Charge:</strong> Equal to the number of electrons gained = 8 minus Group number (for Groups V–VII).<br><br>
+          <strong>Examples:</strong> F + e⁻ → F⁻ &nbsp;·&nbsp; O + 2e⁻ → O²⁻ &nbsp;·&nbsp; N + 3e⁻ → N³⁻<br><br>
+          <strong>Naming:</strong> Element name with suffix changed to <strong>"-ide"</strong> (fluoride, oxide, nitride).
+        </div>
+      </div>
+    </div>
+
+    <!-- GROUP TABLE -->
+    <table class="data-table bond reveal" style="margin-top:2rem;">
+      <thead><tr><th>Group</th><th>Valence Electrons</th><th>Ion Formed</th><th>Electrons</th></tr></thead>
+      <tbody>
+        <tr><td>I</td><td>1</td><td>+1 cation</td><td>Lost</td></tr>
+        <tr><td>II</td><td>2</td><td>+2 cation</td><td>Lost</td></tr>
+        <tr><td>III</td><td>3</td><td>+3 cation</td><td>Lost</td></tr>
+        <tr><td>IV</td><td>4</td><td>N/A (shares)</td><td>Shared</td></tr>
+        <tr><td>V</td><td>5</td><td>−3 anion</td><td>Gained</td></tr>
+        <tr><td>VI</td><td>6</td><td>−2 anion</td><td>Gained</td></tr>
+        <tr><td>VII</td><td>7</td><td>−1 anion</td><td>Gained</td></tr>
+        <tr><td>VIII</td><td>8</td><td>N/A (noble gas)</td><td>None</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout ionic reveal">
+      <div class="callout-title">📊 Ionisation Energy Trends</div>
+      <strong>Across a period:</strong> ionisation energy increases (stronger nuclear attraction as atomic radius decreases).<br>
+      <strong>Down a group:</strong> ionisation energy decreases (electrons are further from nucleus, weaker attraction).<br>
+      Metals typically have <strong>low</strong> ionisation energies (easily lose electrons). Noble gases have the <strong>highest</strong> (don't form ions normally).
+    </div>
+  </div>
+</section>
+
+<!-- BOND ENERGY -->
+<section id="bondenergy">
+  <div class="container">
+    <div class="sec-label">Section 2.2 — Bond Energy</div>
+    <h2 class="sec-title">Bond Formation &amp; Energy</h2>
+    <p class="sec-intro">Bond formation always <strong>releases energy</strong>. Breaking bonds always <strong>requires energy</strong>. Whether a reaction is exothermic or endothermic depends on the net energy change.</p>
+
+    <div class="energy-grid reveal">
+      <div class="energy-card exo">
+        <div class="energy-head">🔥 Exothermic Reaction</div>
+        <div class="energy-body">
+          Energy released (forming bonds) <strong>&gt;</strong> Energy required (breaking bonds).<br><br>
+          Products have <strong>lower</strong> enthalpy than reactants. Energy is released to surroundings as heat.<br><br>
+          <strong>Example:</strong> Non-metal gaining an electron:<br>
+          Cl + e⁻ → Cl⁻ &nbsp; ΔH = −349 kJ/mol<br><br>
+          Energy profile: reactants higher → products lower.
+        </div>
+      </div>
+      <div class="energy-card endo">
+        <div class="energy-head">❄️ Endothermic Reaction</div>
+        <div class="energy-body">
+          Energy released (forming bonds) <strong>&lt;</strong> Energy required (breaking bonds).<br><br>
+          Products have <strong>higher</strong> enthalpy than reactants. Energy is absorbed from surroundings.<br><br>
+          <strong>Example:</strong> Metal losing an electron:<br>
+          Na → Na⁺ + e⁻ &nbsp; ΔH = +496 kJ/mol<br><br>
+          Energy profile: reactants lower → products higher.
+        </div>
+      </div>
+    </div>
+
+    <div class="callout bond reveal">
+      <div class="callout-title">⚡ Activation Energy (Ea)</div>
+      <strong>Activation energy</strong> is the minimum energy that must be provided to start a chemical reaction. Even exothermic reactions require an initial energy input (Ea) to break existing bonds before new, more stable bonds can form. Activation energy is measured in joules per mole (J/mol). The enthalpy (ΔH) describes the overall energy change, not the activation energy.
+    </div>
+  </div>
+</section>
+
+<!-- METALLIC BONDING -->
+<section id="metallic">
+  <div class="container">
+    <div class="sec-label">Section 2.2 — Metallic Bonding</div>
+    <h2 class="sec-title">Metallic Bonding &amp; Properties</h2>
+    <p class="sec-intro">Metals have large atomic radii — valence electrons are weakly held and become <strong>delocalised</strong>, shared between all neighbouring atoms. This creates a "sea" of electrons around a regular lattice of positive metal cations.</p>
+
+    <div class="callout metal reveal">
+      <div class="callout-title">🔩 The Metallic Bond</div>
+      Strong <strong>electrostatic attraction</strong> between the positively charged metal cations and the sea of delocalised electrons holds the metallic lattice together. Although cations repel each other, the delocalised electrons act as "glue" holding them together in a dense, 3D regular lattice arranged in layers.
+    </div>
+
+    <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:700;margin:2.5rem 0 0.5rem;letter-spacing:-0.01em;">Physical Properties of Metals — Explained</h3>
+    <div class="prop-grid reveal">
+      <div class="prop-card c1">
+        <div class="pc-icon">🔨</div>
+        <div class="pc-name">Hardness</div>
+        <div class="pc-desc">Strong electrostatic forces resist compression. Layers can slide over each other. <strong>Alloys are harder than pure metals</strong> — different-sized atoms distort the lattice, requiring more force to slide layers.</div>
+      </div>
+      <div class="prop-card c2">
+        <div class="pc-icon">🔧</div>
+        <div class="pc-name">Malleability</div>
+        <div class="pc-desc">Ability to withstand <strong>compressive stress</strong> without breaking. Layers of cations slide over each other but delocalised electrons maintain attraction — bonds remain unbroken. Can be enhanced by heating.</div>
+      </div>
+      <div class="prop-card c3">
+        <div class="pc-icon">🪢</div>
+        <div class="pc-name">Ductility</div>
+        <div class="pc-desc">Ability to withstand <strong>tensile stress</strong> (stretching). Can be drawn into wires. The cation-electron attraction stretches but does not break — bonds remain intact.</div>
+      </div>
+      <div class="prop-card c4">
+        <div class="pc-icon">⚡</div>
+        <div class="pc-name">Electrical Conductivity</div>
+        <div class="pc-desc">Delocalised electrons <strong>move freely</strong> — toward positive electrode, away from negative. This constitutes an electric current. Silver has the greatest electrical conductivity of all metals.</div>
+      </div>
+      <div class="prop-card c5">
+        <div class="pc-icon">🌡️</div>
+        <div class="pc-name">Thermal Conductivity</div>
+        <div class="pc-desc">Delocalised electrons vibrate more rapidly when heated, causing more spontaneous collisions — <strong>heat is rapidly distributed</strong> throughout the metal.</div>
+      </div>
+      <div class="prop-card c6">
+        <div class="pc-icon">✨</div>
+        <div class="pc-name">Lustre</div>
+        <div class="pc-desc">Delocalised electrons <strong>absorb and re-emit photons</strong> — electrons jump to higher energy levels then return, emitting light. The wavelengths emitted give metals their characteristic shiny appearance.</div>
+      </div>
+      <div class="prop-card c1">
+        <div class="pc-icon">🧊</div>
+        <div class="pc-name">High Melting/Boiling Point</div>
+        <div class="pc-desc">Strong electrostatic attraction requires <strong>significant energy to overcome</strong>. Greater cation charge (higher group) AND smaller atomic radius = higher melting point. E.g., Al (660°C, 3+) vs Mg (650°C, 2+).</div>
+      </div>
+      <div class="prop-card c2">
+        <div class="pc-icon">⚖️</div>
+        <div class="pc-name">Density</div>
+        <div class="pc-desc">Metal cations are <strong>closely packed</strong> in the lattice due to electrostatic attraction. Density depends on cation mass, radius, and packing arrangement. Metals generally have high but varied densities.</div>
+      </div>
+    </div>
+
+    <div class="eg reveal">
+      <div class="eg-label">Why Aluminium Has a Higher Melting Point Than Magnesium</div>
+      Al (Group III) forms Al³⁺ — greater charge than Mg²⁺ (Group II) → stronger electrostatic attraction → higher melting point (660°C vs 650°C).<br>
+      However, Mg has a larger atomic radius than Al (radius increases right to left) → nucleus is further from delocalised electrons → weaker attraction → slightly lower melting point.
+    </div>
+  </div>
+</section>
+
+<!-- IONIC BONDING -->
+<section id="ionic">
+  <div class="container">
+    <div class="sec-label">Section 2.2 — Ionic Bonding</div>
+    <h2 class="sec-title">Ionic Bonding</h2>
+    <p class="sec-intro">When a metal atom transfers electrons to a non-metal, oppositely charged ions form. The <strong>electrostatic attraction</strong> between these ions is the ionic bond, forming an ionic compound (salt).</p>
+
+    <div class="callout ionic reveal">
+      <div class="callout-title">🔴 How Ionic Bonds Form — Two Steps</div>
+      <strong>Step 1:</strong> Electron transfer — metal loses valence electrons (forming cation); non-metal gains them (forming anion).<br>
+      <strong>Step 2:</strong> Ionic bond — electrostatic attraction between oppositely charged ions. Energy is released in this step.<br><br>
+      Ions arrange in a <strong>continuous 3D lattice</strong> that maximises cation-anion attraction and minimises like-charge repulsion. The strength of attraction increases with greater charge magnitude on the ions.
+    </div>
+
+    <!-- PROPERTIES OF IONIC COMPOUNDS -->
+    <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:1.4rem;font-weight:700;margin:2.5rem 0 0.5rem;letter-spacing:-0.01em;">Properties of Ionic Compounds</h3>
+    <div class="prop-grid reveal">
+      <div class="prop-card c2">
+        <div class="pc-icon">💎</div>
+        <div class="pc-name">Hard but Brittle</div>
+        <div class="pc-desc">Strong ionic bonds create a <strong>hard, stable lattice</strong>. BUT when stress shifts layers, like charges align → repulsion causes the crystal to <strong>shatter along a smooth plane</strong> (brittle). Unlike metals, layers cannot simply slide.</div>
+      </div>
+      <div class="prop-card c2">
+        <div class="pc-icon">🌡️</div>
+        <div class="pc-name">High Melting/Boiling Point</div>
+        <div class="pc-desc">Strong electrostatic forces between ions require significant energy to overcome. Higher ion charges = stronger attraction = higher melting point. E.g., MgO (Mg²⁺, O²⁻) has a higher mp than NaCl (Na⁺, Cl⁻).</div>
+      </div>
+      <div class="prop-card c2">
+        <div class="pc-icon">⚡</div>
+        <div class="pc-name">Conductivity</div>
+        <div class="pc-desc"><strong>Solid:</strong> ions in fixed positions — cannot conduct.<br><strong>Molten or dissolved (aqueous):</strong> ions are free to move — conduct electricity.<br>Higher charge ions carry more current. All ionic compounds are <strong>electrolytes</strong>.</div>
+      </div>
+    </div>
+
+    <div class="eg reveal" style="border-left-color:var(--ionic);">
+      <div class="eg-label" style="color:var(--ionic);">Comparing Electrolyte Conductivity</div>
+      MgSO₄ → Mg²⁺ + SO₄²⁻ (doubly charged ions → higher current than NaCl's Na⁺/Cl⁻)<br>
+      Na₂SO₄ → 2Na⁺ + SO₄²⁻ (more Na⁺ ions than NaCl + SO₄²⁻ carries more charge than Cl⁻)
+    </div>
+  </div>
+</section>
+
+<!-- EMPIRICAL FORMULAE -->
+<section id="empirical">
+  <div class="container">
+    <div class="sec-label">Section 2.2 — Ionic Formulae</div>
+    <h2 class="sec-title">Writing Empirical Formulae for Ionic Compounds</h2>
+    <p class="sec-intro">Ionic compounds are electrically neutral — total positive charge must equal total negative charge. The empirical formula shows the <strong>simplest ratio</strong> of ions.</p>
+
+    <div class="steps reveal">
+      <div class="step-card"><div class="step-num">1</div><div class="step-text"><strong>Identify the charges</strong> on the cation and anion from the periodic table or group number.</div></div>
+      <div class="step-card"><div class="step-num">2</div><div class="step-text"><strong>If charges are equal (magnitude):</strong> the ratio is 1:1 → write cation then anion.</div></div>
+      <div class="step-card"><div class="step-num">3</div><div class="step-text"><strong>If charges are not equal:</strong> find the <strong>lowest common multiple (LCM)</strong> of both charges. The number needed of each ion to reach the LCM becomes the subscript.</div></div>
+      <div class="step-card"><div class="step-num">4</div><div class="step-text"><strong>Write the formula:</strong> cation first, then anion with correct subscripts. For polyatomic ions, use <strong>brackets</strong> when a subscript &gt;1 applies.</div></div>
+    </div>
+
+    <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:700;margin:2rem 0 0.5rem;letter-spacing:-0.01em;">Worked Examples</h3>
+    <table class="data-table ionic reveal">
+      <thead><tr><th>Cation</th><th>Anion</th><th>Ratio</th><th>Formula</th><th>Name</th></tr></thead>
+      <tbody>
+        <tr><td>K⁺</td><td>I⁻</td><td>1:1</td><td>KI</td><td>Potassium iodide</td></tr>
+        <tr><td>Li⁺</td><td>S²⁻</td><td>2:1</td><td>Li₂S</td><td>Lithium sulfide</td></tr>
+        <tr><td>Al³⁺</td><td>Cl⁻</td><td>1:3</td><td>AlCl₃</td><td>Aluminium chloride</td></tr>
+        <tr><td>Al³⁺</td><td>O²⁻</td><td>2:3 (LCM=6)</td><td>Al₂O₃</td><td>Aluminium oxide</td></tr>
+        <tr><td>Fe²⁺</td><td>O²⁻</td><td>1:1</td><td>FeO</td><td>Iron(II) oxide</td></tr>
+        <tr><td>Fe³⁺</td><td>O²⁻</td><td>2:3 (LCM=6)</td><td>Fe₂O₃</td><td>Iron(III) oxide</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout ionic reveal">
+      <div class="callout-title">⭐ Transition Metal Oxidation States</div>
+      Transition metals can form ions with <strong>multiple possible charges</strong> (e.g., Fe²⁺ or Fe³⁺). The oxidation state is written in <strong>Roman numerals</strong> in brackets after the element name: Iron(II) vs Iron(III). This is essential to distinguish the different ionic compounds they form.
+    </div>
+  </div>
+</section>
+
+<!-- POLYATOMIC IONS -->
+<section id="polyatomic">
+  <div class="container">
+    <div class="sec-label">Section 2.2 — Polyatomic Ions</div>
+    <h2 class="sec-title">Polyatomic Ions</h2>
+    <p class="sec-intro">Polyatomic ions contain <strong>more than one atom</strong> and carry an overall charge. They behave as a single unit in ionic compounds. Most are anions — notable cation exceptions are NH₄⁺ and H₃O⁺.</p>
+
+    <div class="poly-grid reveal">
+      <table class="data-table ionic">
+        <thead><tr><th>Polyatomic Ion</th><th>Formula</th></tr></thead>
+        <tbody>
+          <tr><td>Hydroxide anion</td><td style="font-family:'JetBrains Mono',monospace;">OH⁻</td></tr>
+          <tr><td>Nitrate anion</td><td style="font-family:'JetBrains Mono',monospace;">NO₃⁻</td></tr>
+          <tr><td>Nitrite anion</td><td style="font-family:'JetBrains Mono',monospace;">NO₂⁻</td></tr>
+          <tr><td>Sulfate anion</td><td style="font-family:'JetBrains Mono',monospace;">SO₄²⁻</td></tr>
+          <tr><td>Sulfite anion</td><td style="font-family:'JetBrains Mono',monospace;">SO₃²⁻</td></tr>
+          <tr><td>Carbonate anion</td><td style="font-family:'JetBrains Mono',monospace;">CO₃²⁻</td></tr>
+        </tbody>
+      </table>
+      <table class="data-table ionic">
+        <thead><tr><th>Polyatomic Ion</th><th>Formula</th></tr></thead>
+        <tbody>
+          <tr><td>Bicarbonate anion</td><td style="font-family:'JetBrains Mono',monospace;">HCO₃⁻</td></tr>
+          <tr><td>Phosphate anion</td><td style="font-family:'JetBrains Mono',monospace;">PO₄³⁻</td></tr>
+          <tr><td>Acetate anion</td><td style="font-family:'JetBrains Mono',monospace;">CH₃COO⁻</td></tr>
+          <tr><td>Ammonium cation</td><td style="font-family:'JetBrains Mono',monospace;">NH₄⁺</td></tr>
+          <tr><td>Hydronium cation</td><td style="font-family:'JetBrains Mono',monospace;">H₃O⁺</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="eg reveal" style="border-left-color:var(--ionic);">
+      <div class="eg-label" style="color:var(--ionic);">Polyatomic Ion Examples</div>
+      <strong>Copper(II) sulfate:</strong> Cu²⁺ + SO₄²⁻ (1:1 ratio) → CuSO₄<br>
+      <strong>Magnesium nitrate:</strong> Mg²⁺ + NO₃⁻ (1:2) → Mg(NO₃)₂ — brackets because subscript applies to whole polyatomic ion<br>
+      <strong>Aluminium sulfate:</strong> Al³⁺ + SO₄²⁻ (LCM=6: 2×Al³⁺, 3×SO₄²⁻) → Al₂(SO₄)₃
+    </div>
+  </div>
+</section>
+
+<!-- COVALENT BONDING -->
+<section id="covalent">
+  <div class="container">
+    <div class="sec-label">Section 2.2 — Covalent Bonding</div>
+    <h2 class="sec-title">Covalent Bonding</h2>
+    <p class="sec-intro">Non-metallic atoms share valence electron pairs to complete their octets. The electrostatic attraction between the shared electron pair and the positive nuclei of <strong>both</strong> atoms is the covalent bond.</p>
+
+    <div class="bond-grid reveal">
+      <div class="bond-cell">
+        <div class="bc-icon">—</div>
+        <div class="bc-name">Single Bond</div>
+        <div class="bc-pairs">1 bonding pair (2 electrons)</div>
+        <div class="bc-desc">Weakest covalent bond. Group VII elements (e.g. Cl₂, F₂). Each atom shares 1 electron.</div>
+      </div>
+      <div class="bond-cell">
+        <div class="bc-icon">═</div>
+        <div class="bc-name">Double Bond</div>
+        <div class="bc-pairs">2 bonding pairs (4 electrons)</div>
+        <div class="bc-desc">Intermediate strength. Group VI elements (e.g. O₂). Each atom shares 2 electrons.</div>
+      </div>
+      <div class="bond-cell">
+        <div class="bc-icon">≡</div>
+        <div class="bc-name">Triple Bond</div>
+        <div class="bc-pairs">3 bonding pairs (6 electrons)</div>
+        <div class="bc-desc">Strongest covalent bond. Group V elements (e.g. N₂). Each atom shares 3 electrons. Very high energy to break.</div>
+      </div>
+    </div>
+
+    <div class="callout cov reveal">
+      <div class="callout-title">📐 Determining the Central Atom</div>
+      The <strong>central atom</strong> has the highest covalence (can form the most bonds) and usually has the <strong>lowest electronegativity</strong>. Hydrogen and Group VII atoms are rarely central. For example, in NH₃, nitrogen is central (can form 3 bonds); hydrogen atoms surround it.
+    </div>
+
+    <!-- DIATOMIC MOLECULES -->
+    <h3 style="font-family:'Barlow Condensed',sans-serif;font-size:1.3rem;font-weight:700;margin:2.5rem 0 0.5rem;letter-spacing:-0.01em;">Seven Homonuclear Diatomic Molecules</h3>
+    <p style="font-size:0.88rem;color:var(--muted);margin-bottom:1rem;">These elements exist as diatomic molecules at room temperature: <span style="font-family:'JetBrains Mono',monospace;color:var(--cov);">H₂, N₂, O₂, F₂, Cl₂, Br₂, I₂</span></p>
+
+    <div class="lewis-grid reveal">
+      <div class="lewis-card"><div class="lc-formula">H₂</div><div class="lc-name">Hydrogen</div><div class="lc-structure">H — H<br>Single bond</div></div>
+      <div class="lewis-card"><div class="lc-formula">N₂</div><div class="lc-name">Nitrogen</div><div class="lc-structure">:N ≡ N:<br>Triple bond</div></div>
+      <div class="lewis-card"><div class="lc-formula">O₂</div><div class="lc-name">Oxygen</div><div class="lc-structure">:O = O:<br>Double bond</div></div>
+      <div class="lewis-card"><div class="lc-formula">Cl₂</div><div class="lc-name">Chlorine</div><div class="lc-structure">:Cl — Cl:<br>Single bond</div></div>
+      <div class="lewis-card"><div class="lc-formula">NH₃</div><div class="lc-name">Ammonia</div><div class="lc-structure">N centre<br>3 N—H bonds<br>1 lone pair on N</div></div>
+      <div class="lewis-card"><div class="lc-formula">H₂O</div><div class="lc-name">Water</div><div class="lc-structure">O centre<br>2 O—H bonds<br>2 lone pairs on O</div></div>
+      <div class="lewis-card"><div class="lc-formula">CO₂</div><div class="lc-name">Carbon dioxide</div><div class="lc-structure">O=C=O<br>2 double bonds<br>No lone pairs on C</div></div>
+      <div class="lewis-card"><div class="lc-formula">CH₄</div><div class="lc-name">Methane</div><div class="lc-structure">C centre<br>4 C—H bonds<br>No lone pairs on C</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- LEWIS STRUCTURES -->
+<section id="lewis">
+  <div class="container">
+    <div class="sec-label">Section 2.2 — Lewis Structures</div>
+    <h2 class="sec-title">Drawing Lewis Structures</h2>
+    <p class="sec-intro">Lewis (electron dot) diagrams show all valence electrons — bonding pairs (as lines) and non-bonding (lone) pairs (as dots). <strong>Both bonding and lone pairs must be shown.</strong></p>
+
+    <div class="steps reveal">
+      <div class="step-card"><div class="step-num">1</div><div class="step-text">Write the chemical formula and <strong>identify all atoms</strong> present.</div></div>
+      <div class="step-card"><div class="step-num">2</div><div class="step-text"><strong>Count total valence electrons</strong> from all atoms (use group numbers).</div></div>
+      <div class="step-card"><div class="step-num">3</div><div class="step-text"><strong>Determine bonds needed</strong> — how many electrons does each atom need to reach 8? Each bond uses 2 electrons (one from each atom).</div></div>
+      <div class="step-card"><div class="step-num">4</div><div class="step-text"><strong>Identify the central atom</strong> — highest covalence, lowest electronegativity (not H, rarely Group VII).</div></div>
+      <div class="step-card"><div class="step-num">5</div><div class="step-text"><strong>Complete octets around outer atoms</strong> first with lone pairs.</div></div>
+      <div class="step-card"><div class="step-num">6</div><div class="step-text"><strong>Place remaining electrons on central atom</strong> as lone pairs.</div></div>
+      <div class="step-card"><div class="step-num">7</div><div class="step-text"><strong>Check:</strong> total electrons in diagram = total valence electrons counted in step 2. Each bond = single line (—), double bond = (=), triple bond (≡).</div></div>
+    </div>
+
+    <div class="eg reveal" style="border-left-color:var(--cov);">
+      <div class="eg-label" style="color:var(--cov);">Worked Example — Ammonia (NH₃)</div>
+      Valence electrons: N=5, H=1×3 = <strong>8 total</strong>.<br>
+      N needs 3 bonds (needs 3 more electrons). Each H needs 1 bond.<br>
+      Central atom: N (highest covalence). 3 N−H bonds used. Remaining 2 electrons = 1 lone pair on N.<br>
+      Lewis structure: N with 3 single bonds to H atoms and 1 lone pair on N.
+    </div>
+  </div>
+</section>
+
+<!-- POLARITY -->
+<section id="polarity">
+  <div class="container">
+    <div class="sec-label">Section 2.2 — Bond Polarity</div>
+    <h2 class="sec-title">Polar and Non-Polar Covalent Bonds</h2>
+    <p class="sec-intro">When two atoms share electrons, the <strong>electronegativity difference</strong> between them determines how equally the electrons are shared — and whether the bond is polar or non-polar.</p>
+
+    <div class="polar-grid reveal">
+      <div class="polar-card nonpol">
+        <div class="polar-head">⚖️ Non-Polar Covalent Bond</div>
+        <div class="polar-body">
+          <strong>Same or negligible electronegativity difference</strong> between bonding atoms.<br><br>
+          Electrons shared equally — no partial charges. No dipole.<br><br>
+          <strong>Examples:</strong><br>
+          Cl₂ — identical atoms, equal sharing.<br>
+          C−H bond — C (2.5) vs H (2.1) = difference of 0.4 → functionally non-polar.
+        </div>
+      </div>
+      <div class="polar-card pol">
+        <div class="polar-head">🔋 Polar Covalent Bond</div>
+        <div class="polar-body">
+          <strong>Significant electronegativity difference</strong> between bonding atoms.<br><br>
+          Electrons shift toward more electronegative atom → partial negative charge (δ⁻) on that atom, partial positive (δ⁺) on the other. Creates a <strong>dipole moment</strong>.<br><br>
+          <strong>Example:</strong> HCl — Cl (3.0) vs H (2.1) = difference of 0.9 → electrons shift toward Cl → Cl is δ⁻, H is δ⁺.
+        </div>
+      </div>
+    </div>
+
+    <div class="callout cov reveal">
+      <div class="callout-title">📈 From Covalent to Ionic — A Spectrum</div>
+      Bond polarity exists on a spectrum. As electronegativity difference increases:<br>
+      <strong>Non-polar covalent</strong> (ΔEN ≈ 0) → <strong>Polar covalent</strong> (ΔEN moderate) → <strong>Ionic</strong> (ΔEN large)<br><br>
+      The greater the polarity, the more ionic character the bond possesses. There is no sharp boundary between polar covalent and ionic bonds.
+    </div>
+
+    <div class="callout bond reveal">
+      <div class="callout-title">📋 Factors Affecting Electronegativity</div>
+      <strong>Across a period (→):</strong> increases — ionisation energy increases, smaller radius, stronger nuclear attraction on bonding electrons.<br>
+      <strong>Down a group (↓):</strong> decreases — larger atomic radius + electron shielding weakens nuclear attraction.<br>
+      <strong>Electron shielding:</strong> inner electrons shield the nucleus, reducing its apparent pull on outer/bonding electrons — decreasing electronegativity.
+    </div>
+  </div>
+</section>
+
+<!-- COVALENT NETWORKS -->
+<section id="networks">
+  <div class="container">
+    <div class="sec-label">Section 2.2 — Covalent Networks</div>
+    <h2 class="sec-title">Covalent Network Solids</h2>
+    <p class="sec-intro">Covalent networks extend covalent bonds throughout the <strong>entire solid</strong> — there are no discrete molecules. The size is not fixed. Represented by <strong>empirical formulae</strong> with subscript n.</p>
+
+    <div class="four-grid reveal">
+      <div class="type-card net">
+        <div class="type-head">💎 Diamond</div>
+        <div class="type-body"><strong>Element:</strong> Carbon only.<br><strong>Bonding:</strong> Each C bonds to <strong>four</strong> adjacent C atoms (tetrahedral).<br><strong>Formula:</strong> (C)n<br><strong>Properties:</strong> Hardest known substance, extremely high mp (~3500°C), no electrical conductivity (all electrons in bonds).</div>
+      </div>
+      <div class="type-card net">
+        <div class="type-head">✏️ Graphite</div>
+        <div class="type-body"><strong>Element:</strong> Carbon only (allotrope of diamond).<br><strong>Bonding:</strong> Each C bonds to <strong>three</strong> adjacent C atoms. Fourth electron is <strong>delocalised</strong>.<br><strong>Formula:</strong> (C)n<br><strong>Properties:</strong> Excellent electrical conductor, soft/slippery (layers slide), used in electrodes and lubricants.</div>
+      </div>
+      <div class="type-card net">
+        <div class="type-head">🏖️ Silica (Sand)</div>
+        <div class="type-body"><strong>Elements:</strong> Silicon and oxygen.<br><strong>Bonding:</strong> Each Si bonds to 4 O atoms (similar structure to diamond).<br><strong>Formula:</strong> (SiO₂)n<br><strong>Properties:</strong> Very high mp (1600°C), no conductivity, hard. Main component of sand and glass.</div>
+      </div>
+      <div class="type-card net">
+        <div class="type-head">🛡️ Carbides (SiC, B₄C)</div>
+        <div class="type-body"><strong>Silicon carbide:</strong> (SiC)n — used in brake pads, bulletproof vests.<br><strong>Boron carbide:</strong> (B₄C)n — used in armoured vehicles and aircraft.<br><strong>Properties:</strong> Extremely hard ceramic materials, no conductivity, very high melting points.</div>
+      </div>
+    </div>
+
+    <div class="callout net reveal">
+      <div class="callout-title">🔑 Key Properties of All Covalent Networks</div>
+      <strong>Hard:</strong> extremely strong covalent bonds throughout — diamond is the hardest known substance.<br>
+      <strong>Very high melting/boiling points:</strong> enormous energy needed to break the network of covalent bonds (diamond mp ~4000°C).<br>
+      <strong>No electrical conductivity:</strong> all valence electrons are in covalent bonds — none free to move. <strong>Exception: graphite</strong> (delocalised fourth electron).
+    </div>
+  </div>
+</section>
+
+<!-- NAMING -->
+<section id="naming">
+  <div class="container">
+    <div class="sec-label">Section 2.2 — Nomenclature</div>
+    <h2 class="sec-title">Naming Covalent Molecules</h2>
+    <p class="sec-intro">Covalent molecules are named systematically using <strong>Greek prefixes</strong> for the number of atoms and "-ide" for the second element. The central atom is named first.</p>
+
+    <table class="data-table cov reveal">
+      <thead><tr><th>Number of atoms</th><th>Prefix</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>mono- (omitted if on first atom)</td></tr>
+        <tr><td>2</td><td>di-</td></tr>
+        <tr><td>3</td><td>tri-</td></tr>
+        <tr><td>4</td><td>tetra-</td></tr>
+        <tr><td>5</td><td>penta-</td></tr>
+        <tr><td>6</td><td>hexa-</td></tr>
+        <tr><td>7</td><td>hepta-</td></tr>
+        <tr><td>8</td><td>octa-</td></tr>
+      </tbody>
+    </table>
+
+    <table class="data-table cov reveal" style="margin-top:1.5rem;">
+      <thead><tr><th>Formula</th><th>Systematic Name</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td style="font-family:'JetBrains Mono',monospace;">CO</td><td>Carbon monoxide</td><td>mono- omitted on first atom (C)</td></tr>
+        <tr><td style="font-family:'JetBrains Mono',monospace;">CO₂</td><td>Carbon dioxide</td><td></td></tr>
+        <tr><td style="font-family:'JetBrains Mono',monospace;">SO₃</td><td>Sulfur trioxide</td><td></td></tr>
+        <tr><td style="font-family:'JetBrains Mono',monospace;">N₂O₅</td><td>Dinitrogen pentaoxide</td><td></td></tr>
+        <tr><td style="font-family:'JetBrains Mono',monospace;">CCl₄</td><td>Carbon tetrachloride</td><td></td></tr>
+        <tr><td style="font-family:'JetBrains Mono',monospace;">SF₆</td><td>Sulfur hexafluoride</td><td></td></tr>
+        <tr><td style="font-family:'JetBrains Mono',monospace;">H₂O</td><td>Dihydrogen oxide</td><td>Common name: water</td></tr>
+        <tr><td style="font-family:'JetBrains Mono',monospace;">NH₃</td><td>Nitrogen trihydride</td><td>Common name: ammonia</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout cov reveal">
+      <div class="callout-title">📋 Summary — Ionic vs Covalent Molecular vs Covalent Network</div>
+      <strong>Ionic compounds:</strong> represented by <em>empirical formulae</em> (simplest ratio). Named: cation name + anion with "-ide".<br>
+      <strong>Covalent molecules:</strong> represented by <em>molecular formulae</em> (exact number of each atom). Named with Greek prefixes + "-ide".<br>
+      <strong>Covalent networks:</strong> represented by <em>empirical formulae</em> with subscript n. E.g., (SiO₂)n, (C)n.
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>Chemistry Topic 2 — Combining Atoms · <span>Stage 1 Chemistry</span></div>
+  <div style="margin-top:0.4rem;opacity:0.5;">© Essentials Education 2022 · Study resource for educational use</div>
+</footer>
+
+<script>
+  const els = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('vis'),i*45);obs.unobserve(e.target);}});
+  },{threshold:0.06});
+  els.forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
