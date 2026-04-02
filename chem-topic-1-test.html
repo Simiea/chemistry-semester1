@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chemistry Topic 1 — Practice Test</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0f1a;--surface:#111827;--surface2:#1a2235;--border:#1f2d45;--border2:#2d3f5c;
+  --text:#e4eaf4;--muted:#6b7fa0;--muted2:#3a4d6a;
+  --accent:#ff7744;--accent-bg:rgba(255,119,68,0.08);--accent-bd:rgba(255,119,68,0.3);
+  --green:#34d399;--green-bg:rgba(52,211,153,0.09);--green-bd:rgba(52,211,153,0.32);
+  --red:#f87171;--red-bg:rgba(248,113,113,0.09);--red-bd:rgba(248,113,113,0.32);
+  --yellow:#fbbf24;--yellow-bg:rgba(251,191,36,0.09);--yellow-bd:rgba(251,191,36,0.32);
+  --purple:#a78bfa;--purple-bg:rgba(167,139,250,0.09);--purple-bd:rgba(167,139,250,0.32);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;min-height:100vh;}
+
+/* STICKY HEADER */
+.hdr{background:var(--surface);border-bottom:1px solid var(--border);padding:0.9rem 1.5rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;gap:1rem;flex-wrap:wrap;}
+.hdr-l{display:flex;align-items:center;gap:0.75rem;}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);}
+.hdr-title{font-weight:800;font-size:0.9rem;}
+.hdr-sub{font-size:0.72rem;color:var(--muted);margin-top:0.1rem;}
+.hdr-r{display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;}
+.score-pill{font-family:'Fira Code',monospace;font-size:0.75rem;color:var(--muted);background:var(--surface2);border:1px solid var(--border2);border-radius:100px;padding:0.3em 0.9em;}
+.score-pill span{color:var(--accent);}
+
+/* PROGRESS */
+.prog-wrap{padding:0 1.5rem;margin-top:-1px;background:var(--surface);border-bottom:1px solid var(--border);}
+.prog-track{height:3px;background:var(--border);}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--accent),#ffaa44);transition:width 0.4s ease;width:0%;}
+
+/* WRAP */
+.wrap{max-width:800px;margin:0 auto;padding:2rem 1.5rem 5rem;}
+
+/* SECTION HEADER */
+.sec-hdr{display:flex;align-items:center;gap:0.75rem;margin:2.5rem 0 1rem;padding-bottom:0.75rem;border-bottom:1px solid var(--border);}
+.sec-num{font-family:'Fira Code',monospace;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);background:var(--accent-bg);border:1px solid var(--accent-bd);border-radius:100px;padding:0.25em 0.8em;}
+.sec-title{font-size:0.95rem;font-weight:700;color:var(--text);}
+.sec-count{font-size:0.75rem;color:var(--muted);margin-left:auto;font-family:'Fira Code',monospace;}
+
+/* QUESTION CARDS */
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.5rem;margin-bottom:1rem;transition:border-color 0.2s;}
+.q-card.answered-ok{border-color:var(--green-bd);}
+.q-card.answered-bad{border-color:var(--red-bd);}
+.q-meta{display:flex;align-items:center;gap:0.6rem;margin-bottom:0.75rem;}
+.q-num{font-family:'Fira Code',monospace;font-size:0.65rem;color:var(--muted2);letter-spacing:0.1em;}
+.q-type-badge{font-size:0.62rem;font-family:'Fira Code',monospace;padding:0.2em 0.65em;border-radius:100px;border:1px solid;}
+.q-type-badge.mcq{color:var(--purple);border-color:var(--purple-bd);background:var(--purple-bg);}
+.q-type-badge.short{color:var(--yellow);border-color:var(--yellow-bd);background:var(--yellow-bg);}
+.q-text{font-size:0.97rem;font-weight:600;line-height:1.55;margin-bottom:1.1rem;}
+
+/* MCQ OPTIONS */
+.opts{display:flex;flex-direction:column;gap:0.45rem;}
+.opt{padding:0.7rem 1rem;border-radius:10px;border:1px solid var(--border);background:var(--surface2);cursor:pointer;font-size:0.87rem;color:var(--muted);transition:all 0.14s;display:flex;align-items:flex-start;gap:0.7rem;line-height:1.5;}
+.opt:hover:not(.locked){border-color:var(--border2);color:var(--text);}
+.opt.chosen{border-color:rgba(167,139,250,0.5);background:rgba(167,139,250,0.1);color:var(--text);}
+.opt.correct{border-color:var(--green-bd);background:var(--green-bg);color:var(--green);}
+.opt.wrong{border-color:var(--red-bd);background:var(--red-bg);color:var(--red);}
+.opt-letter{font-family:'Fira Code',monospace;font-size:0.72rem;font-weight:500;flex-shrink:0;margin-top:0.1rem;}
+
+/* SHORT ANSWER */
+.short-input{width:100%;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:0.75rem 1rem;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:0.88rem;line-height:1.6;resize:vertical;min-height:80px;transition:border-color 0.15s;}
+.short-input:focus{outline:none;border-color:var(--accent);}
+.short-input::placeholder{color:var(--muted2);}
+.short-btns{display:flex;gap:0.5rem;margin-top:0.6rem;}
+.btn-reveal{padding:0.45em 1.1em;border-radius:8px;border:1px solid var(--accent-bd);background:var(--accent-bg);color:var(--accent);font-family:'Plus Jakarta Sans',sans-serif;font-size:0.8rem;font-weight:600;cursor:pointer;transition:all 0.15s;}
+.btn-reveal:hover{background:rgba(255,119,68,0.16);}
+.btn-self-ok{padding:0.45em 1em;border-radius:8px;border:1px solid var(--green-bd);background:var(--green-bg);color:var(--green);font-family:'Plus Jakarta Sans',sans-serif;font-size:0.8rem;font-weight:600;cursor:pointer;display:none;}
+.btn-self-bad{padding:0.45em 1em;border-radius:8px;border:1px solid var(--red-bd);background:var(--red-bg);color:var(--red);font-family:'Plus Jakarta Sans',sans-serif;font-size:0.8rem;font-weight:600;cursor:pointer;display:none;}
+
+/* FEEDBACK */
+.feedback{margin-top:0.9rem;padding:0.8rem 1rem;border-radius:10px;font-size:0.84rem;line-height:1.6;display:none;border:1px solid;}
+.feedback.show{display:block;}
+.feedback.ok{background:var(--green-bg);border-color:var(--green-bd);color:var(--green);}
+.feedback.bad{background:var(--red-bg);border-color:var(--red-bd);color:var(--red);}
+.feedback.reveal{background:var(--yellow-bg);border-color:var(--yellow-bd);color:var(--yellow);}
+
+/* SUBMIT */
+.submit-row{display:flex;justify-content:center;margin:2.5rem 0 1rem;}
+.btn-submit{padding:0.8em 2.5em;border-radius:12px;border:none;background:var(--accent);color:#000;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.95rem;font-weight:800;cursor:pointer;transition:all 0.15s;letter-spacing:-0.01em;}
+.btn-submit:hover{opacity:0.9;transform:translateY(-1px);}
+
+/* RESULTS */
+.results{display:none;background:var(--surface);border:1px solid var(--border2);border-radius:18px;padding:2.5rem;text-align:center;margin-top:2rem;}
+.results.show{display:block;}
+.res-big{font-size:4rem;font-weight:800;color:var(--accent);line-height:1;letter-spacing:-0.03em;}
+.res-sub{font-size:1rem;color:var(--muted);margin-top:0.5rem;margin-bottom:2rem;}
+.res-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.75rem;margin-bottom:2rem;}
+.res-cell{background:var(--surface2);border-radius:10px;padding:1rem;border:1px solid var(--border);}
+.res-cell-val{font-size:1.5rem;font-weight:800;letter-spacing:-0.02em;}
+.res-cell-lbl{font-size:0.75rem;color:var(--muted);margin-top:0.2rem;font-family:'Fira Code',monospace;}
+.btn-retry{padding:0.65em 2em;border-radius:10px;border:1px solid var(--border2);background:var(--surface2);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:0.88rem;font-weight:600;cursor:pointer;}
+.btn-retry:hover{border-color:var(--accent);color:var(--accent);}
+
+/* FILTER NAV */
+.filter-bar{display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:1.5rem;}
+.filter-btn{padding:0.35em 0.9em;border-radius:100px;border:1px solid var(--border2);background:transparent;color:var(--muted);font-family:'Fira Code',monospace;font-size:0.68rem;cursor:pointer;transition:all 0.15s;letter-spacing:0.05em;}
+.filter-btn:hover,.filter-btn.on{border-color:var(--accent);color:var(--accent);background:var(--accent-bg);}
+
+.hidden{display:none;}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="dot"></div>
+    <div><div class="hdr-title">Chemistry Topic 1 — Practice Test</div><div class="hdr-sub">Materials and Their Atoms &nbsp;·&nbsp; 54 questions</div></div>
+  </div>
+  <div class="hdr-r">
+    <div class="score-pill">MCQ: <span id="mcqDisp">0/41</span></div>
+    <div class="score-pill">Short: <span id="shortDisp">0/13</span></div>
+  </div>
+</header>
+<div class="prog-wrap"><div class="prog-track"><div class="prog-fill" id="progFill"></div></div></div>
+
+<div class="wrap">
+
+  <div class="filter-bar" id="filterBar"></div>
+
+  <div id="questionsWrap"></div>
+
+  <div class="submit-row"><button class="btn-submit" onclick="submitAll()">Mark test</button></div>
+
+  <div class="results" id="results">
+    <div class="res-big" id="resBig"></div>
+    <div class="res-sub" id="resSub"></div>
+    <div class="res-grid">
+      <div class="res-cell"><div class="res-cell-val" id="rMcq" style="color:var(--green)"></div><div class="res-cell-lbl">MCQ correct</div></div>
+      <div class="res-cell"><div class="res-cell-val" id="rShort" style="color:var(--yellow)"></div><div class="res-cell-lbl">Short answered</div></div>
+      <div class="res-cell"><div class="res-cell-val" id="rPct" style="color:var(--accent)"></div><div class="res-cell-lbl">MCQ score</div></div>
+    </div>
+    <button class="btn-retry" onclick="retryTest()">Reset &amp; retry</button>
+  </div>
+</div>
+
+<script>
+const questions = [{"section": "1.1 Properties of Materials", "type": "mcq", "q": "Which of the following is an EXTENSIVE physical property?", "opts": ["Density", "Colour", "Mass", "Temperature"], "ans": 2, "exp": "Mass is extensive - it changes proportionally with the amount of material. Density, colour, and temperature are intensive (they don't change when you change the amount)."}, {"section": "1.1 Properties of Materials", "type": "mcq", "q": "Which THREE are chemical properties?", "opts": ["Reactivity, acidity, and oxidation", "Melting point, colour, and density", "Solubility, temperature, and mass", "Boiling point, lustre, and ductility"], "ans": 0, "exp": "Chemical properties (reactivity, acidity, oxidation, combustion) can only be observed when a chemical reaction occurs and the substance changes identity. All others listed are physical properties."}, {"section": "1.1 Properties of Materials", "type": "mcq", "q": "Which THREE are physical properties?", "opts": ["Combustion, acidity, reactivity", "Melting point, colour, density", "Oxidation, flammability, corrosion", "Reactivity, mass, combustion"], "ans": 1, "exp": "Melting point, colour, and density are physical properties - observable without a chemical reaction. Combustion, acidity, reactivity, and oxidation all require a chemical change."}, {"section": "1.1 Properties of Materials", "type": "mcq", "q": "Why are intensive properties useful for identifying materials?", "opts": ["They are always larger numbers", "They do not change with the amount of substance, so they are characteristic of the material itself", "They are easier to measure", "They require less equipment"], "ans": 1, "exp": "Intensive properties (density, colour, melting point) do not change based on how much material you have, so they uniquely characterise a substance regardless of sample size."}, {"section": "1.1 Properties of Materials", "type": "short", "q": "Define solubility and give an example with correct units.", "ans": "Solubility is the amount of solute that can dissolve in a given solvent at a given temperature. Example: sugar has a solubility of 200 g/dL at 25 degrees C."}, {"section": "1.1 Properties of Materials", "type": "mcq", "q": "What makes nichrome suitable for electric heating elements?", "opts": ["It is a perfect insulator", "It has delocalised electrons and conducts with no heat", "It is a high-resistance conductor - current generates heat and it has a high melting point", "It is an ionic conductor that works when dissolved"], "ans": 2, "exp": "Nichrome is a high-resistance conductor (Ni-Cr alloy). Resistance causes electrical energy to convert to heat. Its high melting point means it withstands the temperatures required for oven heating elements."}, {"section": "1.1 Properties of Materials", "type": "mcq", "q": "Pure water does NOT conduct electricity because:", "opts": ["It is too cold", "It has no free charged particles", "It is covalently bonded", "It has a low boiling point"], "ans": 1, "exp": "Electrical conductivity requires free-moving charged particles. Pure water has none. When ionic substances dissolve, the freed ions can carry charge."}, {"section": "1.1 Properties of Materials", "type": "mcq", "q": "A material has a very low melting point of -23 degrees C. What type of solid is it most likely?", "opts": ["Covalent network", "Metallic", "Ionic", "Covalent molecular"], "ans": 3, "exp": "Covalent molecular solids have the weakest forces and lowest melting points. Example: CCl4 melts at -23 degrees C. Covalent networks and ionic solids have much higher melting points."}, {"section": "1.1 Properties of Materials", "type": "short", "q": "Explain the difference between a thermal conductor and a thermal insulator. Give one example of each.", "ans": "Thermal conductors transfer heat rapidly (high thermal conductivity), e.g. copper/metals. Thermal insulators transfer heat slowly (low thermal conductivity), e.g. plastic. A vacuum is a perfect insulator - no particles means no conduction at all."}, {"section": "1.1 Nanomaterials", "type": "mcq", "q": "What defines a nanomaterial?", "opts": ["Any material smaller than 1 mm", "A material with particles between 1-100 nm", "A synthetic material made in a lab", "A material with no electrical conductivity"], "ans": 1, "exp": "Nanomaterials are defined as substances containing particles in the size range 1-100 nanometres (nm). At this scale, materials show dramatically different properties from their bulk forms."}, {"section": "1.1 Nanomaterials", "type": "mcq", "q": "What is the defining physical feature of nanomaterials?", "opts": ["Very low density", "Enormous surface area to volume ratio", "High electrical conductivity", "Transparent appearance"], "ans": 1, "exp": "The enormous surface area to volume ratio means far more atoms are at the surface, enabling more efficient catalysis and unique properties."}, {"section": "1.1 Nanomaterials", "type": "mcq", "q": "Why do gold nanoparticles appear red, green or purple instead of gold?", "opts": ["They contain impurities", "At the nanoscale, individual atom count and arrangement changes optical properties", "They are different elements", "Gold is transparent at small sizes"], "ans": 1, "exp": "Bulk properties arise from many atoms acting together. At the nanoscale, the number and arrangement of individual atoms directly determines optical behaviour - producing different colours for different sizes."}, {"section": "1.1 Nanomaterials", "type": "short", "q": "Explain how synthetic lipid nanoparticles were critical for COVID-19 mRNA vaccines.", "ans": "mRNA molecules are highly unstable and would break down before reaching cells. Lipid nanoparticles acted as envelopes that encased and protected the mRNA, delivering it into cells intact so it could initiate an immune response."}, {"section": "1.1 Mixtures & Separation", "type": "mcq", "q": "Blood appears uniform but is classified as a heterogeneous mixture. Why?", "opts": ["Because it contains iron", "Because different cell types (red, white blood cells, platelets) make it non-uniform at the molecular level", "Because plasma is an element", "Because it changes colour with temperature"], "ans": 1, "exp": "Heterogeneous means not uniform at the molecular level. Blood contains different types of cells with different compositions - at the cellular/molecular scale, different parts are clearly distinguishable."}, {"section": "1.1 Mixtures & Separation", "type": "mcq", "q": "Why is filtration NOT suitable for separating dissolved salt from water?", "opts": ["Salt is too heavy", "Dissolved salt ions are smaller than filter paper pores - they pass straight through", "Filtration only works with gases", "Salt destroys filter paper"], "ans": 1, "exp": "Filtration separates solid particles from liquids. When salt dissolves, it dissociates into individual ions - far smaller than filter paper gaps. Evaporation or distillation is needed instead."}, {"section": "1.1 Mixtures & Separation", "type": "mcq", "q": "What property difference does evaporation exploit?", "opts": ["Particle size", "Density", "Boiling point - solvent evaporates, solute with much higher bp remains", "Solubility"], "ans": 2, "exp": "Evaporation heats the mixture to above the solvent boiling point. The solvent vaporises and is lost; the solute, with a much higher boiling point, remains behind in the dish."}, {"section": "1.1 Mixtures & Separation", "type": "mcq", "q": "Fractional distillation is preferred over simple distillation when:", "opts": ["The mixture contains a solid", "Components have very different boiling points", "Components have similar boiling points", "The mixture is heterogeneous"], "ans": 2, "exp": "Simple distillation works when boiling points differ greatly. A fractionating column allows repeated condensation/re-vaporisation cycles, giving precision separation for components with similar boiling points such as crude oil fractions."}, {"section": "1.1 Mixtures & Separation", "type": "short", "q": "Describe simple distillation: what does it separate, how does it work, and what is the distillate?", "ans": "Simple distillation separates a low-boiling-point liquid from other substances. The mixture is heated; the lowest-boiling component vaporises first. Vapour enters a condenser, cools into liquid, and is collected as the distillate. The remaining components stay in the flask."}, {"section": "1.2 Atomic Structure", "type": "mcq", "q": "What is the atomic number of an element?", "opts": ["Protons + neutrons", "Number of neutrons only", "Number of protons - defines the element's identity", "Number of electrons only"], "ans": 2, "exp": "The atomic number (Z) is the number of protons in the nucleus. It defines which element the atom is - no two elements have the same atomic number."}, {"section": "1.2 Atomic Structure", "type": "mcq", "q": "An atom of calcium is written as 42/20 Ca. How many neutrons does it have?", "opts": ["20", "42", "22", "62"], "ans": 2, "exp": "Neutrons = A - Z = 42 - 20 = 22. A (mass number) is the top number; Z (atomic number) is the bottom number."}, {"section": "1.2 Atomic Structure", "type": "mcq", "q": "What is the electron capacity of the 3rd shell?", "opts": ["2", "8", "18", "32"], "ans": 2, "exp": "Shell capacity = 2n^2. For n=3: 2(9) = 18. Shells 1,2,3,4 hold 2, 8, 18, 32 electrons respectively."}, {"section": "1.2 Atomic Structure", "type": "mcq", "q": "What is the main-shell electron configuration of phosphorus (Z=15)?", "opts": ["2,8,5", "2,8,4", "2,5,8", "2,8,7"], "ans": 0, "exp": "Phosphorus has 15 electrons: 2 in shell 1, 8 in shell 2, 5 in shell 3. Configuration: 2,8,5. It is in Period 3, Group V."}, {"section": "1.2 Atomic Structure", "type": "short", "q": "State three differences between a proton and an electron.", "ans": "1. Location: protons are in the nucleus; electrons orbit in shells outside. 2. Charge: protons are +1; electrons are -1. 3. Mass: protons are approximately 1 amu; electrons are approximately 1/1800 amu (negligible)."}, {"section": "1.2 Subshell Configurations", "type": "mcq", "q": "What is the correct subshell configuration for chlorine (Z=17)?", "opts": ["1s2 2s2 2p6 3s2 3p7", "1s2 2s2 2p6 3s2 3p5", "1s2 2s2 2p5 3s2 3p6", "1s2 2s2 2p6 3s1 3p6"], "ans": 1, "exp": "Chlorine has 17 electrons. Fill: 1s2(2) + 2s2(4) + 2p6(10) + 3s2(12) + 3p5(17). Note: p can only hold 6 electrons maximum, so 3p7 is impossible."}, {"section": "1.2 Subshell Configurations", "type": "mcq", "q": "Why does the 4s subshell fill BEFORE the 3d subshell?", "opts": ["4s has more orbitals", "4s is lower in energy than 3d due to shell overlap", "The s subshell always fills before d", "4s is closer to the nucleus"], "ans": 1, "exp": "Subshells fill from lowest energy first. Due to energy level overlap between the 3rd and 4th shells, 4s is actually lower in energy than 3d. So potassium's 19th electron goes to 4s1, not 3d1."}, {"section": "1.2 Subshell Configurations", "type": "mcq", "q": "Which element has the configuration 1s2 2s2 2p6 3s2 3p6 4s1?", "opts": ["Calcium", "Argon", "Potassium", "Copper"], "ans": 2, "exp": "19 electrons total. The 19th goes to 4s1 (not 3d1). Element 19 = potassium (K)."}, {"section": "1.2 Subshell Configurations", "type": "mcq", "q": "Chromium ends in 4s1 3d5 instead of 4s2 3d4. Why?", "opts": ["Chromium has too many protons for 4s2", "A half-filled d subshell (d5) is especially stable due to symmetry", "The 3d subshell fills before 4s in chromium", "It is an error in the periodic table"], "ans": 1, "exp": "A half-filled d subshell (d5) has a symmetry that provides extra stability. The energy gained by achieving d5 symmetry exceeds the cost of moving one electron from 4s to 3d. Copper (4s1 3d10) has the same reasoning for a full d10."}, {"section": "1.2 Subshell Configurations", "type": "mcq", "q": "When nickel (Z=28) forms Ni2+, which electrons are lost first?", "opts": ["The 3d electrons", "The 4s electrons", "The 3p electrons", "The innermost 1s electrons"], "ans": 1, "exp": "Transition metals lose electrons from the ns subshell BEFORE the (n-1)d subshell. Despite 4s filling before 3d, electrons are removed from 4s first when forming ions. Ni2+ loses both 4s electrons, keeping 3d8."}, {"section": "1.2 Subshell Configurations", "type": "short", "q": "Write the full subshell electron configuration for arsenic (Z=33). State which block and group it belongs to.", "ans": "As: 1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p3. Arsenic is in the p-block (highest subshell is 4p3). It is in Group V (main group 15) - 3 electrons in the outermost p subshell gives 5 total valence electrons."}, {"section": "1.2 Spectra", "type": "mcq", "q": "What does an atomic absorption spectrum look like?", "opts": ["Bright coloured lines on a dark background", "Dark lines on a continuous rainbow background", "A single solid colour for each element", "A spectrum with no visible lines"], "ans": 1, "exp": "In absorption spectroscopy, white light passes through a gas. Specific wavelengths are absorbed (electrons promoted). The transmitted light shows dark lines at those absorbed wavelengths on an otherwise continuous rainbow background."}, {"section": "1.2 Spectra", "type": "mcq", "q": "Why can spectroscopy identify elements in distant stars?", "opts": ["Stars emit all wavelengths equally", "Each element produces a unique pattern of absorbed/emitted wavelengths - a spectral fingerprint", "Temperature determines visible colour", "Only hydrogen can be detected this way"], "ans": 1, "exp": "Each element has unique energy gaps between its electron shells, producing a unique wavelength pattern. This fingerprint is identical everywhere in the universe, so matching a star's spectrum to known element spectra reveals its composition."}, {"section": "1.2 Spectra", "type": "mcq", "q": "The emission and absorption spectra of the same element have wavelengths that are:", "opts": ["Completely different", "Identical - same energy gaps produce same wavelengths whether absorbing or emitting", "Similar but shifted", "Different because emission involves more electrons"], "ans": 1, "exp": "The energy gap between shells is the same whether being absorbed or emitted. An electron absorbs a photon of wavelength X to jump up; when it falls back, it emits a photon of the same wavelength X."}, {"section": "1.2 Spectra", "type": "short", "q": "Explain why atoms can only absorb specific wavelengths of light and not others.", "ans": "Electrons exist in discrete energy levels (shells). A photon must have EXACTLY the right energy to promote an electron between specific shells - partial absorption is impossible. Energy is inversely proportional to wavelength, so only photons of specific wavelengths match the exact energy gaps. Photons that do not match pass straight through."}, {"section": "1.2 Isotopes", "type": "mcq", "q": "Carbon-12 and Carbon-14 are isotopes. Which is correct?", "opts": ["Different proton numbers", "Same protons, different neutrons, identical chemical properties", "Same mass, different chemical reactions", "Different numbers of electrons"], "ans": 1, "exp": "Both have Z=6 (6 protons, 6 electrons). C-12 has 6 neutrons; C-14 has 8 neutrons. Chemical properties are identical because they depend on electron configuration - which is the same for both."}, {"section": "1.2 Isotopes", "type": "mcq", "q": "An atom has 8 protons and 10 neutrons. Which notation is correct?", "opts": ["8/18 O", "18/8 O", "10/8 O", "8/10 O"], "ans": 1, "exp": "A = protons + neutrons = 8 + 10 = 18. Z = protons = 8. Notation: A on top, Z on bottom. 8 protons = oxygen. So: 18/8 O (oxygen-18)."}, {"section": "1.2 Isotopes", "type": "mcq", "q": "Bromine: Br-79 (50.7%, 78.92 amu) and Br-81 (49.3%, 80.92 amu). What is the relative atomic mass?", "opts": ["79.00", "79.91", "80.00", "80.92"], "ans": 1, "exp": "Ar = (0.507 x 78.92) + (0.493 x 80.92) = 40.01 + 39.89 = 79.90, approximately 79.91. Relative atomic mass is a weighted average based on isotope abundance."}, {"section": "1.2 Isotopes", "type": "short", "q": "Nitrogen-14 and nitrogen-15 are two stable isotopes. Write the composite symbol for each and state how many neutrons each has.", "ans": "Nitrogen-14: 14/7 N - 7 protons, 7 neutrons (14-7=7). Nitrogen-15: 15/7 N - 7 protons, 8 neutrons (15-7=8). Both have 7 protons and 7 electrons - same element, identical chemistry."}, {"section": "1.3 Moles & Calculations", "type": "mcq", "q": "What is Avogadro's number?", "opts": ["6.02 x 10^20", "6.02 x 10^23", "6.02 x 10^26", "1.66 x 10^-24"], "ans": 1, "exp": "Avogadro's number = 6.02 x 10^23. This is the number of particles in 1 mole of any substance. It was chosen so that 1 mole of carbon-12 has a mass of exactly 12.00 g."}, {"section": "1.3 Moles & Calculations", "type": "mcq", "q": "Calculate the molar mass of sulfuric acid H2SO4. (H=1.01, S=32.07, O=16.00)", "opts": ["81.09 g/mol", "98.09 g/mol", "96.07 g/mol", "34.09 g/mol"], "ans": 1, "exp": "M(H2SO4) = 2(1.01) + 32.07 + 4(16.00) = 2.02 + 32.07 + 64.00 = 98.09 g/mol."}, {"section": "1.3 Moles & Calculations", "type": "mcq", "q": "An iron sample has a mass of 5.585 g. How many moles of Fe? (M=55.85 g/mol)", "opts": ["0.100 mol", "0.500 mol", "1.00 mol", "5.00 mol"], "ans": 0, "exp": "n = m/M = 5.585/55.85 = 0.100 mol. Always divide mass by molar mass to find moles."}, {"section": "1.3 Moles & Calculations", "type": "mcq", "q": "How many moles of H atoms are in 3.00 mol of CH4?", "opts": ["3.00 mol", "12.00 mol", "4.00 mol", "1.00 mol"], "ans": 1, "exp": "Each CH4 molecule contains 4 hydrogen atoms. So n(H) = 3.00 x 4 = 12.00 mol H atoms. Multiply moles of compound by the number of that atom per formula unit."}, {"section": "1.3 Moles & Calculations", "type": "short", "q": "STOICHIOMETRY: 2H2 + O2 -> 2H2O. You have 4.04 g of H2 (M=2.02 g/mol). Find: moles of H2, moles of H2O produced, mass of H2O (M=18.02 g/mol), and number of H2O molecules.", "ans": "n(H2) = 4.04/2.02 = 2.00 mol. Ratio H2:H2O = 2:2 = 1:1, so n(H2O) = 2.00 mol. m(H2O) = 2.00 x 18.02 = 36.04 g. Molecules = 2.00 x 6.02x10^23 = 1.20x10^24 molecules."}, {"section": "1.3 Moles & Calculations", "type": "short", "q": "STOICHIOMETRY: N2 + 3H2 -> 2NH3 (Haber process). Start with 56.04 g of N2 (M=28.02 g/mol). Find moles of N2, moles of NH3 produced, and mass of NH3 (M=17.04 g/mol).", "ans": "n(N2) = 56.04/28.02 = 2.00 mol. Ratio N2:NH3 = 1:2, so n(NH3) = 4.00 mol. m(NH3) = 4.00 x 17.04 = 68.16 g."}, {"section": "1.3 Moles & Calculations", "type": "short", "q": "What is the difference between molar mass and relative molecular mass? Give an example showing both for water.", "ans": "Molar mass (M): mass of 1 mole in g/mol - has units. M(H2O) = 18.02 g/mol. Relative molecular mass (Mr): dimensionless - compared to carbon-12. Mr(H2O) = 18.02. Both are calculated the same way but Mr has no units."}, {"section": "1.4 Periodic Table", "type": "mcq", "q": "An element has configuration 1s2 2s2 2p6 3s2 3p4. What period and group is it in?", "opts": ["Period 2, Group IV", "Period 3, Group VI", "Period 3, Group IV", "Period 4, Group VI"], "ans": 1, "exp": "Highest occupied shell = 3 -> Period 3. Valence electrons = 3s2 3p4 = 6 total -> Group VI (main group 16). This element is sulfur (S)."}, {"section": "1.4 Periodic Table", "type": "mcq", "q": "Which block do the transition metals belong to?", "opts": ["s-block", "p-block", "d-block", "f-block"], "ans": 2, "exp": "Transition metals (Groups III-XII) have their highest energy electrons in d subshells. They form the d-block of the periodic table."}, {"section": "1.4 Periodic Table", "type": "mcq", "q": "Why is helium placed in Group XVIII despite having an s2 configuration?", "opts": ["It has 2 electrons only", "It shares noble gas properties - non-reactive, full outer shell - so it belongs with Group XVIII", "It is an error in the periodic table", "Helium is actually in Group II"], "ans": 1, "exp": "Helium's properties (non-reactive, full outer shell, forms no bonds) are identical to the other noble gases (Ne, Ar, Kr). Chemical behaviour takes priority over configuration in this case."}, {"section": "1.4 Periodic Trends", "type": "mcq", "q": "Atomic radius INCREASES as you:", "opts": ["Move left to right across a period", "Move down a group", "Move from metals to non-metals", "Move to higher atomic number within a period"], "ans": 1, "exp": "Moving down a group, electrons occupy higher shells further from the nucleus, so radius increases. Moving left to right across a period, radius decreases - more protons pull all electrons closer."}, {"section": "1.4 Periodic Trends", "type": "mcq", "q": "Why does electronegativity decrease DOWN a group?", "opts": ["Fewer protons are present", "Larger atomic radius and more electron shielding weaken the nuclear pull on bonding electrons", "The element becomes more metallic", "Higher shells have more energy so attract electrons more"], "ans": 1, "exp": "Two reasons: (1) Greater atomic radius - bonding electrons are further from nucleus. (2) More inner electrons create shielding - reducing effective nuclear pull. Both decrease the atom's ability to attract bonding electrons."}, {"section": "1.4 Periodic Trends", "type": "mcq", "q": "A Group VII element will form an ion with charge:", "opts": ["+7", "-1", "+1", "-7"], "ans": 1, "exp": "Group VII elements have 7 valence electrons and need only 1 more to complete their octet. They gain 1 electron to form a -1 anion (e.g. F-, Cl-, Br-, I-). Charge = 8 - Group number = 8 - 7 = 1-."}, {"section": "1.4 Periodic Trends", "type": "mcq", "q": "Which element has a SMALLER atomic radius than sodium (Na, Z=11)?", "opts": ["Potassium (K)", "Lithium (Li)", "Magnesium (Mg)", "Rubidium (Rb)"], "ans": 2, "exp": "Moving right across period 3 from Na to Mg: same shell (n=3), but Mg has 12 protons vs Na's 11. Greater nuclear charge pulls all electrons closer, decreasing radius. Mg is smaller than Na."}, {"section": "1.4 Periodic Trends", "type": "mcq", "q": "Which set correctly describes non-metals?", "opts": ["Lustrous, ductile, good conductors, low electronegativity", "Dull, brittle, poor conductors, high electronegativity, form anions", "High melting point, malleable, form cations", "Soft, good conductors, form positive ions"], "ans": 1, "exp": "Non-metals are on the right of the periodic table. They are dull, brittle, poor conductors, have high electronegativity, and gain electrons to form negative anions."}, {"section": "1.4 Periodic Trends", "type": "short", "q": "Explain the trend in electronegativity across period 3 (Na to Cl). Use values Na=0.9 and Cl=3.2.", "ans": "Electronegativity increases from Na (0.9) to Cl (3.2) across period 3. Moving right, atomic radius decreases (more protons, same shell). The smaller radius means the nucleus is closer to bonding electrons and attracts them more strongly - increasing electronegativity."}, {"section": "1.4 Periodic Trends", "type": "short", "q": "Describe what metalloids are, where they are found on the periodic table, and give two examples.", "ans": "Metalloids display both metallic and non-metallic properties. They are found along the diagonal staircase boundary between metals (left) and non-metals (right). Examples: silicon (Si) used as a semiconductor in electronics; arsenic (As) which is semi-conducting; germanium (Ge)."}];
+const sections = ["1.1 Properties of Materials", "1.1 Nanomaterials", "1.1 Mixtures & Separation", "1.2 Atomic Structure", "1.2 Subshell Configurations", "1.2 Spectra", "1.2 Isotopes", "1.3 Moles & Calculations", "1.4 Periodic Table", "1.4 Periodic Trends"];
+
+let mcqAnswered = {};
+let shortRevealed = {};
+let shortSelfMark = {};
+let mcqCorrect = 0;
+let shortDone = 0;
+let submitted = false;
+
+function build() {
+  const bar = document.getElementById('filterBar');
+  bar.innerHTML = '';
+  const allBtn = document.createElement('button');
+  allBtn.className = 'filter-btn on'; allBtn.textContent = 'All sections';
+  allBtn.onclick = () => filterSec(null, allBtn);
+  bar.appendChild(allBtn);
+  sections.forEach(s => {
+    const b = document.createElement('button');
+    b.className = 'filter-btn'; b.textContent = s;
+    b.onclick = () => filterSec(s, b);
+    bar.appendChild(b);
+  });
+
+  const wrap = document.getElementById('questionsWrap');
+  wrap.innerHTML = '';
+  let secEl = null, curSec = null, qNum = 0;
+
+  questions.forEach((q, qi) => {
+    if (q.section !== curSec) {
+      curSec = q.section;
+      secEl = document.createElement('div');
+      secEl.className = 'sec-block'; secEl.dataset.sec = q.section;
+      const sh = document.createElement('div'); sh.className = 'sec-hdr';
+      sh.innerHTML = '<span class="sec-num">' + q.section + '</span>';
+      const cnt = questions.filter(x => x.section === q.section).length;
+      sh.innerHTML += '<span class="sec-title"></span><span class="sec-count">' + cnt + ' questions</span>';
+      secEl.appendChild(sh);
+      wrap.appendChild(secEl);
+    }
+    qNum++;
+    const card = document.createElement('div');
+    card.className = 'q-card'; card.id = 'qcard-' + qi;
+
+    const meta = '<div class="q-meta"><span class="q-num">Q' + qNum + '</span><span class="q-type-badge ' + q.type + '">' + (q.type === 'mcq' ? 'MCQ' : 'Short answer') + '</span></div>';
+    const qText = '<div class="q-text">' + q.q + '</div>';
+
+    let body = '';
+    if (q.type === 'mcq') {
+      const opts = q.opts.map((o,oi) => '<div class="opt" id="opt' + qi + '_' + oi + '" onclick="chooseOpt(' + qi + ',' + oi + ')"><span class="opt-letter">' + ['A','B','C','D'][oi] + '</span><span>' + o + '</span></div>').join('');
+      body = '<div class="opts">' + opts + '</div>';
+    } else {
+      body = '<textarea class="short-input" id="shortTa' + qi + '" placeholder="Write your answer here..."></textarea><div class="short-btns"><button class="btn-reveal" onclick="revealShort(' + qi + ')">Show model answer</button><button class="btn-self-ok" id="selfok' + qi + '" onclick="selfMark(' + qi + ',true)">I got it</button><button class="btn-self-bad" id="selfbad' + qi + '" onclick="selfMark(' + qi + ',false)">Missed it</button></div>';
+    }
+    const fb = '<div class="feedback" id="fb' + qi + '"></div>';
+    card.innerHTML = meta + qText + body + fb;
+    secEl.appendChild(card);
+  });
+}
+
+function filterSec(sec, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  document.querySelectorAll('.sec-block').forEach(b => {
+    b.style.display = (!sec || b.dataset.sec === sec) ? '' : 'none';
+  });
+}
+
+function chooseOpt(qi, oi) {
+  if (submitted) return;
+  if (mcqAnswered[qi] !== undefined) return;
+  document.querySelectorAll('#qcard-' + qi + ' .opt').forEach(o => o.classList.remove('chosen'));
+  document.getElementById('opt' + qi + '_' + oi).classList.add('chosen');
+  mcqAnswered[qi] = oi;
+  updateProg();
+}
+
+function revealShort(qi) {
+  const q = questions[qi];
+  const fb = document.getElementById('fb' + qi);
+  fb.className = 'feedback show reveal';
+  fb.textContent = 'Model answer: ' + q.ans;
+  shortRevealed[qi] = true;
+  document.getElementById('selfok' + qi).style.display = 'inline-block';
+  document.getElementById('selfbad' + qi).style.display = 'inline-block';
+  updateProg();
+}
+
+function selfMark(qi, ok) {
+  if (shortSelfMark[qi] !== undefined) return;
+  shortSelfMark[qi] = ok;
+  const card = document.getElementById('qcard-' + qi);
+  const fb = document.getElementById('fb' + qi);
+  const q = questions[qi];
+  if (ok) {
+    card.classList.add('answered-ok');
+    fb.className = 'feedback show ok';
+    fb.textContent = 'Marked correct. Model answer: ' + q.ans;
+    shortDone++;
+  } else {
+    card.classList.add('answered-bad');
+    fb.className = 'feedback show bad';
+    fb.textContent = 'Marked incorrect. Model answer: ' + q.ans;
+  }
+  document.getElementById('selfok' + qi).style.display = 'none';
+  document.getElementById('selfbad' + qi).style.display = 'none';
+  document.getElementById('shortDisp').textContent = Object.keys(shortSelfMark).length + '/13';
+  updateProg();
+}
+
+function updateProg() {
+  const total = Object.keys(mcqAnswered).length + Object.keys(shortRevealed).length;
+  const pct = (total / questions.length) * 100;
+  document.getElementById('progFill').style.width = pct + '%';
+}
+
+function submitAll() {
+  if (submitted) return;
+  submitted = true;
+  mcqCorrect = 0;
+  questions.forEach((q, qi) => {
+    if (q.type !== 'mcq') return;
+    const sel = mcqAnswered[qi];
+    const opts = document.querySelectorAll('#qcard-' + qi + ' .opt');
+    opts.forEach(o => o.classList.add('locked'));
+    opts[q.ans].classList.add('correct');
+    const fb = document.getElementById('fb' + qi);
+    const card = document.getElementById('qcard-' + qi);
+    if (sel === q.ans) {
+      mcqCorrect++;
+      fb.className = 'feedback show ok';
+      fb.textContent = 'Correct! ' + q.exp;
+      card.classList.add('answered-ok');
+    } else {
+      if (sel !== undefined) opts[sel].classList.add('wrong');
+      fb.className = 'feedback show bad';
+      fb.textContent = (sel === undefined ? 'Not answered. ' : 'Incorrect. ') + q.exp;
+      card.classList.add('answered-bad');
+    }
+  });
+  document.getElementById('mcqDisp').textContent = mcqCorrect + '/41';
+  const pct = Math.round((mcqCorrect / 41) * 100);
+  const shortCount = Object.values(shortSelfMark).filter(v => v).length;
+  document.getElementById('rMcq').textContent = mcqCorrect + '/41';
+  document.getElementById('rShort').textContent = shortCount + '/13';
+  document.getElementById('rPct').textContent = pct + '%';
+  document.getElementById('resBig').textContent = mcqCorrect + '/41';
+  document.getElementById('resSub').textContent = pct >= 80 ? 'Excellent work! Strong understanding across all topics.' : pct >= 60 ? 'Good effort - review the sections you found difficult.' : 'Keep revising - go back to the notes and try again.';
+  const res = document.getElementById('results');
+  res.classList.add('show');
+  res.scrollIntoView({behavior:'smooth'});
+  document.getElementById('progFill').style.width = '100%';
+}
+
+function retryTest() {
+  mcqAnswered = {};
+  shortRevealed = {};
+  shortSelfMark = {};
+  mcqCorrect = 0; shortDone = 0; submitted = false;
+  document.getElementById('results').classList.remove('show');
+  document.getElementById('mcqDisp').textContent = '0/41';
+  document.getElementById('shortDisp').textContent = '0/13';
+  document.getElementById('progFill').style.width = '0%';
+  build();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+build();
+</script>
+</body>
+</html>
