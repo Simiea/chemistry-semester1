@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chemistry Revision Quiz</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #09090f;
+  --surface:  #10111c;
+  --surface2: #161724;
+  --surface3: #1c1e2e;
+  --border:   #222438;
+  --border2:  #2d3050;
+  --text:     #e8eaf8;
+  --muted:    #6068a0;
+  --muted2:   #323660;
+
+  --accent:   #818cf8;
+  --acbg:     rgba(129,140,248,0.09);
+  --acbd:     rgba(129,140,248,0.28);
+
+  --green:    #34d399;
+  --gbg:      rgba(52,211,153,0.09);
+  --gbd:      rgba(52,211,153,0.3);
+
+  --red:      #f87171;
+  --rbg:      rgba(248,113,113,0.09);
+  --rbd:      rgba(248,113,113,0.3);
+
+  --amber:    #fbbf24;
+  --teal:     #22d3ee;
+
+  --tc1: #818cf8; /* Bond type */
+  --tc2: #34d399; /* Naming    */
+  --tc3: #fbbf24; /* Mole      */
+  --tc4: #22d3ee; /* Covalent  */
+  --tc5: #f472b6; /* Lewis     */
+  --tc6: #f87171; /* Ionic     */
+  --tc7: #fb923c; /* Reactions */
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── subtle bg glow ── */
+body::before {
+  content:'';
+  position:fixed; inset:0;
+  background:
+    radial-gradient(ellipse 55% 40% at 15% 25%, rgba(129,140,248,0.05) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at 85% 75%, rgba(52,211,153,0.04) 0%, transparent 55%);
+  pointer-events:none; z-index:0;
+}
+
+/* ── HEADER ── */
+.hdr {
+  position:sticky; top:0; z-index:100;
+  background:rgba(9,9,15,0.88);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+  padding:0.85rem 1.5rem;
+  display:flex; align-items:center; justify-content:space-between;
+  gap:1rem; flex-wrap:wrap;
+}
+
+.hdr-l { display:flex; align-items:center; gap:0.7rem; }
+
+.hdr-dot {
+  width:9px; height:9px; border-radius:50%;
+  background:var(--accent);
+  box-shadow:0 0 12px var(--accent), 0 0 24px rgba(129,140,248,0.4);
+  animation:pulse 2.8s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%,100%{box-shadow:0 0 12px var(--accent), 0 0 24px rgba(129,140,248,0.35);}
+  50%    {box-shadow:0 0 18px var(--accent), 0 0 36px rgba(129,140,248,0.55);}
+}
+
+.hdr-title { font-family:'Syne',sans-serif; font-size:0.92rem; font-weight:800; letter-spacing:-0.01em; }
+.hdr-sub   { font-size:0.7rem; color:var(--muted); margin-top:0.1rem; }
+
+.hdr-pills {
+  display:flex; gap:0.6rem; align-items:center;
+  font-family:'Fira Code',monospace; font-size:0.72rem;
+}
+
+.hdr-stat {
+  padding:0.28em 0.85em; border-radius:100px;
+  border:1px solid var(--border2); background:var(--surface2);
+  color:var(--muted);
+}
+.hdr-stat .n { color:var(--text); font-weight:500; }
+.hdr-stat.ok  { border-color:var(--gbd); background:var(--gbg); color:var(--green); }
+.hdr-stat.bad { border-color:var(--rbd); background:var(--rbg); color:var(--red);   }
+
+/* ── PROGRESS ── */
+.prog-wrap { background:var(--surface); border-bottom:1px solid var(--border); }
+.prog-track { height:3px; background:var(--border); overflow:hidden; }
+.prog-fill {
+  height:100%;
+  background:linear-gradient(90deg, var(--accent), var(--teal));
+  width:0%; transition:width 0.45s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* ── MAIN WRAP ── */
+.wrap {
+  max-width:720px; margin:0 auto;
+  padding:1.75rem 1.5rem 5rem;
+  position:relative; z-index:1;
+}
+
+/* ── FILTER ROW ── */
+.filter-label {
+  font-family:'Fira Code',monospace; font-size:0.63rem;
+  letter-spacing:0.15em; text-transform:uppercase;
+  color:var(--muted2); margin-bottom:0.6rem;
+}
+
+.filter-row { display:flex; gap:0.4rem; flex-wrap:wrap; margin-bottom:1.5rem; }
+
+.pill {
+  padding:0.35em 0.95em;
+  border-radius:100px;
+  border:1px solid var(--border2);
+  background:transparent;
+  color:var(--muted);
+  font-family:'Fira Code',monospace; font-size:0.68rem;
+  cursor:pointer; transition:all 0.16s;
+  white-space:nowrap;
+}
+.pill:hover { color:var(--text); border-color:var(--accent); }
+.pill.on {
+  background:var(--acbg); border-color:var(--acbd);
+  color:var(--accent); font-weight:500;
+}
+
+/* ── DOT ROW ── */
+.dot-row {
+  display:flex; gap:5px; flex-wrap:wrap;
+  margin-bottom:1.25rem;
+}
+.mdot {
+  width:9px; height:9px; border-radius:50%;
+  background:var(--border2);
+  transition:all 0.22s ease; cursor:pointer;
+  flex-shrink:0;
+}
+.mdot.cur  { background:var(--accent); box-shadow:0 0 8px var(--accent); transform:scale(1.4); }
+.mdot.ok   { background:var(--green); opacity:0.75; }
+.mdot.bad  { background:var(--red);   opacity:0.75; }
+
+/* ── CARD ── */
+.card-wrap {
+  perspective:1200px;
+  margin-bottom:1.25rem;
+}
+
+.card {
+  background:var(--surface);
+  border:1px solid var(--border2);
+  border-radius:18px;
+  overflow:hidden;
+  transition:border-color 0.22s, transform 0.2s;
+  position:relative;
+}
+
+.card:hover { border-color:var(--accent); transform:translateY(-1px); }
+
+/* coloured left strip */
+.card-strip {
+  position:absolute; left:0; top:0; bottom:0;
+  width:4px; border-radius:18px 0 0 18px;
+  background:var(--tc-color, var(--accent));
+}
+
+.card-body { padding:1.75rem 1.75rem 1.75rem 2rem; }
+
+/* topic + meta row */
+.card-meta {
+  display:flex; align-items:center; gap:0.6rem;
+  margin-bottom:1rem;
+}
+
+.card-badge {
+  font-family:'Fira Code',monospace; font-size:0.63rem;
+  letter-spacing:0.12em; text-transform:uppercase;
+  padding:0.22em 0.75em; border-radius:100px; border:1px solid;
+  color:var(--tc-color, var(--accent));
+  border-color:color-mix(in srgb, var(--tc-color, var(--accent)) 35%, transparent);
+  background:color-mix(in srgb, var(--tc-color, var(--accent)) 9%, transparent);
+}
+
+.card-count {
+  font-family:'Fira Code',monospace; font-size:0.65rem;
+  color:var(--muted2); margin-left:auto;
+}
+
+/* question */
+.card-q {
+  font-size:clamp(0.95rem,2vw,1.1rem);
+  font-weight:700;
+  line-height:1.6;
+  letter-spacing:-0.01em;
+  color:var(--text);
+  margin-bottom:1.25rem;
+}
+
+/* tap hint */
+.tap-hint {
+  display:flex; align-items:center; justify-content:center; gap:0.5rem;
+  font-family:'Fira Code',monospace; font-size:0.72rem;
+  color:var(--muted2);
+  padding:0.75rem;
+  cursor:pointer;
+  border-top:1px solid var(--border);
+  transition:all 0.18s;
+}
+.tap-hint:hover { color:var(--accent); border-color:var(--acbd); background:var(--acbg); }
+.tap-hint svg { opacity:0.5; animation:bounceY 1.8s ease-in-out infinite; }
+@keyframes bounceY { 0%,100%{transform:translateY(0)} 50%{transform:translateY(3px)} }
+
+/* answer panel */
+.answer-panel {
+  max-height:0; overflow:hidden;
+  transition:max-height 0.45s cubic-bezier(0.4,0,0.2,1);
+  border-top:0px solid transparent;
+}
+.answer-panel.open {
+  max-height:800px;
+  border-top:1px solid var(--border);
+}
+
+.answer-inner {
+  padding:1.25rem 1.75rem 1.5rem 2rem;
+  background:var(--surface2);
+}
+
+.answer-label {
+  font-family:'Fira Code',monospace; font-size:0.63rem;
+  letter-spacing:0.14em; text-transform:uppercase;
+  color:var(--green); margin-bottom:0.65rem;
+  display:flex; align-items:center; gap:0.4rem;
+}
+
+.answer-text {
+  font-size:0.9rem; line-height:1.85;
+  color:var(--text);
+  white-space:pre-wrap;
+  font-family:'Fira Code',monospace;
+}
+
+/* self-mark row */
+.mark-row {
+  display:none; gap:0.7rem;
+  padding:1rem 1.75rem;
+  border-top:1px solid var(--border);
+}
+.mark-row.show { display:flex; }
+
+.btn-mark {
+  flex:1; padding:0.6em 0;
+  border-radius:10px; border:1px solid;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:0.83rem; font-weight:700;
+  cursor:pointer; transition:all 0.16s;
+  display:flex; align-items:center; justify-content:center; gap:0.4rem;
+}
+.btn-mark.got  { border-color:var(--gbd); background:var(--gbg); color:var(--green); }
+.btn-mark.got:hover  { background:rgba(52,211,153,0.18); }
+.btn-mark.miss { border-color:var(--rbd); background:var(--rbg); color:var(--red); }
+.btn-mark.miss:hover { background:rgba(248,113,113,0.18); }
+
+/* ── NAV ── */
+.nav-row {
+  display:flex; align-items:center; justify-content:space-between; gap:1rem;
+  margin-bottom:1.5rem;
+}
+
+.nav-btn {
+  padding:0.6em 1.35em;
+  border-radius:10px; border:1px solid var(--border2);
+  background:var(--surface);
+  color:var(--muted);
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:0.82rem; font-weight:600;
+  cursor:pointer; transition:all 0.16s;
+  display:flex; align-items:center; gap:0.35rem;
+}
+.nav-btn:hover { border-color:var(--accent); color:var(--accent); }
+.nav-btn:disabled { opacity:0.25; pointer-events:none; }
+
+.nav-center { text-align:center; }
+.nav-num {
+  font-family:'Syne',sans-serif; font-size:1.5rem;
+  font-weight:800; letter-spacing:-0.02em;
+}
+.nav-of {
+  font-family:'Fira Code',monospace; font-size:0.68rem;
+  color:var(--muted);
+}
+
+/* ── WIN CARD ── */
+.win-card {
+  display:none;
+  background:var(--surface); border:1px solid var(--gbg);
+  border-color:rgba(52,211,153,0.3);
+  border-radius:20px; padding:3rem 2rem; text-align:center;
+  animation:popIn 0.45s cubic-bezier(0.34,1.56,0.64,1);
+}
+.win-card.show { display:block; }
+@keyframes popIn { from{opacity:0;transform:scale(0.88)} to{opacity:1;transform:scale(1)} }
+
+.win-emoji { font-size:3rem; margin-bottom:0.75rem; }
+.win-title { font-family:'Syne',sans-serif; font-size:1.8rem; font-weight:800; letter-spacing:-0.02em; color:var(--accent); margin-bottom:0.4rem; }
+.win-sub   { font-size:0.9rem; color:var(--muted); margin-bottom:2rem; line-height:1.6; }
+
+.win-stats { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; margin-bottom:2rem; }
+.win-stat  { background:var(--surface2); border:1px solid var(--border2); border-radius:12px; padding:1rem 1.5rem; min-width:90px; }
+.win-stat-val { font-family:'Syne',sans-serif; font-size:1.6rem; font-weight:800; }
+.win-stat-lbl { font-size:0.7rem; color:var(--muted); font-family:'Fira Code',monospace; margin-top:0.2rem; }
+
+.btn-restart {
+  padding:0.7em 2em; border-radius:10px; border:none;
+  background:var(--accent); color:#000;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:0.9rem; font-weight:800; cursor:pointer;
+}
+.btn-restart:hover { opacity:0.88; }
+
+/* card entrance */
+.card-wrap { animation:slideUp 0.32s cubic-bezier(0.4,0,0.2,1) both; }
+@keyframes slideUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-l">
+    <div class="hdr-dot"></div>
+    <div>
+      <div class="hdr-title">Chemistry Revision Quiz</div>
+      <div class="hdr-sub">Stage 1 · Flashcard deck</div>
+    </div>
+  </div>
+  <div class="hdr-pills">
+    <div class="hdr-stat ok">&#10003; <span class="n" id="hGot">0</span></div>
+    <div class="hdr-stat bad">&#10007; <span class="n" id="hMiss">0</span></div>
+    <div class="hdr-stat"><span class="n" id="hIdx">1</span>/<span id="hTotal">16</span></div>
+  </div>
+</header>
+<div class="prog-wrap"><div class="prog-track"><div class="prog-fill" id="prog"></div></div></div>
+
+<div class="wrap">
+
+  <div class="filter-label">Filter by topic</div>
+  <div class="filter-row" id="filterRow"></div>
+
+  <div class="dot-row" id="dotRow"></div>
+
+  <!-- NAV -->
+  <div class="nav-row">
+    <button class="nav-btn" id="btnPrev" onclick="go(-1)">&#8592; Prev</button>
+    <div class="nav-center">
+      <div class="nav-num" id="navNum">1</div>
+      <div class="nav-of" id="navOf">of 16</div>
+    </div>
+    <button class="nav-btn" id="btnNext" onclick="go(1)">Next &#8594;</button>
+  </div>
+
+  <!-- CARD -->
+  <div class="card-wrap" id="cardWrap"></div>
+
+  <!-- WIN -->
+  <div class="win-card" id="winCard">
+    <div class="win-emoji">🎉</div>
+    <div class="win-title">Deck complete!</div>
+    <div class="win-sub" id="winSub"></div>
+    <div class="win-stats" id="winStats"></div>
+    <button class="btn-restart" onclick="restart()">Restart deck</button>
+  </div>
+
+</div>
+
+<script>
+const TOPIC_COLORS = {
+  "Bond type ID":    "#818cf8",
+  "Naming covalent": "#34d399",
+  "Mole definition": "#fbbf24",
+  "Covalent bond":   "#22d3ee",
+  "Lewis diagram":   "#f472b6",
+  "Ionic lattice":   "#f87171",
+  "Mg + O reaction": "#fb923c",
+};
+
+const ALL = [
+  {t:"Bond type ID",     q:"A substance has melting point −12°C. What bond type is it?",                                                              a:"Covalent molecular. Low/negative melting point = weak intermolecular forces only. Ionic and metallic solids melt at hundreds of degrees; covalent networks at 1000°C+."},
+  {t:"Bond type ID",     q:"A substance has melting point 2850°C. What bond type?",                                                                   a:"Covalent network (e.g. diamond, SiO₂). Enormous energy needed to break covalent bonds throughout the whole lattice."},
+  {t:"Bond type ID",     q:"A substance has melting point 801°C, conducts when molten but not solid. What bond type?",                                a:"Ionic. High-ish melting point, ions fixed in solid lattice (no conductivity), freed when molten."},
+  {t:"Bond type ID",     q:"A substance melts at 1085°C, conducts in solid form, is malleable. What bond type?",                                      a:"Metallic. Delocalised electrons conduct in solid state; cation layers can slide without breaking the bonding."},
+  {t:"Bond type ID",     q:"Quick rule: rank these 4 bond types from LOWEST to HIGHEST melting point.",                                               a:"Covalent molecular < Metallic ≈ Ionic < Covalent network\n(Cov. mol. can be −200°C; cov. network can be 3500°C+)"},
+  {t:"Naming covalent",  q:"Name: N₂O₄",                                                                                                              a:"Dinitrogen tetraoxide\n• N = 2 → di-\n• O = 4 → tetra- (drop 'a' before 'oxide' → tetroxide)\nNote: never use mono- on the first element."},
+  {t:"Naming covalent",  q:"Name: CO",                                                                                                                 a:"Carbon monoxide\n• C = 1 → omit prefix on first element\n• O = 1 → mono- (but vowel rule: mono + oxide = monoxide, keep the 'o')"},
+  {t:"Naming covalent",  q:"Name: PCl₅",                                                                                                              a:"Phosphorus pentachloride\n• P = 1 → no prefix\n• Cl = 5 → penta- (penta + chloride, no vowel drop needed)"},
+  {t:"Naming covalent",  q:"Name: SF₆",                                                                                                               a:"Sulfur hexafluoride\n• S = 1 → no prefix\n• F = 6 → hexa-"},
+  {t:"Naming covalent",  q:"Prefix rule: when do you drop the final vowel of a prefix?",                                                              a:"When the compound name starts with a vowel (oxide, iodide etc.).\ntetra + oxide → tetroxide (drop the 'a')\nmono + oxide → monoxide (keep the 'o' — sounds better)\npenta + iodide → pentaiodide (drop the 'a')"},
+  {t:"Mole definition",  q:"Define 'one mole'.",                                                                                                       a:"One mole is the amount of substance that contains exactly 6.02 × 10²³ particles (Avogadro's number). It is the SI unit for amount of substance.\n\nKey formulae:\nn = m / M      (moles = mass ÷ molar mass)\nn = N / Nₐ    (moles = particles ÷ Avogadro's number)"},
+  {t:"Covalent bond",    q:"Describe what a covalent bond is.",                                                                                        a:"A covalent bond is formed by the sharing of one or more pairs of electrons between two non-metal atoms. The strong electrostatic attraction between the shared electron pair and the positive nuclei of both atoms holds them together.\n\nMore shared pairs → stronger bond:\nSingle bond (1 pair) < Double (2) < Triple (3)"},
+  {t:"Lewis diagram",    q:"Draw the Lewis structure for H₂O.",                                                                                        a:"Oxygen has 6 valence electrons. It shares 1 with each H (2 bonds), leaving 2 lone pairs.\n\n        H — O — H\n             |\n        (2 lone pairs on O)\n\nTotal electrons: O(6) + 2×H(1) = 8\nUsed: 2 bonds (4e) + 2 lone pairs (4e) = 8 ✓\n\nShape: bent/V-shaped (~104.5°)"},
+  {t:"Ionic lattice",    q:"Describe why NaCl is hard but brittle. Use the lattice structure in your answer. (3 marks)",                              a:"Hard (1 mark): NaCl forms a 3D ionic lattice of alternating Na⁺ and Cl⁻ ions held by strong electrostatic forces in all directions — resists deformation.\n\nBrittle (2 marks): When stress is applied, layers shift so that like charges (+ with +, − with −) align next to each other. The resulting strong repulsion causes the crystal to shatter along a clean plane."},
+  {t:"Mg + O reaction",  q:"Write the balanced equation for magnesium burning in oxygen, then find the molar mass of the product.",                   a:"Balanced equation:\n2Mg + O₂ → 2MgO\n\nCheck: 2 Mg each side ✓, 2 O each side ✓\n\nMolar mass of MgO:\nM(Mg) = 24.31 g/mol\nM(O)  = 16.00 g/mol\nM(MgO) = 24.31 + 16.00 = 40.31 g/mol"},
+  {t:"Mg + O reaction",  q:"In the reaction 2Mg + O₂ → 2MgO, if you start with 2.43 g of Mg, how many moles is that?",                              a:"M(Mg) = 24.31 g/mol\nn = m / M = 2.43 / 24.31 = 0.100 mol Mg\n\nStoichiometry (Mg:MgO = 1:1):\n→ 0.100 mol MgO produced\nm(MgO) = 0.100 × 40.31 = 4.03 g"},
+];
+
+const TOPICS = [...new Set(ALL.map(c => c.t))];
+let deck = [...ALL], idx = 0, shown = false;
+let got = 0, miss = 0, results = {}, activeTopic = null;
+
+// ── BUILD FILTERS ──
+function buildFilters() {
+  const row = document.getElementById('filterRow');
+  row.innerHTML = '';
+  [{label:'All ('+ALL.length+')', val:null}, ...TOPICS.map(t=>({label:t+' ('+ALL.filter(c=>c.t===t).length+')', val:t}))].forEach(({label,val}) => {
+    const b = document.createElement('button');
+    b.className = 'pill' + (activeTopic===val?' on':'');
+    b.textContent = label;
+    if (val && TOPIC_COLORS[val]) b.style.setProperty('--pill-c', TOPIC_COLORS[val]);
+    b.onclick = () => { activeTopic=val; deck=val?ALL.filter(c=>c.t===val):[...ALL]; idx=0; shown=false; got=0; miss=0; results={}; buildFilters(); buildDots(); render(); };
+    row.appendChild(b);
+  });
+}
+
+// ── BUILD DOTS ──
+function buildDots() {
+  const row = document.getElementById('dotRow');
+  row.innerHTML = '';
+  deck.forEach((c,i) => {
+    const d = document.createElement('div');
+    d.className = 'mdot'+(i===idx?' cur':'')+(results[i]===true?' ok':'')+(results[i]===false?' bad':'');
+    d.onclick = () => { idx=i; shown=false; render(); };
+    row.appendChild(d);
+  });
+}
+function updateDots() {
+  document.querySelectorAll('.mdot').forEach((d,i) => {
+    d.className = 'mdot'+(i===idx?' cur':'')+(results[i]===true?' ok':'')+(results[i]===false?' bad':'');
+  });
+}
+
+// ── RENDER CARD ──
+function render() {
+  const wrap = document.getElementById('cardWrap');
+  const win  = document.getElementById('winCard');
+
+  if (idx >= deck.length) {
+    wrap.innerHTML = '';
+    win.classList.add('show');
+    const pct = deck.length ? Math.round(got/deck.length*100) : 0;
+    document.getElementById('winSub').textContent = pct>=80 ? 'Excellent recall! Keep it up.' : pct>=60 ? 'Good effort — review the ones you missed.' : 'Keep studying — you will get there!';
+    document.getElementById('winStats').innerHTML =
+      '<div class="win-stat"><div class="win-stat-val" style="color:var(--green)">'+got+'</div><div class="win-stat-lbl">got it</div></div>'+
+      '<div class="win-stat"><div class="win-stat-val" style="color:var(--red)">'+miss+'</div><div class="win-stat-lbl">review</div></div>'+
+      '<div class="win-stat"><div class="win-stat-val" style="color:var(--accent)">'+pct+'%</div><div class="win-stat-lbl">recall</div></div>';
+    updateHdr(); updateProg();
+    return;
+  }
+
+  win.classList.remove('show');
+  const c = deck[idx];
+  const color = TOPIC_COLORS[c.t] || 'var(--accent)';
+  const isOpen = shown || results[idx] !== undefined;
+
+  wrap.innerHTML = `
+    <div class="card" id="theCard" style="--tc-color:${color}">
+      <div class="card-strip"></div>
+      <div class="card-body">
+        <div class="card-meta">
+          <span class="card-badge">${c.t}</span>
+          <span class="card-count">card ${idx+1} of ${deck.length}</span>
+        </div>
+        <div class="card-q">${c.q.replace(/\n/g,'<br>')}</div>
+      </div>
+      <div class="tap-hint" id="tapHint" onclick="reveal()" style="${isOpen?'display:none':''}">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M7 2v10M3.5 8.5L7 12l3.5-3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        tap to reveal answer
+      </div>
+      <div class="answer-panel${isOpen?' open':''}" id="ansPanel">
+        <div class="answer-inner">
+          <div class="answer-label">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.2"/>
+              <path d="M4 6l1.5 1.5L8 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Answer
+          </div>
+          <div class="answer-text">${c.a}</div>
+        </div>
+      </div>
+      <div class="mark-row${isOpen?' show':''}" id="markRow">
+        <button class="btn-mark got" onclick="mark(true)">&#10003; Got it</button>
+        <button class="btn-mark miss" onclick="mark(false)">&#10007; Need review</button>
+      </div>
+    </div>`;
+
+  // trigger reflow for animation on card re-render
+  const cw = document.getElementById('cardWrap');
+  cw.style.animation = 'none'; cw.offsetHeight; cw.style.animation = '';
+
+  updateHdr(); updateProg(); updateDots();
+
+  document.getElementById('btnPrev').disabled = idx === 0;
+  document.getElementById('btnNext').textContent = idx===deck.length-1 ? 'Finish ✓' : 'Next →';
+  document.getElementById('navNum').textContent = idx+1;
+  document.getElementById('navOf').textContent  = 'of '+deck.length;
+}
+
+function reveal() {
+  shown = true;
+  document.getElementById('tapHint').style.display = 'none';
+  document.getElementById('ansPanel').classList.add('open');
+  document.getElementById('markRow').classList.add('show');
+}
+
+function mark(isGot) {
+  if (results[idx] === undefined) {
+    if (isGot) got++; else miss++;
+  } else {
+    if (results[idx] && !isGot)  { got--;  miss++; }
+    if (!results[idx] && isGot)  { miss--; got++;  }
+  }
+  results[idx] = isGot;
+  updateHdr(); updateProg(); updateDots();
+  setTimeout(() => go(1), 280);
+}
+
+function go(dir) {
+  idx = Math.max(0, Math.min(deck.length, idx + dir));
+  shown = false; render();
+}
+
+function restart() {
+  got=0; miss=0; results={}; idx=0; shown=false;
+  document.getElementById('winCard').classList.remove('show');
+  buildDots(); render();
+}
+
+function updateHdr() {
+  document.getElementById('hGot').textContent  = got;
+  document.getElementById('hMiss').textContent = miss;
+  document.getElementById('hIdx').textContent  = Math.min(idx+1, deck.length);
+  document.getElementById('hTotal').textContent= deck.length;
+}
+
+function updateProg() {
+  const done = Object.keys(results).length;
+  document.getElementById('prog').style.width = (done/deck.length*100)+'%';
+}
+
+// keyboard
+document.addEventListener('keydown', e => {
+  if (e.key==='ArrowRight'||e.key===' ') { e.preventDefault(); shown ? go(1) : reveal(); }
+  if (e.key==='ArrowLeft') { e.preventDefault(); go(-1); }
+  if (e.key==='1' && shown) mark(true);
+  if (e.key==='2' && shown) mark(false);
+});
+
+buildFilters();
+buildDots();
+render();
+</script>
+</body>
+</html>
