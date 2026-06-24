@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stage 1 Chemistry – Practice Exams</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+:root{
+  --bg:#0d1117;--surf:#161b22;--surf2:#21262d;--border:#30363d;
+  --accent:#58d68d;--blue:#3498db;--yellow:#f39c12;--red:#e74c3c;--purple:#a569bd;
+  --text:#e6edf3;--muted:#8b949e;--r:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+
+/* NAV */
+nav{display:flex;align-items:center;gap:8px;padding:13px 20px;background:var(--surf);border-bottom:1px solid var(--border);flex-wrap:wrap;}
+.logo{font-size:1rem;font-weight:700;color:var(--accent);margin-right:10px;white-space:nowrap;}
+nav button{background:none;border:1px solid var(--border);color:var(--muted);padding:5px 13px;border-radius:20px;font-family:inherit;font-size:0.82rem;cursor:pointer;transition:all 0.2s;white-space:nowrap;}
+nav button:hover,nav button.active{background:var(--accent);border-color:var(--accent);color:#000;font-weight:600;}
+
+/* PAGES */
+.page{display:none;max-width:820px;margin:0 auto;padding:28px 18px 80px;}
+.page.active{display:block;}
+
+/* HOME */
+.home-hero{text-align:center;padding:44px 0 32px;}
+.home-hero .tag{display:inline-block;background:rgba(88,214,141,.12);color:var(--accent);padding:4px 12px;border-radius:20px;font-size:.75rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;}
+.home-hero h1{font-size:2.4rem;font-weight:700;letter-spacing:-1px;margin-bottom:10px;}
+.home-hero p{color:var(--muted);font-size:.95rem;max-width:480px;margin:0 auto 32px;}
+.exam-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;}
+.exam-card{background:var(--surf);border:1px solid var(--border);border-radius:var(--r);padding:20px;cursor:pointer;transition:all .2s;text-align:left;}
+.exam-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 6px 20px rgba(88,214,141,.08);}
+.exam-card .icon{font-size:1.5rem;margin-bottom:10px;}
+.exam-card h3{font-size:.9rem;font-weight:700;margin-bottom:4px;}
+.exam-card p{font-size:.78rem;color:var(--muted);line-height:1.4;}
+.exam-card .meta{margin-top:10px;font-size:.72rem;color:var(--accent);font-family:'DM Mono',monospace;}
+
+/* EXAM PAGE */
+.exam-header{margin-bottom:24px;}
+.exam-header h2{font-size:1.4rem;font-weight:700;letter-spacing:-.5px;margin-bottom:4px;}
+.exam-header p{color:var(--muted);font-size:.85rem;}
+.progress-wrap{margin-bottom:24px;}
+.progress-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+.progress-fill{height:100%;background:var(--accent);transition:width .4s ease;}
+.progress-label{font-size:.75rem;color:var(--muted);font-family:'DM Mono',monospace;margin-top:6px;}
+
+/* SECTION LABEL */
+.section-label{display:inline-flex;align-items:center;gap:6px;font-size:.72rem;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:16px;padding:4px 10px;background:var(--surf2);border-radius:6px;}
+
+/* QUESTION CARD */
+.q-card{background:var(--surf);border:1px solid var(--border);border-radius:12px;padding:22px 24px;margin-bottom:14px;transition:border-color .2s;}
+.q-card .q-num{font-size:.72rem;font-family:'DM Mono',monospace;color:var(--muted);margin-bottom:8px;}
+.q-card .q-text{font-size:.95rem;font-weight:500;line-height:1.55;margin-bottom:16px;}
+.q-card .q-marks{font-size:.72rem;color:var(--yellow);font-family:'DM Mono',monospace;float:right;}
+
+/* MCQ OPTIONS */
+.mcq-options{display:flex;flex-direction:column;gap:8px;}
+.mcq-btn{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:8px;border:1px solid var(--border);background:var(--surf2);cursor:pointer;font-family:inherit;font-size:.88rem;color:var(--text);text-align:left;transition:all .2s;}
+.mcq-btn:hover:not(:disabled){border-color:var(--blue);background:rgba(52,152,219,.07);}
+.mcq-letter{width:26px;height:26px;border-radius:50%;background:var(--border);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;font-family:'DM Mono',monospace;flex-shrink:0;transition:all .2s;}
+.mcq-btn.correct{border-color:var(--accent);background:rgba(88,214,141,.08);}
+.mcq-btn.correct .mcq-letter{background:var(--accent);color:#000;}
+.mcq-btn.wrong{border-color:var(--red);background:rgba(231,76,60,.08);}
+.mcq-btn.wrong .mcq-letter{background:var(--red);color:#fff;}
+.mcq-btn.reveal-correct{border-color:var(--accent);background:rgba(88,214,141,.05);}
+.mcq-btn.reveal-correct .mcq-letter{background:rgba(88,214,141,.3);color:var(--accent);}
+.mcq-btn:disabled{cursor:default;}
+
+/* FEEDBACK BADGE */
+.feedback{display:none;align-items:center;gap:8px;margin-top:12px;padding:10px 14px;border-radius:8px;font-size:.85rem;font-weight:600;}
+.feedback.show{display:flex;}
+.feedback.correct-fb{background:rgba(88,214,141,.1);color:var(--accent);border:1px solid rgba(88,214,141,.2);}
+.feedback.wrong-fb{background:rgba(231,76,60,.1);color:var(--red);border:1px solid rgba(231,76,60,.2);}
+
+/* SHORT ANSWER */
+.short-textarea{width:100%;min-height:90px;background:var(--surf2);border:1px solid var(--border);border-radius:8px;padding:12px;font-family:inherit;font-size:.88rem;color:var(--text);resize:vertical;transition:border-color .2s;}
+.short-textarea:focus{outline:none;border-color:var(--blue);}
+.short-controls{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+.reveal-btn{padding:8px 16px;border-radius:8px;border:1px solid var(--border);background:var(--surf2);color:var(--text);font-family:inherit;font-size:.82rem;cursor:pointer;transition:all .2s;}
+.reveal-btn:hover{border-color:var(--yellow);color:var(--yellow);}
+.model-answer{display:none;background:rgba(52,152,219,.06);border:1px solid rgba(52,152,219,.2);border-radius:8px;padding:14px;margin-top:10px;font-size:.85rem;line-height:1.65;color:#c9d1d9;}
+.model-answer.show{display:block;}
+.model-answer .ma-label{font-size:.7rem;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:1px;color:var(--blue);margin-bottom:8px;font-weight:500;}
+.judge-btns{display:flex;gap:8px;margin-top:10px;}
+.judge-btn{flex:1;padding:9px;border-radius:8px;border:none;font-family:inherit;font-size:.82rem;font-weight:600;cursor:pointer;transition:all .2s;}
+.judge-btn.got-it{background:rgba(88,214,141,.1);color:var(--accent);border:1px solid rgba(88,214,141,.25);}
+.judge-btn.got-it:hover,.judge-btn.got-it.selected{background:rgba(88,214,141,.2);border-color:var(--accent);}
+.judge-btn.partial{background:rgba(243,156,18,.1);color:var(--yellow);border:1px solid rgba(243,156,18,.25);}
+.judge-btn.partial:hover,.judge-btn.partial.selected{background:rgba(243,156,18,.2);border-color:var(--yellow);}
+.judge-btn.missed{background:rgba(231,76,60,.1);color:var(--red);border:1px solid rgba(231,76,60,.25);}
+.judge-btn.missed:hover,.judge-btn.missed.selected{background:rgba(231,76,60,.2);border-color:var(--red);}
+
+/* SUBMIT / SCORE */
+.submit-wrap{text-align:center;margin:24px 0;}
+.submit-btn{background:var(--accent);color:#000;border:none;padding:13px 36px;border-radius:10px;font-family:inherit;font-size:.95rem;font-weight:700;cursor:pointer;transition:all .2s;}
+.submit-btn:hover{background:#4fc47d;}
+.submit-btn:disabled{opacity:.4;cursor:not-allowed;}
+
+/* RESULTS PANEL */
+.results-panel{background:var(--surf);border:1px solid var(--border);border-radius:14px;padding:28px;text-align:center;margin-bottom:20px;}
+.results-panel .score-big{font-size:3.2rem;font-weight:700;color:var(--accent);letter-spacing:-2px;line-height:1;}
+.results-panel .score-sub{color:var(--muted);font-size:.85rem;margin-top:4px;}
+.score-breakdown{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:20px 0;}
+.score-box{background:var(--surf2);border:1px solid var(--border);border-radius:10px;padding:12px 18px;min-width:75px;}
+.score-box .sn{font-size:1.5rem;font-weight:700;line-height:1;}
+.score-box .sl{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;}
+.score-box.g .sn{color:var(--accent);}
+.score-box.y .sn{color:var(--yellow);}
+.score-box.r .sn{color:var(--red);}
+.restart-btn{background:var(--surf2);border:1px solid var(--border);color:var(--text);padding:10px 24px;border-radius:10px;font-family:inherit;font-size:.85rem;cursor:pointer;margin-top:8px;}
+.restart-btn:hover{border-color:var(--accent);color:var(--accent);}
+
+/* ANSWER REVIEW */
+.review-card{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:10px;}
+.review-card .rc-q{font-size:.88rem;font-weight:500;margin-bottom:8px;}
+.review-card .rc-meta{font-size:.72rem;font-family:'DM Mono',monospace;color:var(--muted);margin-bottom:10px;}
+.review-card .rc-answer{font-size:.83rem;color:#c9d1d9;line-height:1.55;}
+.badge{display:inline-block;font-size:.68rem;font-family:'DM Mono',monospace;padding:2px 7px;border-radius:6px;font-weight:700;}
+.badge.correct{background:rgba(88,214,141,.15);color:var(--accent);}
+.badge.wrong{background:rgba(231,76,60,.15);color:var(--red);}
+.badge.partial{background:rgba(243,156,18,.15);color:var(--yellow);}
+.badge.skipped{background:rgba(139,148,158,.15);color:var(--muted);}
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="logo">⚗️ Stage 1 Chem</span>
+  <button class="active" onclick="showPage('home')">Home</button>
+  <button onclick="startExam('stoich')">Stoichiometry & Titrations</button>
+  <button onclick="startExam('organic')">Organic Chemistry</button>
+  <button onclick="startExam('imf')">Intermolecular Forces</button>
+  <button onclick="startExam('covalent')">Covalent Structures</button>
+</nav>
+
+<!-- HOME -->
+<div id="home" class="page active">
+  <div class="home-hero">
+    <div class="tag">Stage 1 Chemistry</div>
+    <h1>Practice Exams</h1>
+    <p>Four full-length practice exams built from your worksheets. MCQs are auto-marked. Short answers show the model answer so you can judge yourself.</p>
+  </div>
+  <div class="exam-grid">
+    <div class="exam-card" onclick="startExam('stoich')">
+      <div class="icon">⚖️</div>
+      <h3>Stoichiometry & Titrations</h3>
+      <p>Mole calculations, balancing equations, titration calculations and procedures.</p>
+      <div class="meta">20 MCQ · 20 Short Answer · 10 Extended</div>
+    </div>
+    <div class="exam-card" onclick="startExam('organic')">
+      <div class="icon">🧪</div>
+      <h3>Organic Chemistry</h3>
+      <p>Hydrocarbons, naming, functional groups, combustion, polymers.</p>
+      <div class="meta">6 MCQ · 21 Short Answer · 3 Extended</div>
+    </div>
+    <div class="exam-card" onclick="startExam('imf')">
+      <div class="icon">🔗</div>
+      <h3>Intermolecular Forces & Polymers</h3>
+      <p>Dispersion, dipole-dipole, hydrogen bonding, cross-linking, polymer properties.</p>
+      <div class="meta">15 MCQ · 25 Short Answer · 4 Extended</div>
+    </div>
+    <div class="exam-card" onclick="startExam('covalent')">
+      <div class="icon">🔷</div>
+      <h3>Covalent Structures</h3>
+      <p>Lewis diagrams, molecular shapes, electronegativity, polarity, IMFs.</p>
+      <div class="meta">15 MCQ · 29 Short Answer · 7 Extended</div>
+    </div>
+  </div>
+</div>
+
+<!-- EXAM PAGE -->
+<div id="exam-page" class="page">
+  <div class="exam-header">
+    <h2 id="exam-title"></h2>
+    <p id="exam-subtitle"></p>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="pbar" style="width:0%"></div></div>
+    <div class="progress-label" id="plabel"></div>
+  </div>
+  <div id="exam-body"></div>
+  <div class="submit-wrap">
+    <button class="submit-btn" id="submit-btn" onclick="submitExam()">Submit &amp; See Results</button>
+  </div>
+</div>
+
+<!-- RESULTS PAGE -->
+<div id="results-page" class="page">
+  <div class="results-panel">
+    <div class="score-big" id="score-pct">—</div>
+    <div class="score-sub" id="score-sub">MCQ score</div>
+    <div class="score-breakdown">
+      <div class="score-box g"><div class="sn" id="sc-correct">—</div><div class="sl">Correct</div></div>
+      <div class="score-box y"><div class="sn" id="sc-partial">—</div><div class="sl">Partial</div></div>
+      <div class="score-box r"><div class="sn" id="sc-wrong">—</div><div class="sl">Wrong</div></div>
+    </div>
+    <button class="restart-btn" onclick="showPage('home')">← Back to Exams</button>
+    <button class="restart-btn" onclick="restartExam()" style="margin-left:8px;">↺ Retry</button>
+  </div>
+  <div id="review-body"></div>
+</div>
+
+<script>
+// ─── EXAM DATA ─────────────────────────────────────────────────────────────
+const EXAMS = {
+
+stoich: {
+  title: "Stoichiometry & Titrations",
+  subtitle: "50 questions — 60 minutes suggested",
+  mcq: [
+    {q:"How many particles are in 1 mole of a substance?",opts:["6.02×10²³","6.02×10²²","12.04×10²³","1.00×10²³"],ans:0},
+    {q:"What is the molar mass of H₂O?",opts:["16","18","20","22"],ans:1},
+    {q:"Which unit is used for amount of substance?",opts:["g","mol","dm³","mol L⁻¹"],ans:1},
+    {q:"How many moles are in 44 g of CO₂?",opts:["0.5","1.0","2.0","4.0"],ans:1},
+    {q:"What is the molar mass of NaCl?",opts:["58.5","35.5","23.0","74.5"],ans:0},
+    {q:"Which formula calculates moles from mass?",opts:["n=m×M","n=m/M","n=M/m","m=n/M"],ans:1},
+    {q:"How many moles are in 18 g of water?",opts:["0.5","1.0","2.0","18"],ans:1},
+    {q:"Which substance has the greatest molar mass?",opts:["H₂","CO₂","O₂","He"],ans:1},
+    {q:"What is the coefficient of O₂ in: 2H₂ + O₂ → 2H₂O?",opts:["1","2","3","4"],ans:0},
+    {q:"How many moles of O₂ are required for 2 mol H₂ (2H₂ + O₂ → 2H₂O)?",opts:["1","2","3","4"],ans:0},
+    {q:"Which instrument accurately delivers a fixed volume in a titration?",opts:["Beaker","Pipette","Measuring cylinder","Funnel"],ans:1},
+    {q:"What instrument is used to measure the titre?",opts:["Pipette","Conical flask","Burette","Balance"],ans:2},
+    {q:"Which term describes the point at which the indicator changes colour in a titration?",opts:["Start point","Endpoint","Neutral point","Standard point"],ans:1},
+    {q:"Which solution has a known concentration in a titration?",opts:["Analyte","Unknown","Standard solution","Solvent"],ans:2},
+    {q:"What is the purpose of an indicator in a titration?",opts:["Add volume","Detect endpoint","Increase rate","Cool reaction"],ans:1},
+    {q:"Which flask is commonly used during a titration?",opts:["Conical flask","Beaker","Test tube","Evaporating dish"],ans:0},
+    {q:"What is the molar mass of CaCO₃?",opts:["40","60","100","120"],ans:2},
+    {q:"How many particles are in 0.5 mol?",opts:["Same as Avogadro's number","Half Avogadro's number","Double Avogadro's number","Cannot determine"],ans:1},
+    {q:"What do the coefficients in a balanced equation represent?",opts:["Mass ratios","Volume ratios","Mole ratios","Density ratios"],ans:2},
+    {q:"Which safety item must be worn during titrations?",opts:["Sandals","Gloves only","Safety glasses","Hat"],ans:2},
+  ],
+  short: [
+    {q:"Define a mole.",marks:1,ans:"The amount of substance containing 6.02 × 10²³ particles."},
+    {q:"State Avogadro's number.",marks:1,ans:"6.02 × 10²³ mol⁻¹."},
+    {q:"Calculate the molar mass of NH₃.",marks:1,ans:"M(NH₃) = 14 + 3(1) = 17 g mol⁻¹."},
+    {q:"Calculate the number of moles in 10 g of H₂.",marks:2,ans:"n = m/M = 10/2 = 5 mol."},
+    {q:"Calculate the mass of 0.5 mol NaOH.",marks:2,ans:"m = n × M = 0.5 × 40 = 20 g."},
+    {q:"How many molecules are in 2 mol H₂O?",marks:2,ans:"N = 2 × 6.02×10²³ = 1.204×10²⁴ molecules."},
+    {q:"Write the balanced equation for Mg + O₂ → MgO.",marks:1,ans:"2Mg + O₂ → 2MgO."},
+    {q:"Determine the mole ratio between Mg and MgO in 2Mg + O₂ → 2MgO.",marks:1,ans:"1 : 1 (Mg : MgO)."},
+    {q:"Calculate the number of moles in 98 g H₂SO₄. (M = 98 g mol⁻¹)",marks:2,ans:"n = 98/98 = 1.0 mol."},
+    {q:"Calculate the mass of 2 mol CO₂.",marks:2,ans:"m = 2 × 44 = 88 g."},
+    {q:"List three pieces of titration equipment.",marks:1,ans:"Burette, pipette, conical flask (any three: also accept white tile, indicator, retort stand)."},
+    {q:"Explain the purpose of a burette.",marks:1,ans:"To accurately deliver and measure variable volumes of solution (the titrant)."},
+    {q:"Explain the purpose of a pipette.",marks:1,ans:"To accurately transfer a fixed, precise volume of solution into the conical flask."},
+    {q:"What is meant by concordant titres?",marks:1,ans:"Titres that agree closely with each other, usually within 0.10 mL, used to calculate a reliable average."},
+    {q:"Why is a white tile used during titrations?",marks:1,ans:"To provide a white background that makes the indicator colour change at the endpoint easier to see."},
+    {q:"What is the analyte in a titration?",marks:1,ans:"The solution of unknown concentration being analysed (in the conical flask)."},
+    {q:"What is a standard solution?",marks:1,ans:"A solution with an accurately known concentration used as the titrant."},
+    {q:"State one safety precaution for titrations.",marks:1,ans:"Wear safety glasses/goggles to protect eyes from acid/base splashes (or equivalent valid precaution)."},
+    {q:"Calculate the concentration if 0.50 mol is dissolved to make 2.00 L solution.",marks:2,ans:"C = n/V = 0.50/2.00 = 0.25 mol L⁻¹."},
+    {q:"Calculate the moles in 250 mL of 0.20 M NaCl.",marks:2,ans:"n = C × V = 0.20 × 0.250 = 0.050 mol."},
+    {q:"Calculate the mass of NaCl produced when 2.0 mol Na reacts completely with Cl₂.\n(Na + Cl₂ → 2NaCl — balance this first)",marks:3,ans:"Balanced: 2Na + Cl₂ → 2NaCl. Mole ratio Na:NaCl = 1:1. n(NaCl) = 2.0 mol. m = 2.0 × 58.5 = 117 g NaCl."},
+    {q:"2H₂ + O₂ → 2H₂O. Calculate the moles of water produced from 5.0 mol H₂.",marks:2,ans:"Mole ratio H₂:H₂O = 1:1. Therefore 5.0 mol H₂O produced."},
+    {q:"Calculate the mass of water produced from 3.0 mol H₂O.",marks:2,ans:"m = n × M = 3.0 × 18 = 54 g."},
+    {q:"CaCO₃ → CaO + CO₂. Calculate the mass of CO₂ produced from 50.0 g CaCO₃.",marks:3,ans:"n(CaCO₃) = 50.0/100 = 0.50 mol. Ratio 1:1 → n(CO₂) = 0.50 mol. m = 0.50 × 44 = 22 g."},
+    {q:"25.00 mL of 0.100 M HCl is titrated with NaOH. Calculate the moles of HCl present.",marks:2,ans:"n = C × V = 0.100 × 0.02500 = 2.50 × 10⁻³ mol (0.00250 mol)."},
+    {q:"25.00 mL of 0.100 M HCl requires 25.00 mL NaOH to neutralise. Calculate the concentration of NaOH. (HCl + NaOH → NaCl + H₂O)",marks:3,ans:"n(HCl) = 0.100 × 0.02500 = 0.00250 mol. Ratio 1:1 → n(NaOH) = 0.00250 mol. C(NaOH) = 0.00250/0.02500 = 0.100 mol L⁻¹."},
+    {q:"20.00 mL of H₂SO₄ requires 30.00 mL of 0.200 M NaOH. Calculate the concentration of H₂SO₄. (H₂SO₄ + 2NaOH → Na₂SO₄ + 2H₂O)",marks:4,ans:"n(NaOH) = 0.200 × 0.03000 = 0.00600 mol. Ratio H₂SO₄:NaOH = 1:2 → n(H₂SO₄) = 0.00600/2 = 0.00300 mol. C = 0.00300/0.02000 = 0.150 mol L⁻¹."},
+    {q:"A student obtains titres of 24.60 mL, 24.55 mL and 24.65 mL. Determine the average concordant titre.",marks:2,ans:"Average = (24.60 + 24.55 + 24.65)/3 = 24.60 mL. All three are concordant (within 0.10 mL of each other)."},
+    {q:"Describe a complete titration procedure, including equipment and safety.",marks:5,ans:"Rinse and fill burette with standard solution. Use pipette to transfer exact volume of analyte to conical flask. Add 2–3 drops of indicator. Add standard from burette slowly, swirling constantly. Near endpoint, add drop by drop. Record titre at permanent colour change. Repeat until concordant titres obtained (within 0.10 mL). Safety: wear safety glasses, use lab coat."},
+    {q:"An unknown HCl solution requires 18.40 mL of 0.150 M NaOH to neutralise 20.00 mL of acid. Calculate the concentration of HCl.",marks:4,ans:"n(NaOH) = 0.150 × 0.01840 = 0.00276 mol. Ratio HCl:NaOH = 1:1. n(HCl) = 0.00276 mol. C(HCl) = 0.00276/0.02000 = 0.138 mol L⁻¹."},
+  ]
+},
+
+organic: {
+  title: "Organic Chemistry",
+  subtitle: "41 questions — 50 minutes suggested",
+  mcq: [
+    {q:"A hydrocarbon contains:",opts:["Carbon and oxygen only","Carbon and hydrogen only","Hydrogen and oxygen only","Carbon, hydrogen and oxygen"],ans:1},
+    {q:"The homologous series with only single bonds is:",opts:["Alkenes","Alkynes","Alkanes","Alcohols"],ans:2},
+    {q:"Which compound contains a C=C double bond?",opts:["Ethane","Ethene","Ethyne","Methane"],ans:1},
+    {q:"Which compound contains a triple bond?",opts:["Propane","Propene","Propyne","Propanol"],ans:2},
+    {q:"The functional group of an alcohol is:",opts:["C=C","C≡C","–OH","–COOH"],ans:2},
+    {q:"Which is the correct balanced combustion equation for methane?",opts:["CH₄ + O₂ → CO₂ + H₂O","CH₄ + 2O₂ → CO₂ + 2H₂O","2CH₄ + O₂ → 2CO₂ + H₂O","CH₄ + O₂ → CO + 2H₂O"],ans:1},
+  ],
+  short: [
+    {q:"What is the molecular formula for methane?",marks:1,ans:"CH₄"},
+    {q:"Define a functional group.",marks:1,ans:"An atom or group of atoms that gives an organic molecule its characteristic chemical properties and reactions."},
+    {q:"Define a homologous series.",marks:2,ans:"A family of organic compounds with the same functional group, similar chemical properties, and differing by –CH₂– units."},
+    {q:"What is a monomer?",marks:1,ans:"A small molecule that joins with other monomers (by polymerisation) to form a polymer."},
+    {q:"What is a polymer?",marks:1,ans:"A large molecule made from many repeating monomer units joined by covalent bonds."},
+    {q:"Explain the difference between a thermoplastic and a thermosetting polymer.",marks:2,ans:"A thermoplastic can be melted and reshaped repeatedly (it has no cross-links). A thermosetting polymer cannot be remelted once set because it has many cross-links between chains."},
+    {q:"Name the compound CH₄.",marks:1,ans:"Methane."},
+    {q:"Name the compound C₂H₆.",marks:1,ans:"Ethane."},
+    {q:"Name the compound C₅H₁₂.",marks:1,ans:"Pentane."},
+    {q:"Name the compound C₈H₁₈.",marks:1,ans:"Octane."},
+    {q:"Name the compound CH₂=CH₂.",marks:1,ans:"Ethene."},
+    {q:"Name the compound CH≡CH.",marks:1,ans:"Ethyne."},
+    {q:"Name the compound CH₃OH.",marks:1,ans:"Methanol."},
+    {q:"Name the compound CH₃CH₂OH.",marks:1,ans:"Ethanol."},
+    {q:"Name the compound CH₃CH(CH₃)CH₃.",marks:1,ans:"2-Methylpropane (also accepted: isobutane)."},
+    {q:"Name the compound CH₃CH₂CH(CH₃)CH₂CH₃.",marks:1,ans:"3-Methylpentane."},
+    {q:"Write the condensed structural formula for hexane.",marks:1,ans:"CH₃CH₂CH₂CH₂CH₂CH₃"},
+    {q:"Write the condensed structural formula for propene.",marks:1,ans:"CH₂=CHCH₃"},
+    {q:"Write the condensed structural formula for butyne.",marks:1,ans:"CH≡CCH₂CH₃"},
+    {q:"Write the condensed structural formula for ethanol.",marks:1,ans:"CH₃CH₂OH"},
+    {q:"Balance the equation: CH₄ + O₂ → CO₂ + H₂O",marks:1,ans:"CH₄ + 2O₂ → CO₂ + 2H₂O"},
+    {q:"Balance the equation: C₂H₆ + O₂ → CO₂ + H₂O",marks:1,ans:"2C₂H₆ + 7O₂ → 4CO₂ + 6H₂O"},
+    {q:"Balance the equation: C₃H₈ + O₂ → CO₂ + H₂O",marks:1,ans:"C₃H₈ + 5O₂ → 3CO₂ + 4H₂O"},
+    {q:"Balance the equation: C₄H₁₀ + O₂ → CO₂ + H₂O",marks:1,ans:"2C₄H₁₀ + 13O₂ → 8CO₂ + 10H₂O"},
+    {q:"Balance the equation: C₅H₁₂ + O₂ → CO₂ + H₂O",marks:1,ans:"C₅H₁₂ + 8O₂ → 5CO₂ + 6H₂O"},
+    {q:"Write the balanced incomplete combustion equation for methane producing carbon monoxide.",marks:2,ans:"2CH₄ + 3O₂ → 2CO + 4H₂O"},
+    {q:"Explain why carbon monoxide is dangerous.",marks:2,ans:"Carbon monoxide binds strongly and irreversibly to haemoglobin (forming carboxyhaemoglobin), preventing oxygen from being transported in the blood, which can be fatal."},
+    {q:"Write the monomer used to make polyethene.",marks:1,ans:"Ethene (CH₂=CH₂)."},
+    {q:"Write the repeating unit for polyethene.",marks:1,ans:"[–CH₂–CH₂–]ₙ"},
+    {q:"Explain the differences between alkanes, alkenes and alkynes. Include bonding and naming rules.",marks:4,ans:"Alkanes contain only single C–C bonds, are the most saturated hydrocarbons, and names end in '-ane'. Alkenes contain at least one C=C double bond, are unsaturated, and names end in '-ene'. Alkynes contain at least one C≡C triple bond, are the most unsaturated, and names end in '-yne'."},
+    {q:"Describe the advantages and disadvantages of thermoplastics and thermosetting polymers for recycling.",marks:4,ans:"Thermoplastics: Advantage — can be melted and reprocessed/recycled. Disadvantage — less heat resistant, softer. Thermosetting polymers: Advantage — very heat resistant, hard, rigid. Disadvantage — cannot be remelted once set, so difficult/impossible to recycle."},
+    {q:"Explain why chemists use skeletal formulae and compare them with molecular and condensed structural formulae.",marks:3,ans:"Skeletal formulae show carbon chains as zigzag lines with functional groups shown, making them quick to draw for complex molecules. Molecular formulae show only the number of each atom (e.g. C₂H₆). Condensed structural formulae show bonding connectivity without a full diagram (e.g. CH₃CH₃). Skeletal formulae are most efficient for large organic molecules."},
+  ]
+},
+
+imf: {
+  title: "Intermolecular Forces & Polymers",
+  subtitle: "40 questions — 50 minutes suggested",
+  mcq: [
+    {q:"Dispersion forces occur between:",opts:["All molecules","Only polar molecules","Only water molecules","Only ionic compounds"],ans:0},
+    {q:"Which intermolecular force is generally the weakest?",opts:["Hydrogen bonding","Ionic bonding","Dispersion forces","Covalent bonding"],ans:2},
+    {q:"Dipole-dipole forces occur between:",opts:["Non-polar molecules","Polar molecules","Metals","Ionic compounds"],ans:1},
+    {q:"Hydrogen bonding occurs when hydrogen is bonded to:",opts:["Carbon","Sulfur","Nitrogen, oxygen or fluorine","Chlorine"],ans:2},
+    {q:"Which substance exhibits hydrogen bonding?",opts:["CH₄","CO₂","H₂O","CCl₄"],ans:2},
+    {q:"As molecular size increases, dispersion forces generally:",opts:["Decrease","Stay the same","Increase","Disappear"],ans:2},
+    {q:"Which substance has the strongest intermolecular forces?",opts:["Methane","Ethane","Propane","Water"],ans:3},
+    {q:"Which intermolecular force is responsible for water's unusually high boiling point?",opts:["Dispersion forces","Dipole-dipole forces","Hydrogen bonding","Ionic bonding"],ans:2},
+    {q:"Cross-links in polymers are:",opts:["Bonds between monomers in a chain","Bonds between different polymer chains","Hydrogen bonds only","Ionic bonds only"],ans:1},
+    {q:"Cross-linking generally makes polymers:",opts:["Softer","More flexible","Stronger and more rigid","Easier to melt"],ans:2},
+    {q:"Thermosetting polymers contain:",opts:["No cross-links","Many cross-links","Only hydrogen bonds","Only dispersion forces"],ans:1},
+    {q:"Which polymer is easiest to recycle?",opts:["Thermosetting polymer","Thermoplastic polymer","Bakelite","Epoxy resin"],ans:1},
+    {q:"Which force exists between non-polar molecules?",opts:["Hydrogen bonding","Dipole-dipole","Dispersion forces","Ionic attraction"],ans:2},
+    {q:"Which molecule is polar?",opts:["CH₄","CO₂","H₂O","CCl₄"],ans:2},
+    {q:"Which intermolecular force is strongest?",opts:["Dispersion","Dipole-dipole","Hydrogen bonding","All equal"],ans:2},
+  ],
+  short: [
+    {q:"Define dispersion forces.",marks:2,ans:"Temporary attractions between molecules caused by momentary (instantaneous) unequal distribution of electrons, creating temporary dipoles. Present in all molecules."},
+    {q:"Define dipole-dipole forces.",marks:2,ans:"Attractions between the permanent positive and negative ends (permanent dipoles) of polar molecules."},
+    {q:"Define hydrogen bonding.",marks:2,ans:"A strong intermolecular dipole attraction that occurs when hydrogen is bonded to a highly electronegative atom (N, O, or F) and is attracted to a lone pair on N, O, or F on a neighbouring molecule."},
+    {q:"What is meant by a polar molecule?",marks:2,ans:"A molecule with an uneven (asymmetric) distribution of charge, giving it a net dipole moment — one end is partially positive (δ+) and the other partially negative (δ−)."},
+    {q:"Define cross-linking in polymers.",marks:2,ans:"Covalent bonds that connect adjacent polymer chains together, creating a more rigid and heat-resistant three-dimensional network structure."},
+    {q:"Explain why larger molecules generally have higher boiling points.",marks:2,ans:"Larger molecules have more electrons, leading to stronger dispersion forces between them. More energy is required to overcome these stronger forces, raising the boiling point."},
+    {q:"Why does water have a higher boiling point than methane?",marks:3,ans:"Water (H₂O) forms extensive hydrogen bonds (H bonded to O, which is highly electronegative). These are much stronger than the dispersion forces between methane (CH₄) molecules. More energy is needed to separate water molecules → higher boiling point."},
+    {q:"Describe how hydrogen bonding occurs between water molecules.",marks:3,ans:"In water, each O–H bond is highly polar (large electronegativity difference). The partially positive H on one water molecule is attracted to a lone pair on the oxygen of a neighbouring water molecule. Each water molecule can form up to four hydrogen bonds."},
+    {q:"State one example of a substance that exhibits hydrogen bonding.",marks:1,ans:"Water (H₂O), ammonia (NH₃), hydrogen fluoride (HF), or ethanol (CH₃CH₂OH) — any substance with H bonded to N, O, or F."},
+    {q:"State one example of a non-polar molecule.",marks:1,ans:"CH₄ (methane), CO₂ (carbon dioxide), CCl₄ (carbon tetrachloride), or H₂ — any molecule with symmetric charge distribution."},
+    {q:"Explain why oil does not mix with water.",marks:3,ans:"Oil consists of non-polar molecules held together by dispersion forces. Water is polar and forms strong hydrogen bonds. For oil to dissolve in water, hydrogen bonds between water molecules would need to break to accommodate non-polar molecules, which is energetically unfavourable. 'Like dissolves like' — polar dissolves polar, non-polar dissolves non-polar."},
+    {q:"Rank the following from weakest to strongest: hydrogen bonding, dispersion forces, dipole-dipole forces.",marks:1,ans:"Dispersion forces < Dipole-dipole forces < Hydrogen bonding."},
+    {q:"Identify the strongest intermolecular force present in: a) CH₄  b) HCl  c) H₂O",marks:3,ans:"a) CH₄ — Dispersion forces (non-polar, no permanent dipole). b) HCl — Dipole-dipole forces (polar molecule, no H bonded to N/O/F). c) H₂O — Hydrogen bonding (H bonded to O)."},
+    {q:"Predict which has the higher boiling point and explain: CH₄ or C₄H₁₀.",marks:3,ans:"C₄H₁₀ has a higher boiling point. Both are non-polar with only dispersion forces. However, C₄H₁₀ is a larger molecule with more electrons and greater surface area → stronger dispersion forces → more energy needed to separate molecules → higher boiling point."},
+    {q:"What is a thermoplastic polymer?",marks:2,ans:"A polymer that can be melted and reshaped repeatedly because its chains are not cross-linked — they are held together only by intermolecular forces (dispersion, dipole-dipole, or H-bonding)."},
+    {q:"What is a thermosetting polymer?",marks:2,ans:"A polymer that cannot be remelted once set because it contains extensive cross-links (covalent bonds) between chains, forming a rigid three-dimensional network."},
+    {q:"Explain how cross-links affect polymer properties.",marks:3,ans:"Cross-links are covalent bonds between adjacent polymer chains. They prevent chains from sliding past each other, making the polymer: more rigid and hard; less flexible; more heat resistant; and unable to be remelted. The more cross-links, the stiffer the material."},
+    {q:"Why are thermoplastics generally easier to recycle?",marks:2,ans:"Thermoplastics can be melted and reprocessed/remoulded without chemical degradation because they have no cross-links. Thermosetting polymers have extensive cross-links so cannot be remelted — breaking them down requires destroying the covalent network."},
+    {q:"State one advantage of thermosetting polymers.",marks:1,ans:"Very heat resistant, hard and rigid (e.g. used in electrical plugs, saucepan handles, epoxy resins). They maintain shape at high temperatures."},
+    {q:"State one disadvantage of thermosetting polymers.",marks:1,ans:"They cannot be remelted or recycled once set, making them difficult to recycle."},
+    {q:"Describe the role of cross-links in tyres, electrical plugs or epoxy resins.",marks:3,ans:"In tyres (vulcanised rubber): cross-links between rubber chains prevent them from sliding under stress → more durable and hard-wearing. In electrical plugs/saucepan handles: cross-linked thermosetting polymer resists heat and does not melt when carrying current. In epoxy resins: cross-linking occurs during setting, creating a hard, strong, permanent bond."},
+    {q:"Compare dispersion forces, dipole-dipole forces and hydrogen bonding: how each forms, relative strength, and examples.",marks:6,ans:"Dispersion forces: form due to instantaneous temporary dipoles in any molecule. Weakest. Example: CH₄. Dipole-dipole: form between molecules with permanent dipoles (electronegativity difference). Intermediate strength. Example: HCl. Hydrogen bonding: forms when H is bonded to N, O, or F and attracted to lone pair on N/O/F of neighbouring molecule. Strongest of the three. Example: H₂O. Relative strength: dispersion < dipole-dipole < hydrogen bonding."},
+    {q:"Explain why intermolecular forces influence boiling point, melting point and solubility.",marks:4,ans:"Boiling/melting point: stronger intermolecular forces require more energy to overcome → higher boiling and melting points. Solubility: 'like dissolves like' — polar solutes dissolve in polar solvents (e.g. NaCl in water) because new solvent-solute interactions replace broken solvent-solvent interactions. Non-polar solutes dissolve in non-polar solvents."},
+    {q:"Discuss how cross-linking changes the properties and uses of polymers.",marks:4,ans:"Cross-linking replaces weak intermolecular forces between chains with strong covalent bonds. This increases rigidity, hardness, and thermal stability. Cross-linked polymers resist deformation under heat or stress. However, they become non-recyclable and brittle if over-cross-linked. Uses: tyres, epoxy resins, Bakelite electrical fittings. Without cross-links (thermoplastics): more flexible, recyclable, lower melting point."},
+    {q:"Explain why thermoplastics are generally preferred over thermosetting polymers for recycling programs.",marks:4,ans:"Thermoplastics can be melted down and remoulded into new products because their chains are not cross-linked — they are held together only by intermolecular forces that can be overcome by heating. Thermosetting polymers cannot be remelted because their covalent cross-links form a permanent network that would need to be broken chemically (destructive decomposition) rather than physically. This makes thermoplastics more economically and practically recyclable."},
+  ]
+},
+
+covalent: {
+  title: "Covalent Structures, Lewis Diagrams & Polarity",
+  subtitle: "50 questions — 60 minutes suggested",
+  mcq: [
+    {q:"A covalent bond is formed by:",opts:["Transfer of electrons","Sharing of electrons","Transfer of protons","Sharing of neutrons"],ans:1},
+    {q:"Which molecule has a linear shape?",opts:["H₂O","NH₃","CO₂","CH₄"],ans:2},
+    {q:"Which molecule has a tetrahedral shape?",opts:["CH₄","CO₂","H₂O","HCl"],ans:0},
+    {q:"Which molecule has a bent shape?",opts:["NH₃","CH₄","H₂O","CO₂"],ans:2},
+    {q:"Which molecule has a pyramidal shape?",opts:["NH₃","CH₄","CO₂","H₂"],ans:0},
+    {q:"The shape of a molecule depends on:",opts:["Number of protons","Number of neutrons","Repulsion between electron pairs","Atomic mass"],ans:2},
+    {q:"Which molecule exhibits hydrogen bonding?",opts:["CH₄","CO₂","NH₃","CCl₄"],ans:2},
+    {q:"Which bond is most polar?",opts:["C–H","N–H","O–H","Cl–Cl"],ans:2},
+    {q:"Which molecule is non-polar?",opts:["H₂O","NH₃","CO₂","HF"],ans:2},
+    {q:"Which intermolecular force exists between all molecules?",opts:["Ionic attraction","Hydrogen bonding","Dispersion forces","Metallic bonding"],ans:2},
+    {q:"Which shape has a bond angle of approximately 109.5°?",opts:["Linear","Bent","Tetrahedral","Trigonal planar"],ans:2},
+    {q:"Which shape has a bond angle of approximately 180°?",opts:["Bent","Linear","Pyramidal","Tetrahedral"],ans:1},
+    {q:"A lone pair of electrons:",opts:["Increases bond angles","Has no effect","Repels bonding pairs, compressing bond angles","Creates ionic bonds"],ans:2},
+    {q:"The strongest intermolecular force listed is:",opts:["Dispersion forces","Dipole-dipole forces","Hydrogen bonding","Metallic bonding"],ans:2},
+    {q:"Hydrogen bonding occurs when hydrogen is bonded to:",opts:["Carbon","Oxygen, nitrogen or fluorine","Sulfur","Chlorine"],ans:1},
+  ],
+  short: [
+    {q:"Define covalent bonding.",marks:1,ans:"A chemical bond formed when two atoms share one or more pairs of electrons."},
+    {q:"Define a Lewis diagram.",marks:1,ans:"A diagram showing the valence electrons of all atoms in a molecule, including bonding pairs and lone pairs."},
+    {q:"Define electronegativity.",marks:1,ans:"The ability of an atom to attract shared (bonding) electrons towards itself in a covalent bond."},
+    {q:"Define molecular polarity.",marks:2,ans:"The overall unequal distribution of electron charge within a molecule, resulting in a net dipole moment — one end is partially positive (δ+) and the other partially negative (δ−)."},
+    {q:"Define hydrogen bonding.",marks:2,ans:"A strong intermolecular force between molecules containing hydrogen covalently bonded to N, O, or F — the hydrogen is attracted to a lone pair on N, O, or F of a neighbouring molecule."},
+    {q:"Describe the Lewis diagram for H₂.",marks:1,ans:"H:H or H—H. Each hydrogen has one electron; they share one pair (single bond). No lone pairs."},
+    {q:"Describe the Lewis diagram for Cl₂.",marks:1,ans:":Cl—Cl: with three lone pairs on each chlorine. Single bond (one shared pair)."},
+    {q:"Describe the Lewis diagram for HCl.",marks:1,ans:"H—Cl with three lone pairs on the chlorine atom. Single bond."},
+    {q:"Describe the Lewis diagram for H₂O.",marks:2,ans:"H–O–H with two lone pairs on the oxygen atom. Two single bonds. Oxygen has 4 electron groups (2 bonding pairs + 2 lone pairs)."},
+    {q:"Describe the Lewis diagram for NH₃.",marks:2,ans:"H–N–H with a third H below N, and one lone pair on nitrogen. Three single bonds. Nitrogen has 4 electron groups (3 bonding + 1 lone pair)."},
+    {q:"Describe the Lewis diagram for CH₄.",marks:1,ans:"Four H atoms bonded to central C with four single bonds. No lone pairs on carbon."},
+    {q:"Describe the Lewis diagram for CO₂.",marks:2,ans:"O=C=O with two lone pairs on each oxygen atom. Carbon forms two double bonds. No lone pairs on carbon."},
+    {q:"Describe the Lewis diagram for O₂.",marks:1,ans:"O=O with two lone pairs on each oxygen atom. One double bond."},
+    {q:"Describe the Lewis diagram for N₂.",marks:1,ans:"N≡N with one lone pair on each nitrogen. One triple bond."},
+    {q:"Describe the Lewis diagram for HF.",marks:1,ans:"H—F with three lone pairs on fluorine. One single bond."},
+    {q:"What is the molecular shape of H₂O and why?",marks:3,ans:"Bent (V-shaped). Oxygen has 2 bonding pairs and 2 lone pairs. Lone pairs repel more strongly than bonding pairs, compressing the bond angle from 109.5° to approximately 104.5°."},
+    {q:"What is the molecular shape of NH₃ and why?",marks:3,ans:"Trigonal pyramidal. Nitrogen has 3 bonding pairs and 1 lone pair. The lone pair repels bonding pairs downward, creating a pyramidal arrangement (~107° bond angle)."},
+    {q:"What is the molecular shape of CH₄?",marks:1,ans:"Tetrahedral — 4 bonding pairs, no lone pairs. Bond angle = 109.5°."},
+    {q:"What is the molecular shape of CO₂?",marks:1,ans:"Linear — 2 double bonds, no lone pairs on carbon. Bond angle = 180°."},
+    {q:"What is the molecular shape of HF?",marks:1,ans:"Linear (diatomic molecule — only two atoms)."},
+    {q:"Explain why H₂O is bent rather than linear.",marks:3,ans:"Oxygen in H₂O has 2 bonding pairs and 2 lone pairs. According to VSEPR theory, lone pairs occupy more space and repel bonding pairs more strongly than bonding pairs repel each other. This pushes the two O–H bonds together, reducing the bond angle from 109.5° (tetrahedral) to ~104.5°, giving a bent shape."},
+    {q:"Explain why NH₃ is pyramidal.",marks:2,ans:"Nitrogen has 3 bonding pairs and 1 lone pair. The lone pair exerts greater repulsion than bonding pairs, pushing the three H atoms downward into a triangular base with N at the apex — a pyramidal shape (~107°)."},
+    {q:"Calculate the electronegativity difference for: a) H–Cl  b) O–H  c) C–H  d) H–F\n(H=2.1, C=2.5, N=3.0, O=3.5, F=4.0, Cl=3.0)",marks:4,ans:"a) H–Cl: |3.0−2.1| = 0.9 (polar covalent). b) O–H: |3.5−2.1| = 1.4 (polar covalent). c) C–H: |2.5−2.1| = 0.4 (non-polar covalent). d) H–F: |4.0−2.1| = 1.9 (polar covalent, most polar of these)."},
+    {q:"State whether each bond is polar or non-polar covalent: H–Cl, O–H, C–H, H–F.",marks:2,ans:"H–Cl: polar covalent. O–H: polar covalent. C–H: non-polar covalent (ΔEN = 0.4, too small). H–F: polar covalent (most polar)."},
+    {q:"State whether the following are polar or non-polar: H₂O, CO₂, NH₃, CH₄, HF.",marks:3,ans:"H₂O: polar (bent, dipoles don't cancel). CO₂: non-polar (linear, polar bonds but dipoles cancel). NH₃: polar (pyramidal, asymmetric). CH₄: non-polar (tetrahedral, symmetric, all C–H bonds similar EN). HF: polar (diatomic, large EN difference)."},
+    {q:"Identify the strongest intermolecular force in: a) CH₄  b) HCl  c) H₂O  d) NH₃  e) CO₂",marks:5,ans:"a) CH₄ — Dispersion (non-polar). b) HCl — Dipole-dipole (polar, no H bonded to N/O/F). c) H₂O — Hydrogen bonding (H bonded to O). d) NH₃ — Hydrogen bonding (H bonded to N). e) CO₂ — Dispersion (non-polar overall)."},
+    {q:"Explain why CO₂ is non-polar despite having polar bonds.",marks:3,ans:"CO₂ has two polar C=O bonds (C is δ+, each O is δ−). However, CO₂ is linear — the two bond dipoles point in exactly opposite directions (180° apart) and are equal in magnitude. They cancel each other out, giving a net dipole of zero → the molecule is non-polar overall."},
+    {q:"Explain why water molecules attract each other strongly.",marks:3,ans:"Water molecules contain highly polar O–H bonds (large electronegativity difference). The partially positive H of one molecule is strongly attracted to the lone pair on the oxygen of a neighbouring molecule, forming hydrogen bonds. Each water molecule can form up to four hydrogen bonds, creating a strong intermolecular network."},
+    {q:"Describe how Lewis diagrams can be used to predict molecular shape.",marks:4,ans:"Lewis diagrams show the number of bonding pairs and lone pairs around the central atom. Using VSEPR theory, electron pairs repel each other and adopt positions that minimise repulsion. Lone pairs repel more than bonding pairs. Counting total electron groups predicts geometry: 2 groups→linear, 3→trigonal planar, 4→tetrahedral. Lone pairs then distort this. Example: CH₄ has 4 bonding pairs → tetrahedral; H₂O has 4 electron groups but 2 lone pairs → bent."},
+    {q:"Compare tetrahedral, pyramidal, bent and linear molecular shapes.",marks:4,ans:"Linear (e.g. CO₂): 2 electron groups, bond angle 180°. Tetrahedral (e.g. CH₄): 4 bonding pairs, no lone pairs, bond angle 109.5°. Pyramidal (e.g. NH₃): 3 bonding pairs, 1 lone pair, bond angle ~107° — lone pair compresses angle slightly. Bent (e.g. H₂O): 2 bonding pairs, 2 lone pairs, bond angle ~104.5° — two lone pairs compress angle more."},
+    {q:"Explain the relationship between electronegativity difference and bond polarity.",marks:3,ans:"The larger the electronegativity difference between bonded atoms, the more unequally electrons are shared → the more polar the bond. A ΔEN ≈ 0 means non-polar covalent (equal sharing). A moderate ΔEN (~0.4–1.7) gives polar covalent. A large ΔEN (>~1.7) gives ionic character. Example: H–F (ΔEN = 1.9) is more polar than C–H (ΔEN = 0.4)."},
+    {q:"Describe the conditions required for hydrogen bonding.",marks:3,ans:"1. Hydrogen must be covalently bonded directly to a highly electronegative atom — specifically N, O, or F. 2. A neighbouring molecule must have a N, O, or F atom with a lone pair of electrons. The partially positive H (δ+) on one molecule is attracted to the lone pair on the N/O/F of another molecule. Both conditions are required."},
+    {q:"Explain why hydrogen bonding gives water unusual physical properties.",marks:4,ans:"Water's O–H bonds are highly polar, allowing extensive hydrogen bonding (up to 4 per molecule). This gives water: (1) Unusually high boiling point (100°C) for its small molecular size — much energy needed to break H-bonds. (2) High melting point and surface tension. (3) Ice being less dense than liquid water (H-bonds form open lattice in ice). (4) Excellent solvent properties — can form H-bonds with dissolved polar substances."},
+    {q:"Compare dispersion forces, dipole-dipole forces and hydrogen bonding.",marks:6,ans:"Dispersion forces: present in ALL molecules. Caused by instantaneous temporary dipoles due to electron movement. Weakest of the three; increase with molecular size. Example: CH₄, noble gases. Dipole-dipole: between polar molecules with permanent dipoles. Intermediate strength. Example: HCl, SO₂. Hydrogen bonding: strongest of the three intermolecular forces. Requires H bonded to N, O, or F interacting with lone pair on N/O/F of another molecule. Example: H₂O, NH₃, HF. Order: dispersion < dipole-dipole < hydrogen bonding."},
+    {q:"Using examples, explain how molecular shape determines whether a molecule is polar or non-polar.",marks:4,ans:"Molecular polarity depends on both bond polarity AND molecular shape. Symmetric shapes cause bond dipoles to cancel → non-polar. Asymmetric shapes mean dipoles don't cancel → polar. CO₂: linear, two equal C=O dipoles pointing in opposite directions → cancel → non-polar. CH₄: tetrahedral, 4 C–H bonds → symmetric → dipoles cancel → non-polar. H₂O: bent, O–H dipoles don't cancel → net dipole → polar. NH₃: pyramidal, N–H dipoles don't cancel → polar."},
+  ]
+}
+
+}; // end EXAMS
+
+// ─── STATE ─────────────────────────────────────────────────────────────────
+let currentExam = null;
+let mcqAnswers = {};   // qIndex → chosen option index
+let shortJudge = {};   // qIndex → 'got'|'partial'|'missed'
+let revealed = {};     // short q index → bool
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById(id === 'home' ? 'home' : id).classList.add('active');
+  const pages = ['home','stoich','organic','imf','covalent'];
+  const btns = document.querySelectorAll('nav button');
+  const idx = pages.indexOf(id);
+  if (idx >= 0 && btns[idx]) btns[idx].classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function startExam(examKey) {
+  currentExam = examKey;
+  mcqAnswers = {};
+  shortJudge = {};
+  revealed = {};
+  const ex = EXAMS[examKey];
+
+  document.getElementById('exam-title').textContent = ex.title;
+  document.getElementById('exam-subtitle').textContent = ex.subtitle;
+
+  renderExam(ex);
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('exam-page').classList.add('active');
+  const keys = ['home','stoich','organic','imf','covalent'];
+  const btns = document.querySelectorAll('nav button');
+  const idx = keys.indexOf(examKey);
+  if (idx >= 0 && btns[idx]) btns[idx].classList.add('active');
+  document.getElementById('submit-btn').disabled = false;
+  updateProgress();
+  window.scrollTo(0,0);
+}
+
+function renderExam(ex) {
+  const body = document.getElementById('exam-body');
+  let html = '';
+
+  // MCQ section
+  html += `<div class="section-label">Section A — Multiple Choice <span style="color:var(--accent);margin-left:6px;">${ex.mcq.length} questions</span></div>`;
+  ex.mcq.forEach((q, i) => {
+    const letters = ['A','B','C','D'];
+    const optsHtml = q.opts.map((o, oi) =>
+      `<button class="mcq-btn" id="mcq-${i}-${oi}" onclick="chooseMCQ(${i},${oi})" data-qi="${i}" data-oi="${oi}">
+        <span class="mcq-letter">${letters[oi]}</span>
+        <span>${o}</span>
+      </button>`
+    ).join('');
+    html += `<div class="q-card" id="qcard-mcq-${i}">
+      <div class="q-num">Q${i+1} &nbsp;·&nbsp; Multiple Choice <span class="q-marks">1 mark</span></div>
+      <div class="q-text">${q.q}</div>
+      <div class="mcq-options">${optsHtml}</div>
+      <div class="feedback" id="fb-mcq-${i}"></div>
+    </div>`;
+  });
+
+  // Short answer section
+  const offset = ex.mcq.length;
+  html += `<br><div class="section-label">Section B — Short Answer <span style="color:var(--blue);margin-left:6px;">${ex.short.length} questions</span></div>`;
+  ex.short.forEach((q, i) => {
+    const qi = i + offset;
+    html += `<div class="q-card" id="qcard-short-${i}">
+      <div class="q-num">Q${qi+1} &nbsp;·&nbsp; Short Answer <span class="q-marks">${q.marks} mark${q.marks>1?'s':''}</span></div>
+      <div class="q-text" style="white-space:pre-line;">${q.q}</div>
+      <textarea class="short-textarea" id="short-ta-${i}" placeholder="Write your answer here…" oninput="updateProgress()"></textarea>
+      <div class="short-controls">
+        <button class="reveal-btn" onclick="revealAnswer(${i})">👁 Show model answer</button>
+      </div>
+      <div class="model-answer" id="ma-${i}">
+        <div class="ma-label">✦ Model Answer</div>
+        <div>${q.ans}</div>
+        <div class="judge-btns">
+          <button class="judge-btn got-it" id="j-got-${i}" onclick="judgeShort(${i},'got')">✓ Got it</button>
+          <button class="judge-btn partial" id="j-part-${i}" onclick="judgeShort(${i},'partial')">〜 Partial</button>
+          <button class="judge-btn missed" id="j-miss-${i}" onclick="judgeShort(${i},'missed')">✗ Missed</button>
+        </div>
+      </div>
+    </div>`;
+  });
+
+  body.innerHTML = html;
+}
+
+function chooseMCQ(qi, oi) {
+  const ex = EXAMS[currentExam];
+  const q = ex.mcq[qi];
+  const letters = ['A','B','C','D'];
+
+  // Disable all buttons for this question
+  for (let o = 0; o < q.opts.length; o++) {
+    const btn = document.getElementById(`mcq-${qi}-${o}`);
+    btn.disabled = true;
+  }
+
+  mcqAnswers[qi] = oi;
+
+  const chosen = document.getElementById(`mcq-${qi}-${oi}`);
+  const fb = document.getElementById(`fb-mcq-${qi}`);
+
+  if (oi === q.ans) {
+    chosen.classList.add('correct');
+    fb.className = 'feedback correct-fb show';
+    fb.innerHTML = '✓ Correct!';
+  } else {
+    chosen.classList.add('wrong');
+    const correct = document.getElementById(`mcq-${qi}-${q.ans}`);
+    correct.classList.add('reveal-correct');
+    fb.className = 'feedback wrong-fb show';
+    fb.innerHTML = `✗ Incorrect — correct answer was <strong>${letters[q.ans]}: ${q.opts[q.ans]}</strong>`;
+  }
+  updateProgress();
+}
+
+function revealAnswer(i) {
+  const ma = document.getElementById(`ma-${i}`);
+  ma.classList.add('show');
+  revealed[i] = true;
+}
+
+function judgeShort(i, verdict) {
+  shortJudge[i] = verdict;
+  ['got','part','miss'].forEach(k => {
+    document.getElementById(`j-${k}-${i}`).classList.remove('selected');
+  });
+  const map = {got:'got',partial:'part',missed:'miss'};
+  document.getElementById(`j-${map[verdict]}-${i}`).classList.add('selected');
+  updateProgress();
+}
+
+function updateProgress() {
+  const ex = EXAMS[currentExam];
+  if (!ex) return;
+  const total = ex.mcq.length + ex.short.length;
+  const done = Object.keys(mcqAnswers).length + Object.keys(shortJudge).length;
+  const pct = Math.round((done/total)*100);
+  document.getElementById('pbar').style.width = pct + '%';
+  document.getElementById('plabel').textContent = `${done} / ${total} answered`;
+}
+
+function submitExam() {
+  const ex = EXAMS[currentExam];
+  let mcqCorrect = 0;
+  for (let i = 0; i < ex.mcq.length; i++) {
+    if (mcqAnswers[i] === ex.mcq[i].ans) mcqCorrect++;
+  }
+  let shortGot = 0, shortPartial = 0, shortMissed = 0;
+  ex.short.forEach((q,i) => {
+    const j = shortJudge[i];
+    if (j === 'got') shortGot++;
+    else if (j === 'partial') shortPartial++;
+    else if (j === 'missed') shortMissed++;
+  });
+
+  const mcqTotal = ex.mcq.length;
+  const pct = Math.round((mcqCorrect / mcqTotal) * 100);
+
+  document.getElementById('score-pct').textContent = `${mcqCorrect}/${mcqTotal}`;
+  document.getElementById('score-sub').textContent = `MCQ score (${pct}%) · Self-judged short answers below`;
+  document.getElementById('sc-correct').textContent = mcqCorrect + shortGot;
+  document.getElementById('sc-partial').textContent = shortPartial;
+  document.getElementById('sc-wrong').textContent = (mcqTotal - mcqCorrect) + shortMissed;
+
+  // Build review
+  let reviewHtml = '<div style="margin-bottom:12px;font-size:.8rem;color:var(--muted);">Full review — your answers vs model answers</div>';
+
+  // MCQ review
+  for (let i = 0; i < ex.mcq.length; i++) {
+    const q = ex.mcq[i];
+    const chosen = mcqAnswers[i];
+    const letters = ['A','B','C','D'];
+    const correct = chosen === q.ans;
+    const badge = chosen === undefined
+      ? `<span class="badge skipped">SKIPPED</span>`
+      : correct ? `<span class="badge correct">✓ CORRECT</span>` : `<span class="badge wrong">✗ WRONG</span>`;
+    const chosenText = chosen !== undefined ? `You chose: ${letters[chosen]}: ${q.opts[chosen]}` : 'Not answered';
+    const correctText = `Correct: ${letters[q.ans]}: ${q.opts[q.ans]}`;
+    reviewHtml += `<div class="review-card">
+      <div class="rc-q">Q${i+1}. ${q.q}</div>
+      <div class="rc-meta">${badge} MCQ</div>
+      <div class="rc-answer">${chosenText}${!correct?`<br><span style="color:var(--accent)">${correctText}</span>`:''}</div>
+    </div>`;
+  }
+
+  // Short answer review
+  const offset = ex.mcq.length;
+  ex.short.forEach((q, i) => {
+    const j = shortJudge[i];
+    const ta = document.getElementById(`short-ta-${i}`);
+    const yourAnswer = ta ? ta.value.trim() : '';
+    const badge = !j
+      ? `<span class="badge skipped">NOT JUDGED</span>`
+      : j === 'got' ? `<span class="badge correct">✓ GOT IT</span>`
+      : j === 'partial' ? `<span class="badge partial">〜 PARTIAL</span>`
+      : `<span class="badge wrong">✗ MISSED</span>`;
+    reviewHtml += `<div class="review-card">
+      <div class="rc-q">Q${offset+i+1}. ${q.q.replace(/\n/g,'<br>')}</div>
+      <div class="rc-meta">${badge} Short Answer · ${q.marks} mark${q.marks>1?'s':''}</div>
+      ${yourAnswer ? `<div class="rc-answer" style="margin-bottom:8px;"><em style="color:var(--muted);font-size:.72rem;">YOUR ANSWER:</em><br>${yourAnswer}</div>` : ''}
+      <div class="rc-answer"><em style="color:var(--blue);font-size:.72rem;">MODEL ANSWER:</em><br>${q.ans}</div>
+    </div>`;
+  });
+
+  document.getElementById('review-body').innerHTML = reviewHtml;
+
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('results-page').classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function restartExam() {
+  startExam(currentExam);
+}
+</script>
+</body>
+</html>
