@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stage 1 Chemistry – Semester 1 Revision Checklist</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #f5f4f0;
+    --surface: #ffffff;
+    --surface1: #f1f0ec;
+    --border: #d3d1c7;
+    --border-strong: #b4b2a9;
+    --text: #2c2c2a;
+    --text-sec: #5f5e5a;
+    --text-muted: #888780;
+    --accent: #185fa5;
+    --accent-bg: #e6f1fb;
+    --accent-border: #85b7eb;
+    --accent-text: #0c447c;
+    --radius: 8px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1a1a18;
+      --surface: #2c2c2a;
+      --surface1: #242422;
+      --border: #444441;
+      --border-strong: #5f5e5a;
+      --text: #e8e6dc;
+      --text-sec: #b4b2a9;
+      --text-muted: #888780;
+      --accent: #378add;
+      --accent-bg: #0c2a46;
+      --accent-border: #185fa5;
+      --accent-text: #85b7eb;
+    }
+  }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding: 1.5rem 1rem; }
+  .container { max-width: 720px; margin: 0 auto; }
+  h1 { font-size: 20px; font-weight: 600; margin-bottom: 0.25rem; }
+  .subtitle { font-size: 14px; color: var(--text-muted); margin-bottom: 1.25rem; }
+  .progress-bar-bg { background: var(--surface1); border-radius: 999px; height: 8px; overflow: hidden; margin-bottom: 0.25rem; }
+  .progress-bar-fill { height: 8px; border-radius: 999px; background: var(--accent); transition: width 0.3s ease; }
+  .progress-label { font-size: 13px; color: var(--text-muted); margin-bottom: 1.5rem; }
+  .topic { margin-bottom: 1.25rem; border: 0.5px solid var(--border); border-radius: 12px; overflow: hidden; background: var(--surface); }
+  .topic-header { padding: 0.75rem 1rem; background: var(--surface1); cursor: pointer; display: flex; align-items: center; justify-content: space-between; user-select: none; }
+  .topic-title { font-size: 15px; font-weight: 600; }
+  .topic-meta { display: flex; align-items: center; gap: 10px; }
+  .topic-count { font-size: 12px; color: var(--text-muted); }
+  .topic-chevron { font-size: 18px; color: var(--text-muted); transition: transform 0.2s; display: inline-block; }
+  .topic-chevron.open { transform: rotate(180deg); }
+  .section { border-top: 0.5px solid var(--border); }
+  .section-title { padding: 0.5rem 1rem; font-size: 11px; font-weight: 600; color: var(--text-muted); background: var(--bg); text-transform: uppercase; letter-spacing: 0.05em; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
+  .section-title:hover { background: var(--surface1); }
+  .section-items { display: none; }
+  .section-items.open { display: block; }
+  .item-wrap { border-top: 0.5px solid var(--border); }
+  .item-wrap:first-child { border-top: none; }
+  .item { display: flex; align-items: flex-start; gap: 10px; padding: 0.45rem 1rem; cursor: pointer; transition: background 0.1s; }
+  .item:hover { background: var(--surface1); }
+  .item input[type=checkbox] { width: 15px; height: 15px; margin-top: 2px; flex-shrink: 0; accent-color: var(--accent); cursor: pointer; }
+  .item label { font-size: 13.5px; color: var(--text); cursor: pointer; line-height: 1.5; flex: 1; }
+  .item-wrap.checked .item label { color: var(--text-muted); text-decoration: line-through; }
+  .hint-btn { background: none; border: none; cursor: pointer; color: var(--text-muted); font-size: 16px; padding: 2px 4px; border-radius: 4px; flex-shrink: 0; margin-top: 1px; transition: color 0.15s, background 0.15s; line-height: 1; }
+  .hint-btn:hover { color: var(--accent); background: var(--accent-bg); }
+  .hint-btn.open { color: var(--accent); }
+  .answer-box { display: none; margin: 0 1rem 0.5rem 2.5rem; padding: 0.5rem 0.75rem; background: var(--accent-bg); border-left: 2.5px solid var(--accent-border); border-radius: 0 6px 6px 0; font-size: 13px; color: var(--text); line-height: 1.6; }
+  .answer-box.open { display: block; }
+  .section-badge { font-size: 11px; color: var(--accent-text); background: var(--accent-bg); border-radius: 999px; padding: 1px 8px; }
+  .reset-btn { margin-top: 1rem; font-size: 13px; color: var(--text-muted); background: none; border: 0.5px solid var(--border); border-radius: var(--radius); padding: 6px 14px; cursor: pointer; }
+  .reset-btn:hover { background: var(--surface1); }
+  .footer { margin-top: 2rem; font-size: 12px; color: var(--text-muted); text-align: center; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Stage 1 Chemistry – Semester 1</h1>
+  <p class="subtitle">Revision checklist · Topics 1, 2, 3 &amp; 4 · Tick each item when you can explain it without notes</p>
+  <div class="progress-bar-bg"><div class="progress-bar-fill" id="pbar" style="width:0%"></div></div>
+  <div class="progress-label" id="plabel">0 of 0 completed</div>
+  <div id="checklist"></div>
+  <button class="reset-btn" onclick="resetAll()">↺ Reset all</button>
+  <p class="footer">Progress is saved in your browser automatically.</p>
+</div>
+<script>
+const DATA = [
+  { topic: "Topic 1: Materials and their atoms", sections: [
+    { title: "Atomic structure", items: [
+      ["Define atom, element, compound and mixture", "Atom: smallest particle of an element. Element: one type of atom only. Compound: two or more elements chemically bonded. Mixture: two or more substances physically combined, not bonded."],
+      ["Describe the structure of an atom", "Nucleus at the centre containing protons and neutrons. Electrons orbit the nucleus in shells/energy levels."],
+      ["Identify protons, neutrons and electrons", "Proton: positive charge, in nucleus. Neutron: no charge, in nucleus. Electron: negative charge, orbits nucleus. Mass of proton ≈ neutron ≈ 1 amu; electron mass is negligible."],
+      ["Determine atomic number and mass number", "Atomic number (Z) = number of protons. Mass number (A) = protons + neutrons."],
+      ["Calculate the number of protons, neutrons and electrons in an atom", "Protons = atomic number. Neutrons = mass number − atomic number. Electrons = protons (for a neutral atom)."],
+      ["Explain isotopes", "Isotopes are atoms of the same element with the same number of protons but different numbers of neutrons (different mass numbers)."],
+      ["Explain absorption and emission spectra", "Absorption: electrons absorb photons and jump to higher energy levels — dark lines on a continuous spectrum. Emission: electrons fall back down and release photons of specific wavelengths — bright coloured lines on a dark background."],
+      ["Explain ground and excited states", "Ground state: electrons in their lowest possible energy levels. Excited state: an electron has absorbed energy and moved to a higher energy level."],
+    ]},
+    { title: "Electron configuration", items: [
+      ["Write main-shell electron configurations", "Fill shells in order: shell 1 holds max 2, shell 2 holds max 8, shell 3 holds max 8 (at this level). e.g. Sodium (11): 2, 8, 1."],
+      ["Write subshell notation", "Fill subshells in order: 1s² 2s² 2p⁶ 3s² 3p⁶ … e.g. Cl: 1s² 2s² 2p⁶ 3s² 3p⁵"],
+      ["Identify valence electrons", "Valence electrons are the electrons in the outermost shell. They determine reactivity and bonding."],
+      ["Predict ion formation", "Metals lose electrons to form positive ions. Non-metals gain electrons to form negative ions. Elements aim for a full outer shell (usually 8 electrons)."],
+      ["Identify cations and anions", "Cation: positive ion (lost electrons), e.g. Na⁺. Anion: negative ion (gained electrons), e.g. Cl⁻."],
+    ]},
+    { title: "Periodic table", items: [
+      ["Identify groups and periods", "Groups = vertical columns (elements with same number of valence electrons). Periods = horizontal rows (elements with same number of electron shells)."],
+      ["Classify metals, non-metals and metalloids", "Metals: left/centre of table, conduct electricity. Non-metals: top right, poor conductors. Metalloids (e.g. Si, As): along the staircase line, intermediate properties."],
+      ["Explain atomic radius trends", "Increases down a group (more shells). Decreases across a period left to right (more protons pull electrons closer)."],
+      ["Explain electronegativity trends", "Increases across a period (left to right) and up a group. Fluorine is the most electronegative element."],
+      ["Explain ionisation energy trends", "Increases across a period (stronger nuclear attraction). Decreases down a group (electrons further from nucleus, more shielding)."],
+      ["Explain metallic character trends", "Increases down a group and decreases across a period (left to right)."],
+    ]},
+    { title: "Quantities of atoms", items: [
+      ["Understand the mole concept", "A mole is a counting unit for atoms/molecules. 1 mole = 6.022 × 10²³ particles (Avogadro's number)."],
+      ["Use Avogadro's constant", "Nₐ = 6.022 × 10²³ mol⁻¹. Number of particles = moles × Nₐ."],
+      ["Calculate molar mass", "Molar mass = mass of 1 mole of a substance in g/mol. Equal to the atomic/molecular weight from the periodic table."],
+      ["Calculate relative atomic mass", "Weighted average mass of all isotopes relative to ¹²C. Calculated using: Σ(isotope mass × abundance)."],
+      ["Calculate relative molecular mass", "Sum of the relative atomic masses of all atoms in the molecule. e.g. H₂O = 2(1) + 16 = 18 g/mol."],
+      ["Perform mass ↔ mole calculations", "moles = mass ÷ molar mass. mass = moles × molar mass."],
+      ["Calculate the number of particles from moles", "Number of particles = moles × 6.022 × 10²³"],
+      ["Calculate moles from particle numbers", "moles = number of particles ÷ 6.022 × 10²³"],
+    ]},
+  ]},
+  { topic: "Topic 2: Bonding and structure", sections: [
+    { title: "Ionic bonding", items: [
+      ["Explain ionic bonding", "Electrostatic attraction between oppositely charged ions. Occurs between metals and non-metals."],
+      ["Explain electron transfer", "Metal atoms lose electrons (become cations); non-metal atoms gain those electrons (become anions). Both achieve full outer shells."],
+      ["Draw ionic electron diagrams", "Draw both ions with their electron dot structures showing the transfer. Cation loses dots, anion gains them. Enclose each ion in brackets with charge shown outside."],
+      ["Write formulas for ionic compounds", "Balance charges so overall charge = 0. e.g. Ca²⁺ + 2Cl⁻ → CaCl₂."],
+      ["Explain ionic lattice structures", "Ions arrange in a giant 3D lattice with alternating positive and negative ions held by strong electrostatic forces in all directions."],
+      ["Explain the properties of ionic compounds", "High melting/boiling points (strong lattice forces). Conduct electricity when dissolved or molten (ions free to move). Brittle (like charges align and repel when shifted)."],
+    ]},
+    { title: "Metallic bonding", items: [
+      ["Explain metallic bonding", "Electrostatic attraction between positive metal ions (cations) and a 'sea' of delocalised electrons surrounding them."],
+      ["Describe delocalised electrons", "Outer electrons leave their parent atoms and move freely throughout the entire metal lattice — they are not fixed to any one atom."],
+      ["Explain the properties of metals using bonding", "Good conductors (delocalised electrons carry charge/heat). Malleable/ductile (layers slide without breaking bonds). High melting points (strong electrostatic forces between ions and electron sea)."],
+    ]},
+    { title: "Covalent bonding", items: [
+      ["Explain covalent bonding", "Sharing of electron pairs between non-metal atoms. Each shared pair is one covalent bond. Both atoms achieve a full outer shell."],
+      ["Identify single, double and triple bonds", "Single: 1 shared pair (e.g. H−H). Double: 2 shared pairs (e.g. O=O). Triple: 3 shared pairs (e.g. N≡N). More shared pairs = shorter and stronger bond."],
+      ["Draw Lewis diagrams", "Show all valence electrons as dots/crosses. Shared pairs go between atoms; lone pairs stay on the atom. Each atom should have 8 electrons around it (2 for H)."],
+      ["Count valence electrons correctly", "Add up valence electrons from all atoms. For anions, add extra electrons equal to the charge. For cations, subtract electrons."],
+      ["Identify lone pairs", "Lone pairs are pairs of valence electrons not involved in bonding. They still influence molecular shape."],
+      ["Explain the properties of molecular covalent substances", "Low melting/boiling points (weak intermolecular forces, not the covalent bonds themselves). Usually non-conductors. Often gases or liquids at room temperature."],
+    ]},
+  ]},
+  { topic: "Topic 3: Molecules", sections: [
+    { title: "Lewis diagrams and molecular shape", items: [
+      ["Draw Lewis diagrams correctly", "Count all valence electrons, place bonding pairs between atoms, fill remaining electrons as lone pairs, ensure all atoms have a full shell."],
+      ["Identify bonding pairs and lone pairs", "Bonding pairs: shared between two atoms (form the bond). Lone pairs: on one atom only, not shared."],
+      ["Predict molecular shape using VSEPR", "Count electron pairs (bonding + lone) around the central atom. Pairs repel each other and arrange to be as far apart as possible."],
+      ["Identify linear molecules", "2 bonding pairs, 0 lone pairs → linear, bond angle 180°. e.g. CO₂, BeCl₂."],
+      ["Identify tetrahedral molecules", "4 bonding pairs, 0 lone pairs → tetrahedral, bond angle 109.5°. e.g. CH₄."],
+      ["Identify pyramidal molecules", "3 bonding pairs, 1 lone pair → trigonal pyramidal, bond angle ~107°. e.g. NH₃. Lone pair compresses the angle."],
+      ["Identify bent (V-shaped) molecules", "2 bonding pairs, 2 lone pairs → bent/V-shaped, bond angle ~104.5°. e.g. H₂O."],
+      ["Explain how lone pairs affect shape", "Lone pairs repel more strongly than bonding pairs, compressing bond angles. Each lone pair reduces the bond angle by ~2–2.5°."],
+    ]},
+    { title: "Electronegativity and polarity", items: [
+      ["Define electronegativity", "A measure of an atom's ability to attract shared electrons in a covalent bond toward itself."],
+      ["Use electronegativity values to determine bond polarity", "If electronegativity difference > 0.4, the bond is polar. The more electronegative atom gets δ⁻, the less electronegative gets δ⁺."],
+      ["Identify polar covalent bonds", "Unequal sharing of electrons due to electronegativity difference. e.g. H−Cl, O−H, N−H."],
+      ["Identify non-polar covalent bonds", "Equal sharing of electrons — same element (e.g. H−H, Cl−Cl) or very similar electronegativities."],
+      ["Identify partial charges (δ⁺ and δ⁻)", "δ⁻ is on the more electronegative atom; δ⁺ is on the less electronegative atom. These show the direction of the dipole."],
+      ["Determine whether a molecule is polar", "A molecule is polar if it has polar bonds AND the dipoles do NOT cancel due to molecular shape/symmetry."],
+      ["Explain why CO₂ is non-polar", "CO₂ has two polar C=O bonds, but the molecule is linear and symmetrical. The dipoles point in opposite directions and cancel out → net dipole = 0."],
+      ["Explain why H₂O is polar", "H₂O has two polar O−H bonds and a bent shape. The dipoles do not cancel → net dipole pointing toward oxygen → polar molecule."],
+      ["Explain how molecular shape affects polarity", "Symmetrical molecules (even with polar bonds) are non-polar because dipoles cancel. Asymmetrical molecules with polar bonds are polar."],
+    ]},
+    { title: "Intermolecular forces", items: [
+      ["Explain dispersion forces", "Temporary dipoles caused by random electron movement attract neighbouring molecules. Present in ALL molecules. Strength increases with more electrons (larger molecules)."],
+      ["Explain dipole-dipole forces", "Attraction between the δ⁺ end of one polar molecule and the δ⁻ end of another. Stronger than dispersion forces."],
+      ["Explain hydrogen bonding", "Strong dipole-dipole attraction between a H atom bonded to N, O, or F and a lone pair on a nearby N, O, or F atom. Strongest intermolecular force."],
+      ["Identify the strongest intermolecular force present", "Check: does molecule have H bonded to N/O/F? → hydrogen bonding. Is it polar? → dipole-dipole. All others → dispersion only."],
+      ["Rank intermolecular forces from weakest to strongest", "Dispersion < dipole-dipole < hydrogen bonding."],
+      ["Explain boiling point trends using intermolecular forces", "Stronger/more intermolecular forces → more energy needed to separate molecules → higher boiling point."],
+      ["Explain melting point trends using intermolecular forces", "Same logic: stronger forces between molecules → higher melting point."],
+      ["Explain solubility using polarity", "'Like dissolves like.' Polar solutes dissolve in polar solvents (e.g. salt in water). Non-polar solutes dissolve in non-polar solvents (e.g. oil in hexane)."],
+    ]},
+  ]},
+  { topic: "Topic 3: Organic chemistry", sections: [
+    { title: "Hydrocarbons", items: [
+      ["Define a hydrocarbon", "A compound containing only carbon and hydrogen atoms."],
+      ["Identify alkanes", "Saturated hydrocarbons with only C−C single bonds. General formula: CₙH₂ₙ₊₂. e.g. methane CH₄, ethane C₂H₆."],
+      ["Identify alkenes", "Unsaturated hydrocarbons with at least one C=C double bond. General formula: CₙH₂ₙ. e.g. ethene C₂H₄."],
+      ["Identify alkynes", "Unsaturated hydrocarbons with at least one C≡C triple bond. General formula: CₙH₂ₙ₋₂. e.g. ethyne C₂H₂."],
+      ["Identify alcohols", "Contain the −OH (hydroxyl) functional group. General formula: CₙH₂ₙ₊₁OH. e.g. methanol CH₃OH, ethanol C₂H₅OH."],
+      ["Identify functional groups", "The atom or group of atoms that gives a molecule its characteristic chemical properties. e.g. −OH (alcohol), C=C (alkene), −COOH (carboxylic acid)."],
+      ["Define homologous series", "A family of compounds with the same functional group, same general formula, and similar chemical properties, differing by a CH₂ unit each time."],
+    ]},
+    { title: "Naming organic molecules", items: [
+      ["Name hydrocarbons from 1–10 carbons", "1=meth, 2=eth, 3=prop, 4=but, 5=pent, 6=hex, 7=hept, 8=oct, 9=non, 10=dec."],
+      ["Name straight-chain alkanes", "Count carbons → use prefix → add '-ane'. e.g. 3 carbons = propane."],
+      ["Name simple alkenes", "Same prefix + '-ene'. Add position number if needed. e.g. but-1-ene, but-2-ene."],
+      ["Name simple alkynes", "Same prefix + '-yne'. e.g. 2 carbons = ethyne."],
+      ["Name simple alcohols", "Same prefix + '-ol'. e.g. 3 carbons = propan-1-ol or propan-2-ol depending on OH position."],
+      ["Name branched hydrocarbons", "Find the longest carbon chain (parent chain). Number from the end closest to the branch. Name branch as 'methyl-', 'ethyl-' etc. State position number."],
+      ["Identify methyl branches", "A −CH₃ group attached to the main chain. Named 'methyl' with its position number. e.g. 2-methylpropane."],
+    ]},
+    { title: "Organic formulae", items: [
+      ["Write molecular formulae", "Shows the actual number of each type of atom in one molecule. e.g. C₃H₈."],
+      ["Write condensed structural formulae", "Shows atoms grouped by carbon: e.g. CH₃CH₂CH₃ for propane. Branches shown in brackets."],
+      ["Interpret skeletal formulae", "Each line end or bend = a carbon. H atoms on carbons are implied (not drawn). Other atoms (O, N, etc.) are shown explicitly."],
+      ["Convert between formula types", "Molecular formula → count atoms. Structural/condensed → draw out each C with its H atoms. Skeletal → count carbons at each vertex/end."],
+    ]},
+    { title: "Combustion reactions", items: [
+      ["Write complete combustion equations", "Hydrocarbon + O₂ → CO₂ + H₂O (excess oxygen). e.g. CH₄ + 2O₂ → CO₂ + 2H₂O."],
+      ["Write incomplete combustion equations", "Hydrocarbon + O₂ → CO + H₂O (limited oxygen). Carbon (soot) may also form."],
+      ["Balance hydrocarbon combustion equations", "Balance C first (→ CO₂), then H (→ H₂O), then O last. Use fractions if needed, then multiply through."],
+      ["Identify products of complete combustion", "Carbon dioxide (CO₂) and water (H₂O)."],
+      ["Identify products of incomplete combustion", "Carbon monoxide (CO), water (H₂O), and possibly carbon (soot/C)."],
+      ["Explain why carbon monoxide is dangerous", "CO binds to haemoglobin more strongly than O₂, preventing oxygen transport in the blood. It is colourless and odourless, so it's undetectable without a detector."],
+    ]},
+    { title: "Polymers", items: [
+      ["Define monomer", "A small molecule that can react with many others to form a polymer. e.g. ethene (CH₂=CH₂)."],
+      ["Define polymer", "A large molecule made of many repeating monomer units joined together. e.g. polyethylene."],
+      ["Write simple addition polymer equations", "n(CH₂=CH₂) → −(CH₂−CH₂)ₙ−. The double bond opens and monomers link in a chain."],
+      ["Identify monomers from polymers", "Look at the repeating unit and add a double bond between the two carbons in the backbone to get the monomer."],
+      ["Draw repeating units", "Draw the unit in brackets with a bond extending from each side and subscript n. e.g. −[CH₂−CH₂]ₙ−."],
+      ["Explain thermoplastics", "Polymers with no cross-links between chains. Chains can slide past each other when heated → soften and remould. e.g. polyethylene."],
+      ["Explain thermosetting polymers", "Polymers with covalent cross-links between chains. Cannot be re-melted once set — cross-links prevent chains moving. e.g. Bakelite."],
+      ["Explain cross-linking", "Covalent bonds that form between adjacent polymer chains, making the material rigid and heat-resistant."],
+      ["Explain how cross-links affect properties", "More cross-links → harder, more brittle, higher melting point, cannot be reshaped. Fewer cross-links → more flexible."],
+      ["Explain which polymers are easier to recycle and why", "Thermoplastics are easier to recycle because they can be remelted and reshaped. Thermosetting polymers cannot — cross-links are permanent."],
+    ]},
+  ]},
+  { topic: "Topic 4: Mixtures and solutions", sections: [
+    { title: "Solutions", items: [
+      ["Define solute", "The substance that dissolves in a solvent. e.g. salt in saltwater."],
+      ["Define solvent", "The substance that does the dissolving. e.g. water in saltwater."],
+      ["Define solution", "A homogeneous mixture of a solute dissolved in a solvent."],
+      ["Distinguish between concentrated and dilute solutions", "Concentrated: high amount of solute per litre. Dilute: low amount of solute per litre."],
+      ["Explain factors affecting solubility", "Temperature (usually increases solubility for solids), nature of solute and solvent ('like dissolves like'), pressure (mainly affects gases)."],
+    ]},
+    { title: "Concentration calculations", items: [
+      ["Use concentration = moles ÷ volume", "c = n/V. Concentration in mol L⁻¹, volume in litres."],
+      ["Rearrange the concentration formula", "n = cV (moles). V = n/c (volume). c = n/V (concentration)."],
+      ["Calculate concentration from moles and volume", "c = n ÷ V. e.g. 0.5 mol in 2 L → c = 0.25 mol L⁻¹."],
+      ["Calculate moles from concentration and volume", "n = c × V. e.g. 0.1 mol L⁻¹ × 0.5 L = 0.05 mol."],
+      ["Calculate volume from concentration and moles", "V = n ÷ c. e.g. 0.2 mol ÷ 0.5 mol L⁻¹ = 0.4 L."],
+      ["Correctly use units (mol L⁻¹)", "Volume must be in litres (divide mL by 1000). Concentration is always mol L⁻¹ (also written as M or mol/L)."],
+    ]},
+    { title: "Stoichiometry with solutions", items: [
+      ["Write balanced chemical equations", "Same number of each atom on both sides. Balance by adjusting coefficients only, never subscripts."],
+      ["Determine mole ratios from equations", "Coefficients in the balanced equation give the mole ratio. e.g. 2HCl + Ca → CaCl₂ + H₂: ratio HCl:Ca = 2:1."],
+      ["Solve concentration stoichiometry problems", "Step 1: find moles of known. Step 2: use mole ratio. Step 3: find unknown (concentration or volume)."],
+      ["Calculate unknown concentrations", "Find moles of known substance → use ratio → moles of unknown → c = n/V."],
+      ["Calculate unknown volumes", "Find moles of known → use ratio → moles of unknown → V = n/c."],
+      ["Calculate moles of reactants and products", "moles = c × V (for solutions). Use the mole ratio from the balanced equation to find moles of other species."],
+      ["Show all working with correct units", "State formula, substitute values with units, show each step. Always convert mL → L before calculating. State final answer with units."],
+    ]},
+  ]},
+];
+
+let checked = {};
+try { checked = JSON.parse(localStorage.getItem('chem_checklist_v2') || '{}'); } catch(e){}
+function save() { try { localStorage.setItem('chem_checklist_v2', JSON.stringify(checked)); } catch(e){} }
+function getKey(ti,si,ii) { return ti+'_'+si+'_'+ii; }
+
+function updateProgress() {
+  let total=0, done=0;
+  DATA.forEach(function(t,ti){ t.sections.forEach(function(s,si){ s.items.forEach(function(_,ii){ total++; if(checked[getKey(ti,si,ii)]) done++; }); }); });
+  document.getElementById('pbar').style.width = (total ? Math.round(done/total*100) : 0)+'%';
+  document.getElementById('plabel').textContent = done+' of '+total+' completed';
+}
+
+function updateSectionBadge(ti,si) {
+  var sec=DATA[ti].sections[si];
+  var done=sec.items.filter(function(_,ii){ return checked[getKey(ti,si,ii)]; }).length;
+  var badge=document.getElementById('badge_'+ti+'_'+si);
+  if(badge){ if(done===sec.items.length){badge.textContent='✓ done';badge.style.display='';}else if(done>0){badge.textContent=done+'/'+sec.items.length;badge.style.display='';}else{badge.style.display='none';} }
+}
+
+function updateTopicCount(ti) {
+  var t=DATA[ti];
+  var total=t.sections.reduce(function(a,s){ return a+s.items.length; },0);
+  var done=t.sections.reduce(function(a,s,si){ return a+s.items.filter(function(_,ii){ return checked[getKey(ti,si,ii)]; }).length; },0);
+  var el=document.getElementById('tcount_'+ti);
+  if(el) el.textContent=done+'/'+total;
+}
+
+function toggleHint(ti,si,ii) {
+  var box=document.getElementById('ans_'+ti+'_'+si+'_'+ii);
+  var btn=document.getElementById('hbtn_'+ti+'_'+si+'_'+ii);
+  var open=box.classList.toggle('open');
+  btn.classList.toggle('open',open);
+  btn.textContent = open ? '▲' : '▶';
+}
+
+function toggleTopic(ti) {
+  var chev=document.getElementById('tchev_'+ti);
+  var isOpen=chev.classList.toggle('open');
+  var topicEl=document.querySelectorAll('.topic')[ti];
+  topicEl.querySelectorAll('.section').forEach(function(s){ s.style.display=isOpen?'':'none'; });
+}
+
+function toggleSection(ti,si) {
+  var el=document.getElementById('sec_'+ti+'_'+si);
+  if(el) el.classList.toggle('open');
+}
+
+function resetAll() {
+  if(!confirm('Reset all progress?')) return;
+  checked={};
+  save();
+  render();
+}
+
+function render() {
+  var cl=document.getElementById('checklist');
+  cl.innerHTML='';
+  DATA.forEach(function(t,ti) {
+    var topicEl=document.createElement('div');
+    topicEl.className='topic';
+    var totalItems=t.sections.reduce(function(a,s){ return a+s.items.length; },0);
+    var doneItems=t.sections.reduce(function(a,s,si){ return a+s.items.filter(function(_,ii){ return checked[getKey(ti,si,ii)]; }).length; },0);
+    topicEl.innerHTML='<div class="topic-header" onclick="toggleTopic('+ti+')"><span class="topic-title">'+t.topic+'</span><span class="topic-meta"><span class="topic-count" id="tcount_'+ti+'">'+doneItems+'/'+totalItems+'</span><span class="topic-chevron open" id="tchev_'+ti+'">▼</span></span></div>';
+    t.sections.forEach(function(s,si) {
+      var secEl=document.createElement('div');
+      secEl.className='section';
+      var sDone=s.items.filter(function(_,ii){ return checked[getKey(ti,si,ii)]; }).length;
+      secEl.innerHTML='<div class="section-title" onclick="toggleSection('+ti+','+si+')"><span>'+s.title+'</span><span class="section-badge" id="badge_'+ti+'_'+si+'" style="'+(sDone===0?'display:none':'')+'">'+( sDone===s.items.length?'✓ done':sDone>0?sDone+'/'+s.items.length:'' )+'</span></div><div class="section-items open" id="sec_'+ti+'_'+si+'"></div>';
+      var itemsEl=secEl.querySelector('#sec_'+ti+'_'+si);
+      s.items.forEach(function(pair,ii) {
+        var label=pair[0], answer=pair[1];
+        var key=getKey(ti,si,ii);
+        var wrap=document.createElement('div');
+        wrap.className='item-wrap'+(checked[key]?' checked':'');
+        wrap.id='wrap_'+key;
+        wrap.innerHTML='<div class="item"><input type="checkbox" id="cb_'+key+'" '+(checked[key]?'checked':'')+'><label for="cb_'+key+'">'+label+'</label><button class="hint-btn" id="hbtn_'+ti+'_'+si+'_'+ii+'" onclick="event.stopPropagation();toggleHint('+ti+','+si+','+ii+')" title="Show answer">▶</button></div><div class="answer-box" id="ans_'+ti+'_'+si+'_'+ii+'">'+answer+'</div>';
+        wrap.querySelector('input').addEventListener('change',function(e){
+          checked[key]=e.target.checked;
+          wrap.className='item-wrap'+(checked[key]?' checked':'');
+          save(); updateProgress(); updateTopicCount(ti); updateSectionBadge(ti,si);
+        });
+        itemsEl.appendChild(wrap);
+      });
+      topicEl.appendChild(secEl);
+    });
+    cl.appendChild(topicEl);
+  });
+  updateProgress();
+}
+
+render();
+</script>
+</body>
+</html>
